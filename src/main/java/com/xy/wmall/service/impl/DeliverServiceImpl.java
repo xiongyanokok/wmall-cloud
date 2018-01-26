@@ -280,12 +280,13 @@ public class DeliverServiceImpl implements DeliverService {
     /**
      * 待发货数量
      * 
+     * @param map
      * @return
      */
     @Override
-    public Integer countWaitDeliver() {
+    public Integer countWaitDeliver(Map<String, Object> map) {
     	try {
-	    	return deliverMapper.countWaitDeliver();
+	    	return deliverMapper.countWaitDeliver(map);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "查询待发货失败", e);
 		}

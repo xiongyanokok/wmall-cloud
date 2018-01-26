@@ -73,7 +73,8 @@ public class HomeController extends BaseController {
 			model.addAttribute("myWallet", proxyWallet);
 		}
 		// 待发货
-		int waitDeliver = deliverService.countWaitDeliver();
+		map.put("parentProxyId", getProxyId());
+		int waitDeliver = deliverService.countWaitDeliver(map);
 		model.addAttribute("waitDeliver", waitDeliver);
 		
 		return "home/index";

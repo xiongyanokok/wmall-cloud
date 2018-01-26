@@ -107,9 +107,10 @@ public interface DeliverService {
     /**
      * 待发货数量
      * 
+     * @param map
      * @return
      */
-    Integer countWaitDeliver();
+    Integer countWaitDeliver(Map<String, Object> map);
     
     /**
      * 批量对货

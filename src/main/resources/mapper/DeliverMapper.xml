@@ -265,9 +265,10 @@
   		select 
   			t1.*, t3.wechat_name
         from 
-        	t_deliver t1, t_deliver_detail t2, t_proxy t3
+        	t_deliver t1, t_deliver_detail t2, t_proxy t3, t_proxy_deliver t4
         <where>
         	t1.id = t2.deliver_id
+        	and t1.id = t4.deliver_id
         	and t1.proxy_id = t3.id
         	<if test="id != null">
     			and t1.id = #{id}
@@ -276,10 +277,10 @@
     			and t3.wechat_name like CONCAT('%', #{wechatName}, '%')
   			</if>
   			<if test="proxyId != null">
-    			and t1.proxy_id = #{proxyId}
+    			and t4.proxy_id = #{proxyId}
   			</if>
   			<if test="parentProxyId != null">
-    			and t1.parent_proxy_id = #{parentProxyId}
+    			and t4.parent_proxy_id = #{parentProxyId}
   			</if>
   			<if test="authorizationCode != null">
     			and t1.authorization_code = #{authorizationCode}
@@ -448,14 +449,15 @@
   		select 
   			t2.product_id productId, 
   			sum(t2.amount) deliverNumber
-		from t_deliver t1, t_deliver_detail t2
+		from t_deliver t1, t_deliver_detail t2, t_proxy_deliver t3
         <where>
         	t1.id = t2.deliver_id
+        	and t1.id = t3.deliver_id
         	<if test="proxyId != null">
-        		and t1.proxy_id = #{proxyId}
+        		and t3.proxy_id = #{proxyId}
         	</if>
         	<if test="parentProxyId != null">
-        		and t1.parent_proxy_id = #{parentProxyId}
+        		and t3.parent_proxy_id = #{parentProxyId}
         	</if>
         	<if test="natureMonth != null">
         		and t1.create_time like CONCAT('%', #{natureMonth}, '%')
@@ -486,8 +488,20 @@
   	</select>
   	
   	<!-- 待发货数量 -->
-  	<select id="countWaitDeliver" resultType="java.lang.Integer">
-  		select count(id) from t_deliver where is_delete = 0 and deliver_status = 0
+  	<select id="countWaitDeliver" resultType="java.lang.Integer" parameterType="java.util.Map">
+  		select 
+  			count(t1.id) 
+  		from t_deliver t1, t_proxy_deliver t2 
+  		<where>
+  			t1.id = t2.deliver_id 
+  			and t1.deliver_status = 0
+  			<if test="parentProxyId != null">
+        		and t2.parent_proxy_id = #{parentProxyId}
+        	</if>
+        	<if test="isDelete != null">
+        		and t1.is_delete = #{isDelete}
+        	</if>
+  		</where>
   	</select>
   	
   	<!-- 批量对货 -->
