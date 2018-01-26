@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xy.wmall.mapper.ProxyDeliverMapper">
+	
+  	<resultMap id="BaseResultMap" type="com.xy.wmall.model.ProxyDeliver">
+		<id column="id" property="id" />	
+	    <result column="deliver_id" property="deliverId" />
+	    <result column="proxy_id" property="proxyId" />
+	    <result column="parent_proxy_id" property="parentProxyId" />
+  	</resultMap>
+  	
+  	<!-- 表所有字段 -->
+  	<sql id="Base_Column_List">
+  		id, deliver_id, proxy_id, parent_proxy_id
+  	</sql>
+  	
+  	<!-- 根据主键查询 -->
+  	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    	select 
+    	<include refid="Base_Column_List" />
+    	from t_proxy_deliver
+		where id = #{id}
+  	</select>
+  	
+  	<!-- 新增数据库记录 -->
+  	<insert id="insert" parameterType="com.xy.wmall.model.ProxyDeliver">
+    	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	    insert into t_proxy_deliver
+    		<trim prefix="(" suffix=")" suffixOverrides=",">
+		      	<if test="id != null">
+		        	id,
+		      	</if>
+		      	<if test="deliverId != null">
+		        	deliver_id,
+		      	</if>
+		      	<if test="proxyId != null">
+		        	proxy_id,
+		      	</if>
+		      	<if test="parentProxyId != null">
+		        	parent_proxy_id,
+		      	</if>
+    		</trim>
+    	values
+    		<trim prefix="(" suffix=")" suffixOverrides=",">
+      			<if test="id != null">
+        			#{id},
+      			</if>
+      			<if test="deliverId != null">
+        			#{deliverId},
+      			</if>
+      			<if test="proxyId != null">
+        			#{proxyId},
+      			</if>
+      			<if test="parentProxyId != null">
+        			#{parentProxyId},
+      			</if>
+    		</trim>
+  	</insert>
+  	
+  	<!-- 更新数据库记录 -->
+  	<update id="update" parameterType="com.xy.wmall.model.ProxyDeliver">
+    	update t_proxy_deliver
+    	<set>
+			<if test="deliverId != null">
+    			deliver_id = #{deliverId},
+  			</if>
+			<if test="proxyId != null">
+    			proxy_id = #{proxyId},
+  			</if>
+			<if test="parentProxyId != null">
+    			parent_proxy_id = #{parentProxyId},
+  			</if>
+    	</set>
+    	<where>
+    		id = #{id}
+    	</where>
+  	</update>
+  	
+	<!-- 根据map查询 -->
+  	<select id="getProxyDeliver" resultMap="BaseResultMap" parameterType="java.util.Map">
+  		select
+        <include refid="Base_Column_List"/>
+        from t_proxy_deliver
+        <where>
+  			<if test="id != null">
+    			and id = #{id}
+  			</if>
+  			<if test="deliverId != null">
+    			and deliver_id = #{deliverId}
+  			</if>
+  			<if test="proxyId != null">
+    			and proxy_id = #{proxyId}
+  			</if>
+  			<if test="parentProxyId != null">
+    			and parent_proxy_id = #{parentProxyId}
+  			</if>
+        </where>
+  	</select>
+  
+  	<!-- 根据map查询 -->
+  	<select id="listProxyDeliver" resultMap="BaseResultMap" parameterType="java.util.Map">
+  		select
+        <include refid="Base_Column_List"/>
+        from t_proxy_deliver
+        <where>
+  			<if test="deliverId != null">
+    			and deliver_id = #{deliverId}
+  			</if>
+  			<if test="proxyId != null">
+    			and proxy_id = #{proxyId}
+  			</if>
+  			<if test="parentProxyId != null">
+    			and parent_proxy_id = #{parentProxyId}
+  			</if>
+        </where>
+        <if test="groupBy != null">
+        	group by ${groupBy}
+        </if>
+        <if test="orderBy != null">
+        	order by ${orderBy}
+        </if>
+  	</select>
+  	
+  	<!-- 批量保存 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into t_proxy_deliver (<include refid="Base_Column_List" />)
+		values 
+		<foreach collection="list" index="index" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.id},
+				#{item.deliverId},
+				#{item.proxyId},
+				#{item.parentProxyId},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<!-- 批量更新 -->
+  	<update id="batchUpdate" parameterType="java.util.List">
+		<foreach collection="list" index="index" item="item" separator=";">
+			update t_proxy_deliver
+			<set>
+        		<if test="item.deliverId != null">
+        			deliver_id = #{item.deliverId},
+        		</if>
+        		<if test="item.proxyId != null">
+        			proxy_id = #{item.proxyId},
+        		</if>
+        		<if test="item.parentProxyId != null">
+        			parent_proxy_id = #{item.parentProxyId},
+        		</if>
+			</set>
+            where id = #{item.id}
+		</foreach>
+	</update>
+	
+</mapper>
