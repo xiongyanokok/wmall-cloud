@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.common.utils.ListPageUtils;
-import com.xy.wmall.enums.DeliverTypeEnum;
 import com.xy.wmall.enums.ErrorCodeEnum;
 import com.xy.wmall.enums.OrderStatusEnum;
 import com.xy.wmall.enums.OrderTypeEnum;
@@ -149,8 +148,8 @@ public class ProxyServiceImpl implements ProxyService {
 			}
 			orderDetailMapper.batchInsert(orderDetails);
 			
-			// 发货类型
-			if (DeliverTypeEnum.NOT_DELIVER.getValue().equals(proxy.getDeliverType())) {
+			// 是否发货
+			if (!proxy.getIsDeliver()) {
 				return;
 			}
 			
@@ -162,9 +161,7 @@ public class ProxyServiceImpl implements ProxyService {
 			deliver.setReceivePhone(proxy.getPhone());
 			deliver.setReceiveAddress(proxy.getAddress());
 			deliver.setCourierPrice(proxy.getCourierPrice());
-			deliver.setDeliverType(proxy.getDeliverType());
 			deliver.setDeliverStatus(TrueFalseStatusEnum.FALSE.getValue());
-			deliver.setInventoryStatus(TrueFalseStatusEnum.FALSE.getValue());
 			deliver.setCreateUserId(proxy.getCreateUserId());
 			deliver.setCreateTime(new Date());
 			deliver.setUpdateUserId(proxy.getCreateUserId());

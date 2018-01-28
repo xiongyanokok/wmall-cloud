@@ -70,7 +70,7 @@
 								<span class="select-box">
 									<select th:id="productId_+${status.index}" name="productId" class="select" th:onchange="'computePrice('+${status.index}+')'">
 										<option value="">全部产品</option>
-										<option th:each="product : ${products}" th:value="${product.id }" th:text="${product.productName }" th:selected="${orderDetail.productId == product.id}"></option>
+										<option th:each="product : ${products}" th:if="${product.productType == 1}" th:value="${product.id }" th:text="${product.productName }" th:selected="${orderDetail.productId == product.id}"></option>
 									</select>
 								</span>
 							</td>

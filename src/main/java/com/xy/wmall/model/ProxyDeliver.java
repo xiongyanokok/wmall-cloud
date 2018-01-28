@@ -1,6 +1,7 @@
 package com.xy.wmall.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
@@ -8,7 +9,7 @@ import lombok.Data;
  * model 实体类
  * 
  * @author admin
- * @date 2018年01月26日 下午02:19:05
+ * @date 2018年01月28日 上午11:34:02
  */
 @Data
 public class ProxyDeliver implements Serializable {
@@ -37,5 +38,10 @@ public class ProxyDeliver implements Serializable {
      * 上级代理ID
      */
 	private Integer parentProxyId;
+	
+	/**
+     * 创建时间
+     */
+	private Date createTime;
 	
 }

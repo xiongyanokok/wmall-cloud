@@ -68,7 +68,7 @@
 								<span class="select-box">
 									<select id="productId_0" name="productId" class="select" onchange="computePrice(0)">
 										<option value="">全部产品</option>
-										<option th:each="product : ${products}" th:value="${product.id }" th:text="${product.productName }"></option>
+										<option th:each="product : ${products}" th:if="${product.productType == 1}" th:value="${product.id }" th:text="${product.productName }"></option>
 									</select>
 								</span>
 							</td>

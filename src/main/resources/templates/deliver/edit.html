@@ -49,9 +49,9 @@
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span> 收件人手机号：</label>
+				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span> 收件人电话：</label>
 				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="receivePhone" name="receivePhone" placeholder="收件人手机号" maxlength="11" th:value="${deliver.receivePhone }" onkeyup="pureNumber(this)" onafterpaste="pureNumber(this)" />
+					<input type="text" class="input-text" id="receivePhone" name="receivePhone" placeholder="收件人电话" maxlength="11" th:value="${deliver.receivePhone }" onkeyup="pureNumber(this)" onafterpaste="pureNumber(this)" />
 				</div>
 			</div>
 			<div class="row cl">
@@ -61,27 +61,13 @@
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-2">发货类型：</label>
-				<div class="formControls col-xs-8 col-sm-5 deliverType">
-					<div class="radio-box" th:if="${deliver.deliverType != 3}">
-						<input type="radio" name="deliverType" value="1" th:checked="${deliver.deliverType == 1}" /><label>自己发货</label>
-					</div>
-					<div class="radio-box">
-						<input type="radio" name="deliverType" value="2" th:checked="${deliver.deliverType == 2}" /><label>老大发货</label>
-					</div>
-					<div class="radio-box" th:if="${deliver.proxyId != deliver.parentProxyId}">
-						<input type="radio" name="deliverType" value="3" th:checked="${deliver.deliverType == 3}" /><label>工厂发货</label>
-					</div>
+				<label class="form-label col-xs-4 col-sm-2">授权码：</label>
+				<div class="formControls col-xs-8 col-sm-3">
+					<input type="text" class="input-text" id="authorizationCode" name="authorizationCode" placeholder="工厂发货需要授权码" maxlength="20" th:value="${deliver.authorizationCode }" />
 				</div>
-				<label class="form-label col-xs-4 col-sm-1">快递费：</label>
-				<div class="formControls col-xs-8 col-sm-2">
+				<label class="form-label col-xs-4 col-sm-2">快递费：</label>
+				<div class="formControls col-xs-8 col-sm-3">
 					<input type="text" class="input-text" id="courierPrice" name="courierPrice" placeholder="快递费" maxlength="5" th:value="${deliver.courierPrice }" onkeyup="pureNumber(this)" onafterpaste="pureNumber(this)" />
-				</div>
-			</div>
-			<div class="row cl" id="auth_code" th:style="${deliver.deliverType == 3} ? 'display:block;' : 'display: none;'">
-				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span> 授权码：</label>
-				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="authorizationCode" name="authorizationCode" placeholder="授权码" maxlength="20" th:value="${deliver.authorizationCode }" />
 				</div>
 			</div>
 			<div class="row cl">
@@ -116,25 +102,6 @@
 <script type="text/javascript" th:src="@{/lib/jquery.validation/1.14.0/messages_zh.js}"></script>
 <script th:inline="javascript">
 	$(function(){
-		$(".deliverType input").iCheck({
-			checkboxClass: "icheckbox-blue",
-			radioClass: "iradio-blue",
-			increaseArea: "20%"
-		});
-		
-		// 工厂发货
-		$(".deliverType .iCheck-helper").click(function(){
-			if ($("input[name='deliverType']:checked").val() == 3) {
-				$("#auth_code").show();
-				$("#authorizationCode").val([[${deliver.authorizationCode}]]);
-			} else {
-				$("#auth_code").hide();
-				$("#authorizationCode").val("");
-			}
-		});
-	});
-
-	$(function(){
 		$("#form").validate({
 			rules:{
 				productId:{
@@ -152,9 +119,6 @@
 				},
 				receiveAddress:{
 					required:true
-				},
-				authorizationCode:{
-					required: [[${deliver.authorizationCode}]] ? true : false
 				}
 			},
 			onkeyup:false,

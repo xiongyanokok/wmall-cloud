@@ -88,6 +88,8 @@ public class PurchaseController extends BaseController {
 			map.put("productId", request.getParameter("productId")); 
 			// 自然月
 			map.put("natureMonth", request.getParameter("natureMonth"));
+			// 是否累计
+			map.put("isAccumulate", request.getParameter("isAccumulate"));
 			// 订单id
 			map.put("groupBy", "id");
 			// 查询进货单

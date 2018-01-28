@@ -53,12 +53,12 @@ public interface DeliverMapper {
     List<Deliver> listDeliver(Map<String, Object> map);
     
     /**
-     * 查询发货单
+     * 根据map查询
      * 
      * @param map
      * @return
      */
-    List<Deliver> queryDeliver(Map<String, Object> map);
+    List<Deliver> listProxyDeliver(Map<String, Object> map);
     
     /**
      * 批量保存
@@ -89,12 +89,5 @@ public interface DeliverMapper {
      * @return
      */
     Integer countWaitDeliver(Map<String, Object> map);
-    
-    /**
-     * 批量对货
-     * 
-     * @param map
-     */
-    void batchInventory(Map<String, Object> map);
     
 }

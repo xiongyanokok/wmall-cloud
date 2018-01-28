@@ -14,83 +14,10 @@
 <title>发货详情</title>
 </head>
 <body>
-	<article class="page-container form form-horizontal" th:if="${null == logistics}">
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">收件人姓名：</label>
-			<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
-				[[${deliver.receiveName }]]
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">收件人手机号：</label>
-			<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
-				[[${deliver.receivePhone }]]
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">收件人地址：</label>
-			<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
-				[[${deliver.receiveAddress }]]
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">发货类型：</label>
-			<div class="formControls col-xs-8 col-sm-4" style="padding-top: 3px;">
-				<label th:if="${deliver.deliverType == 1}" th:text="自己发货"></label>
-				<label th:if="${deliver.deliverType == 2}" th:text="代理发货"></label>
-				<label th:if="${deliver.deliverType == 3}" th:text="工厂发货"></label>
-				<label style="color: red;" th:if="${deliver.deliverType == 3 and not #strings.isEmpty(deliver.authorizationCode)}">
-					([[${deliver.authorizationCode }]])
-				</label>
-			</div>
-			<div th:if="${deliver.courierPrice != 0}">
-				<label class="form-label col-xs-4 col-sm-2">快递费：</label>
-				<div class="formControls col-xs-8 col-sm-2" style="padding-top: 3px;">
-					[[${deliver.courierPrice}]]
-				</div>
-			</div>
-		</div>			
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">发货状态：</label>
-			<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
-				<label th:if="${deliver.deliverStatus == false}" th:text="未发货"></label>
-				<label th:if="${deliver.deliverStatus == true}" th:text="已发货"></label>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">对货状态：</label>
-			<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
-				<label th:if="${deliver.inventoryStatus == false}" th:text="未对货"></label>
-				<label th:if="${deliver.inventoryStatus == true}" th:text="已对货"></label>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">产品：</label>
-			<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
-				<table class="table table-border table-bordered table-bg">
-					<tr class="text-c">
-						<th>产品</th>
-						<th>数量</th>
-					</tr>
-					<tr class="text-c" th:each="deliverDetail : ${deliverDetails}">
-						<td th:each="product : ${products}" th:text="${product.productName }" th:if="${deliverDetail.productId == product.id}"></td>
-						<td th:text="${deliverDetail.amount }"></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<div class="row cl" th:if="${not #strings.isEmpty(deliver.remark)}">
-			<label class="form-label col-xs-4 col-sm-3">备注：</label>
-			<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
-				[[${deliver.remark }]]
-			</div>
-		</div>
-	</article>
-	
-	<div id="tab-deliver" class="HuiTab" th:if="${null != logistics}">
+	<div id="tab-deliver" class="HuiTab">
 		<div class="tabBar cl">
 			<span>发货信息</span>
-			<span>物流信息</span>
+			<span th:if="${null != logistics}">物流信息</span>
 		</div>
 		<div class="tabCon">
 			<article class="page-container form form-horizontal">
@@ -101,7 +28,7 @@
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-3">收件人手机号：</label>
+					<label class="form-label col-xs-4 col-sm-3">收件人电话：</label>
 					<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
 						[[${deliver.receivePhone }]]
 					</div>
@@ -112,35 +39,23 @@
 						[[${deliver.receiveAddress }]]
 					</div>
 				</div>
-				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-3">发货类型：</label>
-					<div class="formControls col-xs-8 col-sm-4" style="padding-top: 3px;">
-						<label th:if="${deliver.deliverType == 1}" th:text="自己发货"></label>
-						<label th:if="${deliver.deliverType == 2}" th:text="代理发货"></label>
-						<label th:if="${deliver.deliverType == 3}" th:text="工厂发货"></label>
-						<label style="color: red;" th:if="${deliver.deliverType == 3 and not #strings.isEmpty(deliver.authorizationCode)}">
-							([[${deliver.authorizationCode }]])
-						</label>
+				<div class="row cl" th:if="${not #strings.isEmpty(deliver.authorizationCode)}">
+					<label class="form-label col-xs-4 col-sm-3">授权码：</label>
+					<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
+						[[${deliver.authorizationCode }]]
 					</div>
-					<div th:if="${deliver.courierPrice != 0}">
-						<label class="form-label col-xs-4 col-sm-2">快递费：</label>
-						<div class="formControls col-xs-8 col-sm-2" style="padding-top: 3px;">
-							[[${deliver.courierPrice}]]
-						</div>
+				</div>
+				<div class="row cl" th:if="${deliver.courierPrice > 0}">			
+					<label class="form-label col-xs-4 col-sm-3">快递费：</label>
+					<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
+						[[${deliver.courierPrice }]]
 					</div>
-				</div>	
+				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-3">发货状态：</label>
 					<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
 						<label th:if="${deliver.deliverStatus == false}" th:text="未发货"></label>
 						<label th:if="${deliver.deliverStatus == true}" th:text="已发货"></label>
-					</div>
-				</div>
-				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-3">对货状态：</label>
-					<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
-						<label th:if="${deliver.inventoryStatus == false}" th:text="未对货"></label>
-						<label th:if="${deliver.inventoryStatus == true}" th:text="已对货"></label>
 					</div>
 				</div>
 				<div class="row cl">
@@ -166,12 +81,12 @@
 				</div>
 			</article>
 		</div>
-		<div class="tabCon">
+		<div class="tabCon" th:if="${null != logistics}">
 			<article class="page-container form form-horizontal">
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-3">物流名称：</label>
 					<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
-						[[${name }]]
+						[[${logistics.name }]]
 					</div>
 				</div>
 				<div class="row cl">

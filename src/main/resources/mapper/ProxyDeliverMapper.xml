@@ -7,11 +7,12 @@
 	    <result column="deliver_id" property="deliverId" />
 	    <result column="proxy_id" property="proxyId" />
 	    <result column="parent_proxy_id" property="parentProxyId" />
+	    <result column="create_time" property="createTime" />
   	</resultMap>
   	
   	<!-- 表所有字段 -->
   	<sql id="Base_Column_List">
-  		id, deliver_id, proxy_id, parent_proxy_id
+  		id, deliver_id, proxy_id, parent_proxy_id, create_time
   	</sql>
   	
   	<!-- 根据主键查询 -->
@@ -41,6 +42,9 @@
 		      	<if test="parentProxyId != null">
 		        	parent_proxy_id,
 		      	</if>
+		      	<if test="createTime != null">
+		        	create_time,
+		      	</if>
     		</trim>
     	values
     		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -55,6 +59,9 @@
       			</if>
       			<if test="parentProxyId != null">
         			#{parentProxyId},
+      			</if>
+      			<if test="createTime != null">
+        			#{createTime},
       			</if>
     		</trim>
   	</insert>
@@ -96,6 +103,9 @@
   			<if test="parentProxyId != null">
     			and parent_proxy_id = #{parentProxyId}
   			</if>
+  			<if test="createTime != null">
+    			and create_time = #{createTime}
+  			</if>
         </where>
   	</select>
   
@@ -113,6 +123,9 @@
   			</if>
   			<if test="parentProxyId != null">
     			and parent_proxy_id = #{parentProxyId}
+  			</if>
+  			<if test="createTime != null">
+    			and create_time = #{createTime}
   			</if>
         </where>
         <if test="groupBy != null">
@@ -133,6 +146,7 @@
 				#{item.deliverId},
 				#{item.proxyId},
 				#{item.parentProxyId},
+				#{item.createTime},
 			</trim>
 		</foreach>
 	</insert>

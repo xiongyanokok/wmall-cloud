@@ -63,7 +63,7 @@
 			"bProcessing" : true, // 加载层
 	        "bServerSide" : true, // 服务器获取数据
 	        "iDisplayLength": page_size, // 每页显示条数
-	        "aaSorting" : [3, "asc"], //默认第几个排序
+	        "aaSorting" : [6, "desc"], //默认第几个排序
 			"sAjaxSource" : "/admin/price/query",
 			"fnServerData" : retrieveData,
 			"fnDrawCallback" : function(){
@@ -81,7 +81,7 @@
                 	"mData" : "productId",
                		"sTitle" : "产品名称",
 	                "bSortable": false,
-				    "sWidth" : "8%",
+				    "sWidth" : "6%",
 				    "mRender": function(data, type, full) {
 				    	var name;
 	                	$.each(productsJson, function(n, value) {  

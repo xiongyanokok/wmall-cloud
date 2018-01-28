@@ -208,19 +208,20 @@ public class DeliverServiceImpl implements DeliverService {
     }
     
     /**
-     * 查询发货单
+     * 根据map查询
      * 
      * @param map
      * @return
+     * @throws WmallException
      */
     @Override
-    public List<Deliver> queryDeliver(Map<String, Object> map) {
+    public List<Deliver> listProxyDeliver(Map<String, Object> map) {
     	Assert.notEmpty(map, "查询数据为空");
     	try {
-	    	return deliverMapper.queryDeliver(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询列表失败", e);
-		}
+    		return deliverMapper.listProxyDeliver(map);
+    	} catch (Exception e) {
+    		throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询列表失败", e);
+    	}
     }
     
     /**
@@ -288,22 +289,7 @@ public class DeliverServiceImpl implements DeliverService {
     	try {
 	    	return deliverMapper.countWaitDeliver(map);
 		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "查询待发货失败", e);
-		}
-    }
-    
-    /**
-     * 批量对货
-     * 
-     * @param map
-     */
-    @Override
-    public void batchInventory(Map<String, Object> map) {
-    	Assert.notEmpty(map, "批量对货数据为空");
-    	try {
-    		deliverMapper.batchInventory(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_BATCH_ERROR, "【" + map + "】批量对货失败", e);
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询待发货失败", e);
 		}
     }
     

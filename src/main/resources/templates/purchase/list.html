@@ -11,11 +11,11 @@
 <link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/skin/default/skin.css}" id="skin" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/css/style.css}" />
-<title>进货管理</title>
+<title>补货管理</title>
 </head>
 <body>
 	<div style="position: fixed; width: 100%;">
-		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 进货管理 <span class="c-gray en">&gt;</span> 进货列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 补货管理 <span class="c-gray en">&gt;</span> 补货列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	</div>
 	<div class="pd-20" style="padding-top: 60px;">
 		<div class="text-l">
@@ -23,7 +23,7 @@
 			<span class="select-box inline" style="width: 15%;">
 				<select id="productId" name="productId" class="select" style="width: 100%;" onchange="query()">
 					<option value="">全部产品</option>
-					<option th:each="product : ${products}" th:value="${product.id }" th:text="${product.productName }"></option>
+					<option th:each="product : ${products}" th:if="${product.productType == 1}" th:value="${product.id }" th:text="${product.productName }"></option>
 				</select>
 			</span>
 			<span style="padding-right: 5%;"></span>
@@ -42,14 +42,22 @@
 				</select>
 			</span>
 			月
+			<span style="padding-right: 5%;"></span>
+			是否累计：
+			<span class="select-box inline" style="width: 15%;">
+				<select id="isAccumulate" name="isAccumulate" class="select" style="width: 100%;" onchange="query()">
+					<option value="">全部</option>
+					<option value="1">是</option>
+					<option value="0">否</option>
+				</select>
+			</span>
 		</div>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
     		<span class="l">
-    			<span onclick="add()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 自己进货 </span>
-    			<span onclick="deliver()" class="btn btn-warning radius"><i class="Hui-iconfont">&#xe6a1;</i> 发货到家 </span>
+    			<span onclick="add()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 自己补货 </span>
     		</span>
     		<span class="r">
-    			<span onclick="query()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe665;</i> 查询进货 </span>
+    			<span onclick="query()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe665;</i> 查询补货 </span>
     		</span>
   		</div>
   		<table id="table" class="table table-border table-bordered table-striped table-hover table-bg"/>
@@ -98,9 +106,13 @@
                 	"mData" : "orderPrice",
                		"sTitle" : "订单金额",
 	                "bSortable": true,
-				    "sWidth" : "4%",
+				    "sWidth" : "3%",
 				    "mRender": function(data, type, full) {
-	                	return "<span style='color:red;'><b>"+data+"</b></span>";
+				    	if (data) {
+		                	return "<span style='color:red;'><b>"+data+"</b></span>";
+				    	} else {
+				    		return 0;
+				    	}
 	                }
             	}, {
                 	"mData" : "preferentialPrice",
@@ -108,13 +120,17 @@
 	                "bSortable": true,
 				    "sWidth" : "3%",
 				    "mRender": function(data, type, full) {
-	                	return "<span style='color:red;'><b>"+data+"</b></span>";
+				    	if (data) {
+		                	return "<span style='color:red;'><b>"+data+"</b></span>";
+				    	} else {
+				    		return 0;
+				    	}
 	                }
             	}, {
                 	"mData" : null,
                		"sTitle" : "产品信息",
 	                "bSortable": false,
-				    "sWidth" : "12%",
+				    "sWidth" : "13%",
 				    "mRender": function(data, type, full) {
 				    	var str = "";
 				    	var orderDetails = full.orderDetails;
@@ -214,6 +230,9 @@
 			if (month.length > 1) {
 				data.natureMonth = month;
 			}
+			if ($("#isAccumulate").val()) {
+				data.isAccumulate = $("#isAccumulate").val();
+			}
 			
 			$.ajax({
 				url : url,
@@ -231,22 +250,12 @@
 		}
 	});
 	
-	// 进货
+	// 补货
 	function add() {
 		var index = layer.open({
 			type: 2,
-			title: "自己进货",
+			title: "自己补货",
 			content: "/admin/purchase/add"
-		});
-		layer.full(index);
-	}
-	
-	// 发货
-	function deliver() {
-		var index = layer.open({
-			type: 2,
-			title: "发货到家",
-			content: "/admin/deliver/add"
 		});
 		layer.full(index);
 	}
@@ -255,7 +264,7 @@
 	function edit(id) {
 		var index = layer.open({
 			type: 2,
-			title: "修改进货",
+			title: "修改订单",
 			content: "/admin/purchase/edit?id="+id
 		});
 		layer.full(index);
@@ -263,7 +272,7 @@
 	
 	// 订单详情
 	function detail(id) {
-		layer_show("进货详情", "/admin/order/detail?id="+id, "", "");
+		layer_show("订单详情", "/admin/order/detail?id="+id, "", "");
 	}
 	
 	// 查询数据

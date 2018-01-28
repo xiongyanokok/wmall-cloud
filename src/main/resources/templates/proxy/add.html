@@ -106,7 +106,7 @@
 										<span class="select-box">
 											<select id="productId_0" name="productId" class="select" onchange="computePrice(0)">
 												<option value="">全部产品</option>
-												<option th:each="product : ${products}" th:value="${product.id }" th:text="${product.productName }"></option>
+												<option th:each="product : ${products}" th:if="${product.productType == 1}" th:value="${product.id }" th:text="${product.productName }"></option>
 											</select>
 										</span>
 									</td>
@@ -125,16 +125,13 @@
 						</div>
 					</div>
 					<div class="row cl">
-						<label class="form-label col-xs-4 col-sm-2">发货类型：</label>
-						<div class="formControls col-xs-8 col-sm-8 deliverType">
+						<label class="form-label col-xs-4 col-sm-2">是否发货：</label>
+						<div class="formControls col-xs-8 col-sm-8 isDeliver">
 							<div class="radio-box">
-								<input type="radio" name="deliverType" value="1" checked /><label>自己发货</label>
+								<input type="radio" name="isDeliver" value="1" checked /><label>是</label>
 							</div>
 							<div class="radio-box">
-								<input type="radio" name="deliverType" value="2" /><label>老大发货</label>
-							</div>
-							<div class="radio-box">
-								<input type="radio" name="deliverType" value="0" /><label>不发货</label>
+								<input type="radio" name="isDeliver" value="0" /><label>否</label>
 							</div>
 						</div>
 					</div>
@@ -175,7 +172,7 @@
 			radioClass: "iradio-blue",
 			increaseArea: "20%"
 		});
-		$(".deliverType input").iCheck({
+		$(".isDeliver input").iCheck({
 			checkboxClass: "icheckbox-blue",
 			radioClass: "iradio-blue",
 			increaseArea: "20%"
@@ -186,8 +183,8 @@
 		});
 
 		// 发货类型
-		$(".deliverType .iCheck-helper").click(function(){
-			if ($("input[name='deliverType']:checked").val() == 0) {
+		$(".isDeliver .iCheck-helper").click(function(){
+			if ($("input[name='isDeliver']:checked").val() == 0) {
 				$("#kd").hide();
 			} else {
 				$("#kd").show();

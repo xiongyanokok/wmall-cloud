@@ -153,11 +153,6 @@ public class Order implements Serializable {
 	private String receiveAddress;
 	
 	/**
-     * 发货类型
-     */
-	private Integer deliverType;
-	
-	/**
      * 快递费
      */
     private Integer courierPrice;

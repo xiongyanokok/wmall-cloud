@@ -2,7 +2,6 @@ package com.xy.wmall.controller;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
-import com.xy.wmall.enums.DeliverTypeEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Deliver;
 import com.xy.wmall.model.DeliverDetail;
@@ -40,11 +38,13 @@ import com.xy.wmall.model.Logistics;
 import com.xy.wmall.model.LogisticsCompany;
 import com.xy.wmall.model.Product;
 import com.xy.wmall.model.Proxy;
+import com.xy.wmall.model.ProxyDeliver;
 import com.xy.wmall.service.DeliverDetailService;
 import com.xy.wmall.service.DeliverService;
 import com.xy.wmall.service.LogisticsCompanyService;
 import com.xy.wmall.service.LogisticsService;
 import com.xy.wmall.service.ProductService;
+import com.xy.wmall.service.ProxyDeliverService;
 import com.xy.wmall.service.ProxyService;
 
 /**
@@ -80,6 +80,9 @@ public class DeliverController extends BaseController {
     @Autowired
     private LogisticsCompanyService logisticsCompanyService;
     
+    @Autowired
+    private ProxyDeliverService proxyDeliverService;
+    
 	
 	/**
 	 * 进入列表页面
@@ -109,29 +112,16 @@ public class DeliverController extends BaseController {
 	}
 	
 	/**
-	 * 进入老大发货列表页面
+	 * 进入代理发货列表页面
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/super_list", method = { RequestMethod.GET })
-	public String superList(Model model) {
+	@RequestMapping(value = "/proxy_list", method = { RequestMethod.GET })
+	public String proxyList(Model model) {
 		List<Product> products = productService.listProduct();
 		model.addAttribute("products", products);
 		model.addAttribute("productsJson", JacksonUtils.serialize(products));
-		return "deliver/super_list";
-	}
-	
-	/**
-	 * 进入工厂发货列表页面
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "/factory_list", method = { RequestMethod.GET })
-	public String factoryList(Model model) {
-		List<Product> products = productService.listProduct();
-		model.addAttribute("products", products);
-		model.addAttribute("productsJson", JacksonUtils.serialize(products));
-		return "deliver/factory_list";
+		return "deliver/proxy_list";
 	}
 	
 	/**
@@ -146,25 +136,16 @@ public class DeliverController extends BaseController {
 			// 查询条件
 			// 代理ID
 			map.put("proxyId", request.getParameter("proxyId")); 
+			// 上级代理ID
+			map.put("parentProxyId", getProxyId()); 
 			// 代理昵称
 			map.put("wechatName", request.getParameter("wechatName")); 
 			// 产品id
 			map.put("productId", request.getParameter("productId")); 
 			// 收件人姓名
 			map.put("receiveName", request.getParameter("receiveName"));
-			// 发货类型 
-			String deliverType = request.getParameter("deliverType"); 
-			if (StringUtils.isNotEmpty(deliverType)) {
-				if (DeliverTypeEnum.SUPER_DELIVER.getValue().equals(Integer.valueOf(deliverType))) {
-					map.put("deliverTypes", Arrays.asList(DeliverTypeEnum.SUPER_DELIVER.getValue(), DeliverTypeEnum.FACTORY_DELIVER.getValue()));
-				} else {
-					map.put("deliverType", deliverType); 
-				}
-			}
 			// 发货状态
 			map.put("deliverStatus", request.getParameter("deliverStatus")); 
-			// 对货状态
-			map.put("inventoryStatus", request.getParameter("inventoryStatus"));
 			// 发货开始时间
 			map.put("startDate", request.getParameter("startDate"));
 			// 发货结束时间
@@ -200,6 +181,60 @@ public class DeliverController extends BaseController {
 	}
 	
 	/**
+	 * 代理发货列表分页查询
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/proxy_deliver", method = { RequestMethod.POST })
+	@ResponseBody
+	public Map<String, Object> proxy_deliver() {
+		return pageInfoResult(map -> {
+			// 查询条件
+			// 上级代理ID
+			map.put("parentProxyId", getProxyId()); 
+			// 代理昵称
+			map.put("wechatName", request.getParameter("wechatName")); 
+			// 产品id
+			map.put("productId", request.getParameter("productId")); 
+			// 收件人姓名
+			map.put("receiveName", request.getParameter("receiveName"));
+			// 发货状态
+			map.put("deliverStatus", request.getParameter("deliverStatus")); 
+			// 发货开始时间
+			map.put("startDate", request.getParameter("startDate"));
+			// 发货结束时间
+			map.put("endDate", request.getParameter("endDate")); 
+			// 发货单id
+			map.put("groupBy", "id"); 
+			// 查询发货单
+			List<Deliver> delivers = deliverService.listProxyDeliver(map);
+			if (CollectionUtils.isEmpty(delivers)) {
+				return Collections.emptyList();
+			}
+			
+			// 获取发货单id
+			List<Integer> deliverIds = new ArrayList<>(delivers.size());
+			for (Deliver deliver : delivers) {
+				deliverIds.add(deliver.getId());
+			}
+			// 查询发货单详情
+			Map<String, Object> detailMap = new HashMap<>();
+			detailMap.put("deliverIds", deliverIds);
+			List<DeliverDetail> deliverDetails = deliverDetailService.listDeliverDetail(detailMap);
+			for (Deliver deliver : delivers) {
+				List<DeliverDetail> details = new ArrayList<>();
+				for (DeliverDetail deliverDetail : deliverDetails) {
+					if (deliver.getId().equals(deliverDetail.getDeliverId())) {
+						details.add(deliverDetail);
+					}
+				}
+				deliver.setDeliverDetails(details);
+			}
+			return delivers;
+		});
+	}
+	
+	/**
 	 * 进入新增页面
 	 * 
 	 * @param model
@@ -207,11 +242,6 @@ public class DeliverController extends BaseController {
 	 */
 	@RequestMapping(value = "/add", method = { RequestMethod.GET })
 	public String add(Model model, Integer proxyId) {
-		if (null == proxyId) {
-			proxyId = getProxyId();
-		} else {
-			model.addAttribute("proxyId", proxyId);
-		}
 		Assert.notNull(proxyId, "proxyId为空");
 		Proxy proxy = proxyService.getProxyById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
@@ -231,13 +261,7 @@ public class DeliverController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> save(Deliver deliver) {
 		Assert.notNull(deliver, "保存数据为空");
-		if (deliver.getProxyId().equals(getProxyId())) {
-			// 发给自己
-			deliver.setParentProxyId(getParentProxyId());
-		} else {
-			// 发给代理
-			deliver.setParentProxyId(getProxyId());
-		}
+		deliver.setParentProxyId(getProxyId());
 		deliver.setCreateUserId(getUserId());
 		deliver.setCreateTime(new Date());
 		deliver.setUpdateUserId(getUserId());
@@ -308,69 +332,27 @@ public class DeliverController extends BaseController {
 	}
 	
 	/**
-	 * 查看发货
-	 * 
-	 * @param model
-	 * @param ids
-	 * @return
-	 */
-	@RequestMapping(value = "/report", method = { RequestMethod.GET })
-	public String report(Model model, String ids) {
-		Assert.hasLength(ids, "请选择发货单");
-		Map<String, Object> map = new HashMap<>();
-		map.put("ids", Arrays.asList(ids.split(",")));
-		// 发货单
-		List<Deliver> delivers = deliverService.queryDeliver(map);
-		Assert.notEmpty(delivers, "查看发货单不存在");
-		// 获取发货单id
-		List<Integer> deliverIds = new ArrayList<>(delivers.size());
-		for (Deliver deliver : delivers) {
-			deliverIds.add(deliver.getId());
-		}
-		// 发货单详情
-		Map<String, Object> detailMap = new HashMap<>();
-		detailMap.put("deliverIds", deliverIds);
-		List<DeliverDetail> deliverDetails = deliverDetailService.listDeliverDetail(detailMap);
-		for (Deliver deliver : delivers) {
-			List<DeliverDetail> details = new ArrayList<>();
-			for (DeliverDetail deliverDetail : deliverDetails) {
-				if (deliver.getId().equals(deliverDetail.getDeliverId())) {
-					details.add(deliverDetail);
-				}
-			}
-			deliver.setDeliverDetails(details);
-		}
-		model.addAttribute("delivers", delivers);
-		List<Product> products = productService.listProduct();
-		model.addAttribute("products", products);
-		model.addAttribute("myWechatName", getUserInfo().getWechatName());
-		return "deliver/report";
-	}
-	
-	/**
-	 * 发货
+	 * 上报发货
 	 * 
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "/status", method = { RequestMethod.POST })
+	@RequestMapping(value = "/report", method = { RequestMethod.POST })
 	@ResponseBody
-	public Map<String, Object> deliverStatus(Integer id) {
+	public Map<String, Object> report(Integer id) {
 		Assert.notNull(id, "id为空");
-		Deliver deliverInfo = deliverService.getDeliverById(id);
-		Assert.notNull(deliverInfo, "数据不存在");
-		// 修改已发货
-		Deliver deliver = new Deliver();
-		deliver.setId(id);
-		deliver.setDeliverStatus(TrueFalseStatusEnum.TRUE.getValue());
-		if (DeliverTypeEnum.SELF_DELIVER.getValue().equals(deliverInfo.getDeliverType())) {
-			deliver.setInventoryStatus(TrueFalseStatusEnum.TRUE.getValue());
-		}
-		deliver.setUpdateUserId(getUserId());
-		deliver.setUpdateTime(new Date());
-		deliverService.status(deliver);
-		logger.info("【{}】发货成功", deliver);
-		return buildSuccess("发货成功");
+		Deliver deliver = deliverService.getDeliverById(id);
+		Assert.notNull(deliver, "数据不存在");
+		Proxy proxy = proxyService.getProxyById(deliver.getParentProxyId());
+		Assert.notNull(proxy, "代理不存在");
+		ProxyDeliver proxyDeliver = new ProxyDeliver();
+		proxyDeliver.setDeliverId(id);
+		proxyDeliver.setProxyId(proxy.getId());
+		proxyDeliver.setParentProxyId(proxy.getParentId());
+		proxyDeliver.setCreateTime(new Date());
+		proxyDeliverService.save(proxyDeliver);;
+		logger.info("【{}】上报成功", proxyDeliver);
+		return buildSuccess("上报成功");
 	}
 	
 	/**
@@ -389,29 +371,11 @@ public class DeliverController extends BaseController {
 		Deliver deliver = new Deliver();
 		deliver.setId(id);
 		deliver.setDeliverStatus(TrueFalseStatusEnum.FALSE.getValue());
-		deliver.setInventoryStatus(TrueFalseStatusEnum.FALSE.getValue());
 		deliver.setUpdateUserId(getUserId());
 		deliver.setUpdateTime(new Date());
 		deliverService.status(deliver);
 		logger.info("【{}】撤销发货成功", deliver);
 		return buildSuccess("撤销发货成功");
-	}
-	
-	/**
-	 * 对货
-	 * 
-	 * @param ids
-	 * @return
-	 */
-	@RequestMapping(value = "/inventory", method = { RequestMethod.POST })
-	@ResponseBody
-	public Map<String, Object> inventory(String ids) {
-		Assert.hasLength(ids, "请选择发货单");
-		Map<String, Object> map = new HashMap<>();
-		map.put("ids", Arrays.asList(ids.split(",")));
-		deliverService.batchInventory(map);
-		logger.info("【{}】批量对货成功", map);
-		return buildSuccess("对货成功");
 	}
 	
 	/**
@@ -442,7 +406,7 @@ public class DeliverController extends BaseController {
 		if (null != logistics) {
 			model.addAttribute("logistics", logistics);
 			LogisticsCompany logisticsCompany = logisticsCompanyService.getLogisticsCompanyById(logistics.getCompanyId());
-			model.addAttribute("name", logisticsCompany.getName());
+			logistics.setName(logisticsCompany.getName());
 		}
 		return "deliver/detail";
 	}
@@ -463,19 +427,8 @@ public class DeliverController extends BaseController {
 		map.put("productId", request.getParameter("productId")); 
 		// 收件人姓名
 		map.put("receiveName", request.getParameter("receiveName"));
-		// 发货类型
-		String deliverType = request.getParameter("deliverType");  
-		if (StringUtils.isNotEmpty(deliverType)) {
-			if (DeliverTypeEnum.SUPER_DELIVER.getValue().equals(Integer.valueOf(deliverType))) {
-				map.put("deliverTypes", Arrays.asList(DeliverTypeEnum.SUPER_DELIVER.getValue(), DeliverTypeEnum.FACTORY_DELIVER.getValue()));
-			} else {
-				map.put("deliverType", deliverType); 
-			}
-		}
 		// 发货状态
 		map.put("deliverStatus", request.getParameter("deliverStatus")); 
-		// 对货状态
-		map.put("inventoryStatus", request.getParameter("inventoryStatus"));
 		// 发货开始时间
 		map.put("startDate", request.getParameter("startDate"));
 		// 发货结束时间
@@ -524,7 +477,7 @@ public class DeliverController extends BaseController {
 		}
 
 		// 导出excel
-		exportExcel(wechatName, delivers, deliverType);
+		exportExcel(wechatName, delivers);
 	}
 	
 	/**
@@ -534,7 +487,7 @@ public class DeliverController extends BaseController {
 	 * @param sheet
 	 * @param deliverType
 	 */
-	private void createTitle(HSSFWorkbook workbook, HSSFSheet sheet, String deliverType) {
+	private void createTitle(HSSFWorkbook workbook, HSSFSheet sheet) {
 		// 表头
 		HSSFRow row = sheet.createRow(0);
 		// 设置列宽，setColumnWidth的第二个参数要乘以256，这个参数的单位是1/256个字符宽度
@@ -618,14 +571,13 @@ public class DeliverController extends BaseController {
 	 * 
 	 * @param wechatName
 	 * @param delivers
-	 * @param deliverType
 	 */
-	public void exportExcel(String wechatName, List<Deliver> delivers, String deliverType) {
+	public void exportExcel(String wechatName, List<Deliver> delivers) {
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		// 页签
 		HSSFSheet sheet = workbook.createSheet("发货明细");
 		// 表头
-		createTitle(workbook, sheet, deliverType);
+		createTitle(workbook, sheet);
 		
 		// 产品信息
 		Map<Integer, String> productMap = new HashMap<>();

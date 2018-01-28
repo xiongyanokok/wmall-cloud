@@ -26,7 +26,7 @@
 			<span class="select-box inline" style="width: 15%;">
 				<select id="productId" name="productId" class="select" style="width: 100%;" onchange="query()">
 					<option value="">全部产品</option>
-					<option th:each="product : ${products}" th:value="${product.id }" th:text="${product.productName }"></option>
+					<option th:each="product : ${products}" th:if="${product.productType == 1}" th:value="${product.id }" th:text="${product.productName }"></option>
 				</select>
 			</span>
 			<span style="padding-right: 5%;"></span>
@@ -246,12 +246,12 @@
 			if ($("#orderType").val()) {
 				data.orderType = $("#orderType").val();
 			}
-			if ($("#isAccumulate").val()) {
-				data.isAccumulate = $("#isAccumulate").val();
-			}
 			var month = $("#year").val()+"-"+$("#month").val();
 			if (month.length > 1) {
 				data.natureMonth = month;
+			}
+			if ($("#isAccumulate").val()) {
+				data.isAccumulate = $("#isAccumulate").val();
 			}
 			
 			$.ajax({

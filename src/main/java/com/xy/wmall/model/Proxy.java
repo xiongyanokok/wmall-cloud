@@ -117,9 +117,9 @@ public class Proxy implements Serializable {
     private Boolean isOldProxy;
         
     /**
-     * 发货类型
+     * 是否发货
      */
-	private Integer deliverType;
+	private Boolean isDeliver;
     
     /**
      * 产品id

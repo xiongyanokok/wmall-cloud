@@ -119,7 +119,6 @@ public class LogisticsController extends BaseController {
 		Deliver deliver = new Deliver();
 		deliver.setId(deliverId);
 		deliver.setDeliverStatus(TrueFalseStatusEnum.TRUE.getValue());
-		deliver.setInventoryStatus(TrueFalseStatusEnum.TRUE.getValue());
 		deliver.setUpdateUserId(getUserId());
 		deliver.setUpdateTime(new Date());
 		deliverService.status(deliver);

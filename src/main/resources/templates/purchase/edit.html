@@ -68,7 +68,7 @@
 								<span class="select-box">
 									<select th:id="productId_+${status.index}" name="productId" class="select" th:onchange="'computePrice('+${status.index}+')'">
 										<option value="">全部产品</option>
-										<option th:each="product : ${products}" th:value="${product.id }" th:text="${product.productName }" th:selected="${orderDetail.productId == product.id}"></option>
+										<option th:each="product : ${products}" th:if="${product.productType == 1}" th:value="${product.id }" th:text="${product.productName }" th:selected="${orderDetail.productId == product.id}"></option>
 									</select>
 								</span>
 							</td>
@@ -83,9 +83,9 @@
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span> 进货金额：</label>
+				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span> 订单金额：</label>
 				<div class="formControls col-xs-8 col-sm-9">
-					<input type="text" class="input-text" id="orderPrice" name="orderPrice" placeholder="进货金额" th:value="${order.orderPrice }" maxlength="11" onkeyup="pureNumber(this)" onafterpaste="pureNumber(this)" />
+					<input type="text" class="input-text" id="orderPrice" name="orderPrice" placeholder="订单金额" th:value="${order.orderPrice }" maxlength="11" onkeyup="pureNumber(this)" onafterpaste="pureNumber(this)" />
 				</div>
 			</div>
 			<div class="row cl">

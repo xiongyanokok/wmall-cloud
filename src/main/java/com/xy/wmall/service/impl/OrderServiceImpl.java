@@ -163,9 +163,7 @@ public class OrderServiceImpl implements OrderService {
 			deliver.setReceivePhone(order.getReceivePhone());
 			deliver.setReceiveAddress(order.getReceiveAddress());
 			deliver.setCourierPrice(order.getCourierPrice());
-			deliver.setDeliverType(order.getDeliverType());
 			deliver.setDeliverStatus(TrueFalseStatusEnum.FALSE.getValue());
-			deliver.setInventoryStatus(TrueFalseStatusEnum.FALSE.getValue());
 			deliver.setCreateUserId(order.getCreateUserId());
 			deliver.setCreateTime(new Date());
 			deliver.setUpdateUserId(order.getCreateUserId());

@@ -6,14 +6,12 @@
 		<id column="id" property="id" />	
 	    <result column="proxy_id" property="proxyId" />
 	    <result column="parent_proxy_id" property="parentProxyId" />
-	    <result column="authorization_code" property="authorizationCode" />
 	    <result column="receive_name" property="receiveName" />
 	    <result column="receive_phone" property="receivePhone" />
 	    <result column="receive_address" property="receiveAddress" />
 	    <result column="courier_price" property="courierPrice" />
-	    <result column="deliver_type" property="deliverType" />
 	    <result column="deliver_status" property="deliverStatus" />
-	    <result column="inventory_status" property="inventoryStatus" />
+	    <result column="authorization_code" property="authorizationCode" />
 	    <result column="remark" property="remark" />
 	    <result column="create_user_id" property="createUserId" />
 	    <result column="create_time" property="createTime" />
@@ -25,7 +23,7 @@
   	
   	<!-- 表所有字段 -->
   	<sql id="Base_Column_List">
-  		id, proxy_id, parent_proxy_id, authorization_code, receive_name, receive_phone, receive_address, courier_price, deliver_type, deliver_status, inventory_status, remark, create_user_id, create_time, update_user_id, update_time, is_delete
+  		id, proxy_id, parent_proxy_id, receive_name, receive_phone, receive_address, courier_price, deliver_status, authorization_code, remark, create_user_id, create_time, update_user_id, update_time, is_delete
   	</sql>
   	
   	<!-- 根据主键查询 -->
@@ -52,9 +50,6 @@
 		      	<if test="parentProxyId != null">
 		        	parent_proxy_id,
 		      	</if>
-		      	<if test="authorizationCode != null">
-		        	authorization_code,
-		      	</if>
 		      	<if test="receiveName != null">
 		        	receive_name,
 		      	</if>
@@ -67,14 +62,11 @@
 		      	<if test="courierPrice != null">
 		        	courier_price,
 		      	</if>
-		      	<if test="deliverType != null">
-		        	deliver_type,
-		      	</if>
 		      	<if test="deliverStatus != null">
 		        	deliver_status,
 		      	</if>
-		      	<if test="inventoryStatus != null">
-		        	inventory_status,
+		      	<if test="authorizationCode != null">
+		        	authorization_code,
 		      	</if>
 		      	<if test="remark != null">
 		        	remark,
@@ -106,9 +98,6 @@
       			<if test="parentProxyId != null">
         			#{parentProxyId},
       			</if>
-      			<if test="authorizationCode != null">
-        			#{authorizationCode},
-      			</if>
       			<if test="receiveName != null">
         			#{receiveName},
       			</if>
@@ -121,14 +110,11 @@
       			<if test="courierPrice != null">
         			#{courierPrice},
       			</if>
-      			<if test="deliverType != null">
-        			#{deliverType},
-      			</if>
       			<if test="deliverStatus != null">
         			#{deliverStatus},
       			</if>
-      			<if test="inventoryStatus != null">
-        			#{inventoryStatus},
+      			<if test="authorizationCode != null">
+        			#{authorizationCode},
       			</if>
       			<if test="remark != null">
         			#{remark},
@@ -161,9 +147,6 @@
 			<if test="parentProxyId != null">
     			parent_proxy_id = #{parentProxyId},
   			</if>
-			<if test="authorizationCode != null">
-    			authorization_code = #{authorizationCode},
-  			</if>
 			<if test="receiveName != null">
     			receive_name = #{receiveName},
   			</if>
@@ -176,14 +159,11 @@
 			<if test="courierPrice != null">
     			courier_price = #{courierPrice},
   			</if>
-			<if test="deliverType != null">
-    			deliver_type = #{deliverType},
-  			</if>
 			<if test="deliverStatus != null">
     			deliver_status = #{deliverStatus},
   			</if>
-			<if test="inventoryStatus != null">
-    			inventory_status = #{inventoryStatus},
+			<if test="authorizationCode != null">
+    			authorization_code = #{authorizationCode},
   			</if>
 			<if test="remark != null">
     			remark = #{remark},
@@ -215,9 +195,6 @@
   			<if test="parentProxyId != null">
     			and parent_proxy_id = #{parentProxyId}
   			</if>
-  			<if test="authorizationCode != null">
-    			and authorization_code = #{authorizationCode}
-  			</if>
   			<if test="receiveName != null">
     			and receive_name = #{receiveName}
   			</if>
@@ -230,14 +207,11 @@
   			<if test="courierPrice != null">
     			and courier_price = #{courierPrice}
   			</if>
-  			<if test="deliverType != null">
-    			and deliver_type = #{deliverType}
-  			</if>
   			<if test="deliverStatus != null">
     			and deliver_status = #{deliverStatus}
   			</if>
-  			<if test="inventoryStatus != null">
-    			and inventory_status = #{inventoryStatus}
+  			<if test="authorizationCode != null">
+    			and authorization_code = #{authorizationCode}
   			</if>
   			<if test="remark != null">
     			and remark = #{remark}
@@ -265,10 +239,9 @@
   		select 
   			t1.*, t3.wechat_name
         from 
-        	t_deliver t1, t_deliver_detail t2, t_proxy t3, t_proxy_deliver t4
+        	t_deliver t1, t_deliver_detail t2, t_proxy t3
         <where>
         	t1.id = t2.deliver_id
-        	and t1.id = t4.deliver_id
         	and t1.proxy_id = t3.id
         	<if test="id != null">
     			and t1.id = #{id}
@@ -277,13 +250,10 @@
     			and t3.wechat_name like CONCAT('%', #{wechatName}, '%')
   			</if>
   			<if test="proxyId != null">
-    			and t4.proxy_id = #{proxyId}
+    			and t1.proxy_id = #{proxyId}
   			</if>
   			<if test="parentProxyId != null">
-    			and t4.parent_proxy_id = #{parentProxyId}
-  			</if>
-  			<if test="authorizationCode != null">
-    			and t1.authorization_code = #{authorizationCode}
+    			and t1.parent_proxy_id = #{parentProxyId}
   			</if>
   			<if test="receiveName != null">
     			and t1.receive_name like CONCAT('%', #{receiveName}, '%')
@@ -297,20 +267,14 @@
   			<if test="courierPrice != null">
     			and t1.courier_price = #{courierPrice}
   			</if>
-  			<if test="deliverType != null">
-    			and t1.deliver_type = #{deliverType}
-  			</if>
-  			<if test="deliverTypes != null">
-    			and t1.deliver_type in
-				<foreach collection="deliverTypes" item="deliverType" open="(" separator="," close=")">
-					#{deliverType}
-				</foreach>
-  			</if>
   			<if test="deliverStatus != null">
     			and t1.deliver_status = #{deliverStatus}
   			</if>
-  			<if test="inventoryStatus != null">
-    			and t1.inventory_status = #{inventoryStatus}
+  			<if test="authorizationCode != null">
+    			and t1.authorization_code = #{authorizationCode}
+  			</if>
+  			<if test="remark != null">
+    			and t1.remark = #{remark}
   			</if>
   			<if test="createUserId != null">
     			and t1.create_user_id = #{createUserId}
@@ -345,27 +309,77 @@
         </if>
   	</select>
   	
-  	<!-- 查看未发货的发货单 -->
-  	<select id="queryDeliver" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	<!-- 根据map查询-->
+  	<select id="listProxyDeliver" resultMap="BaseResultMap" parameterType="java.util.Map">
   		select 
-  			t1.*, t2.wechat_name
+  			t1.*, t3.wechat_name
         from 
-        	t_deliver t1, t_proxy t2
+        	t_deliver t1, t_deliver_detail t2, t_proxy t3, t_proxy_deliver t4
         <where>
-        	t1.proxy_id = t2.id
-        	and t1.is_delete = 0
-        	and t1.deliver_status = 0
+        	t1.id = t2.deliver_id
+        	and t1.id = t4.deliver_id
+        	and t3.id = t4.proxy_id
         	<if test="id != null">
     			and t1.id = #{id}
   			</if>
-  			<if test="ids != null">
-    			and t1.id in
-				<foreach collection="ids" item="id" open="(" separator="," close=")">
-					#{id}
-				</foreach>
+        	<if test="wechatName != null">
+    			and t3.wechat_name like CONCAT('%', #{wechatName}, '%')
+  			</if>
+  			<if test="parentProxyId != null">
+    			and t4.parent_proxy_id = #{parentProxyId}
+  			</if>
+  			<if test="receiveName != null">
+    			and t1.receive_name like CONCAT('%', #{receiveName}, '%')
+  			</if>
+  			<if test="receivePhone != null">
+    			and t1.receive_phone = #{receivePhone}
+  			</if>
+  			<if test="receiveAddress != null">
+    			and t1.receive_address = #{receiveAddress}
+  			</if>
+  			<if test="courierPrice != null">
+    			and t1.courier_price = #{courierPrice}
+  			</if>
+  			<if test="deliverStatus != null">
+    			and t1.deliver_status = #{deliverStatus}
+  			</if>
+  			<if test="authorizationCode != null">
+    			and t1.authorization_code = #{authorizationCode}
+  			</if>
+  			<if test="remark != null">
+    			and t1.remark = #{remark}
+  			</if>
+  			<if test="createUserId != null">
+    			and t1.create_user_id = #{createUserId}
+  			</if>
+  			<if test="createTime != null">
+    			and t1.create_time = #{createTime}
+  			</if>
+  			<if test="updateUserId != null">
+    			and t1.update_user_id = #{updateUserId}
+  			</if>
+  			<if test="updateTime != null">
+    			and t1.update_time = #{updateTime}
+  			</if>
+  			<if test="isDelete != null">
+    			and t1.is_delete = #{isDelete}
+  			</if>
+  			<if test="productId != null">
+    			and t2.product_id = #{productId}
+  			</if>
+  			<if test="startDate != null">
+  			 	<![CDATA[ and t1.create_time >= CONCAT(#{startDate}, ' 00:00:00') ]]>
+  			</if>
+  			<if test="endDate != null">
+  			 	<![CDATA[ and t1.create_time <= CONCAT(#{endDate}, ' 23:59:59') ]]>
   			</if>
         </where>
-        order by t1.create_time
+        <if test="groupBy != null">
+        	group by t1.${groupBy}
+        </if>
+        <if test="orderBy != null">
+        	order by t1.${orderBy}
+        </if>
   	</select>
   	
   	<!-- 批量保存 -->
@@ -377,14 +391,12 @@
 				#{item.id},
 				#{item.proxyId},
 				#{item.parentProxyId},
-				#{item.authorizationCode},
 				#{item.receiveName},
 				#{item.receivePhone},
 				#{item.receiveAddress},
 				#{item.courierPrice},
-				#{item.deliverType},
 				#{item.deliverStatus},
-				#{item.inventoryStatus},
+				#{item.authorizationCode},
 				#{item.remark},
 				#{item.createUserId},
 				#{item.createTime},
@@ -406,9 +418,6 @@
         		<if test="item.parentProxyId != null">
         			parent_proxy_id = #{item.parentProxyId},
         		</if>
-        		<if test="item.authorizationCode != null">
-        			authorization_code = #{item.authorizationCode},
-        		</if>
         		<if test="item.receiveName != null">
         			receive_name = #{item.receiveName},
         		</if>
@@ -421,14 +430,11 @@
         		<if test="item.courierPrice != null">
         			courier_price = #{item.courierPrice},
         		</if>
-        		<if test="item.deliverType != null">
-        			deliver_type = #{item.deliverType},
-        		</if>
         		<if test="item.deliverStatus != null">
         			deliver_status = #{item.deliverStatus},
         		</if>
-        		<if test="item.inventoryStatus != null">
-        			inventory_status = #{item.inventoryStatus},
+        		<if test="item.authorizationCode != null">
+        			authorization_code = #{item.authorizationCode},
         		</if>
         		<if test="item.remark != null">
         			remark = #{item.remark},
@@ -454,29 +460,17 @@
         	t1.id = t2.deliver_id
         	and t1.id = t3.deliver_id
         	<if test="proxyId != null">
-        		and t3.proxy_id = #{proxyId}
+        		and (t1.proxy_id = #{proxyId} or t3.proxy_id = #{proxyId})
         	</if>
         	<if test="parentProxyId != null">
-        		and t3.parent_proxy_id = #{parentProxyId}
+        		and (t1.parent_proxy_id = #{parentProxyId} or t3.parent_proxy_id = #{parentProxyId})
         	</if>
         	<if test="natureMonth != null">
         		and t1.create_time like CONCAT('%', #{natureMonth}, '%')
         	</if>
-        	<if test="deliverType != null">
-        		and t1.deliver_type = #{deliverType}
-        	</if>
-        	<if test="deliverTypes != null">
-    			and t1.deliver_type in
-				<foreach collection="deliverTypes" item="deliverType" open="(" separator="," close=")">
-					#{deliverType}
-				</foreach>
-  			</if>
         	<if test="deliverStatus != null">
         		and t1.deliver_status = #{deliverStatus}
         	</if>
-        	<if test="inventoryStatus != null">
-    			and t1.inventory_status = #{inventoryStatus}
-  			</if>
 			<if test="isDelete != null">
         		and t1.is_delete = #{isDelete}
         	</if>
@@ -491,30 +485,15 @@
   	<select id="countWaitDeliver" resultType="java.lang.Integer" parameterType="java.util.Map">
   		select 
   			count(t1.id) 
-  		from t_deliver t1, t_proxy_deliver t2 
+  		from t_deliver t1, t_proxy_deliver t2
   		<where>
-  			t1.id = t2.deliver_id 
+  			t1.id = t2.deliver_id
+  			and t1.is_delete = 0 
   			and t1.deliver_status = 0
   			<if test="parentProxyId != null">
-        		and t2.parent_proxy_id = #{parentProxyId}
-        	</if>
-        	<if test="isDelete != null">
-        		and t1.is_delete = #{isDelete}
+        		and (t1.parent_proxy_id = #{parentProxyId} or t2.parent_proxy_id = #{parentProxyId})
         	</if>
   		</where>
   	</select>
   	
-  	<!-- 批量对货 -->
-  	<update id="batchInventory" parameterType="java.util.Map">
-  		update t_deliver set inventory_status = 1
-  		<where>
-  			is_delete = 0
-  			and deliver_status = 1 
-  			and inventory_status = 0
-  			and id in
-			<foreach collection="ids" item="id" open="(" separator="," close=")">
-				#{id}
-			</foreach>
-		</where>
-  	</update>
 </mapper>

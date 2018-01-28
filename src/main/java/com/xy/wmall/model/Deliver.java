@@ -36,11 +36,6 @@ public class Deliver implements Serializable {
 	private Integer parentProxyId;
 	
 	/**
-     * 授权码
-     */
-	private String authorizationCode;
-	
-	/**
      * 收件人姓名
      */
 	private String receiveName;
@@ -61,19 +56,14 @@ public class Deliver implements Serializable {
 	private Integer courierPrice;
 	
 	/**
-     * 发货类型：1自己发货，2老大发货，3工厂发货
-     */
-	private Integer deliverType;
-	
-	/**
      * 发货状态：0未发货，1已发货
      */
 	private Boolean deliverStatus;
 	
 	/**
-     * 对货状态：0未对货，1已对货
+     * 授权码
      */
-	private Boolean inventoryStatus;
+	private String authorizationCode;
 	
 	/**
      * 备注
@@ -104,6 +94,7 @@ public class Deliver implements Serializable {
      * 删除：1删除，0未删除
      */
 	private Boolean isDelete;
+	
 	
     /**
      * 产品id

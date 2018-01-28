@@ -79,4 +79,9 @@ public class Logistics implements Serializable {
      */
 	private Boolean isDelete;
 	
+	
+	/**
+	 * 物流公司名称
+	 */
+	private String name;
 }
