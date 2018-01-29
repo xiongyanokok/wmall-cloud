@@ -26,16 +26,6 @@ public class Deliver implements Serializable {
 	private Integer id;
 	
 	/**
-     * 代理ID
-     */
-	private Integer proxyId;
-	
-	/**
-     * 上级代理ID
-     */
-	private Integer parentProxyId;
-	
-	/**
      * 收件人姓名
      */
 	private String receiveName;
@@ -96,6 +86,16 @@ public class Deliver implements Serializable {
 	private Boolean isDelete;
 	
 	
+	/**
+	 * 代理id
+	 */
+	private Integer proxyId;
+	
+	/**
+	 * 上级代理id
+	 */
+	private Integer parentProxyId;
+	
     /**
      * 产品id
      */
@@ -120,5 +120,15 @@ public class Deliver implements Serializable {
      * 发货物流
      */
     private Logistics logistics;
+    
+    /**
+     * 流程id
+     */
+	private Integer flowId;
+	
+	/**
+     * 流程状态：1开始，2处理，3上报，4完成
+     */
+	private Integer flowStatus;
 
 }

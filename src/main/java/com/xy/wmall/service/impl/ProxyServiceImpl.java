@@ -14,6 +14,7 @@ import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.common.utils.ListPageUtils;
 import com.xy.wmall.enums.ErrorCodeEnum;
+import com.xy.wmall.enums.FlowStatusEnum;
 import com.xy.wmall.enums.OrderStatusEnum;
 import com.xy.wmall.enums.OrderTypeEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
@@ -22,12 +23,14 @@ import com.xy.wmall.mapper.DeliverDetailMapper;
 import com.xy.wmall.mapper.DeliverMapper;
 import com.xy.wmall.mapper.OrderDetailMapper;
 import com.xy.wmall.mapper.OrderMapper;
+import com.xy.wmall.mapper.DeliverFlowMapper;
 import com.xy.wmall.mapper.ProxyMapper;
 import com.xy.wmall.model.Deliver;
 import com.xy.wmall.model.DeliverDetail;
 import com.xy.wmall.model.Order;
 import com.xy.wmall.model.OrderDetail;
 import com.xy.wmall.model.Proxy;
+import com.xy.wmall.model.DeliverFlow;
 import com.xy.wmall.service.ProxyService;
 
 /**
@@ -53,6 +56,9 @@ public class ProxyServiceImpl implements ProxyService {
     
     @Autowired
     private DeliverDetailMapper deliverDetailMapper;
+    
+    @Autowired
+    private DeliverFlowMapper deliverFlowMapper;
 	
 	/**
      * 根据主键查询
@@ -155,8 +161,6 @@ public class ProxyServiceImpl implements ProxyService {
 			
 			// 保存发货单信息
 			Deliver deliver = new Deliver();
-			deliver.setProxyId(proxy.getId());
-			deliver.setParentProxyId(proxy.getParentId());
 			deliver.setReceiveName(proxy.getName());
 			deliver.setReceivePhone(proxy.getPhone());
 			deliver.setReceiveAddress(proxy.getAddress());
@@ -168,6 +172,15 @@ public class ProxyServiceImpl implements ProxyService {
 			deliver.setUpdateTime(new Date());
 			deliver.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 			deliverMapper.insert(deliver);
+			
+			// 保存发货流程
+			DeliverFlow deliverFlow = new DeliverFlow();
+			deliverFlow.setDeliverId(deliver.getId());
+			deliverFlow.setProxyId(proxy.getId());
+			deliverFlow.setParentProxyId(proxy.getParentId());
+			deliverFlow.setFlowStatus(FlowStatusEnum.START.getValue());
+			deliverFlow.setCreateTime(new Date());
+			deliverFlowMapper.insert(deliverFlow);
 			
 			// 保存发货详情信息
 	    	List<DeliverDetail> deliverDetails = new ArrayList<>(productId.length);

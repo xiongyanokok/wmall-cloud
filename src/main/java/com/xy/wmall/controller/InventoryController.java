@@ -1,7 +1,6 @@
 package com.xy.wmall.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.utils.BeanUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
-import com.xy.wmall.enums.DeliverTypeEnum;
 import com.xy.wmall.enums.ProductTypeEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Inventory;
@@ -194,7 +192,6 @@ public class InventoryController extends BaseController {
 		List<Statistics> purchaseStatistics = orderService.purchaseStatistics(map);
 		// 老大发货统计
 		map.remove("parentProxyId");
-		map.put("deliverTypes", Arrays.asList(DeliverTypeEnum.SUPER_DELIVER.getValue(), DeliverTypeEnum.FACTORY_DELIVER.getValue()));
 		map.put("deliverStatus", TrueFalseStatusEnum.TRUE.getValue());
 		List<Statistics> deliverStatistics = deliverService.deliverStatistics(map);
 		// 合并
@@ -401,7 +398,6 @@ public class InventoryController extends BaseController {
 		List<Statistics> purchaseStatistics = orderService.purchaseStatistics(map);
 		// 老大发货统计
 		map.remove("parentProxyId");
-		map.put("deliverTypes", Arrays.asList(DeliverTypeEnum.SUPER_DELIVER.getValue(), DeliverTypeEnum.FACTORY_DELIVER.getValue()));
 		map.put("deliverStatus", TrueFalseStatusEnum.TRUE.getValue());
 		List<Statistics> deliverStatistics = deliverService.deliverStatistics(map);
 		// 合并

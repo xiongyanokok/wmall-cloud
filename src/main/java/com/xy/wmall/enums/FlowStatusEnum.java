@@ -1,39 +1,39 @@
 package com.xy.wmall.enums;
 
 /**
- * 发货类型
+ * 流程状态
  * 
  * @author xiongyan
  * @date 2016年11月21日 上午11:39:33
  */
-public enum DeliverTypeEnum {
+public enum FlowStatusEnum {
 	
 	/**
-	 * 不发货
+	 * 开始
 	 */
-	NOT_DELIVER(0),
+	START(1),
 
 	/**
-	 * 自己发货
+	 * 处理
 	 */
-	SELF_DELIVER(1),
+	HANDLE(2),
 	
 	/**
-	 * 老大发货
+	 * 上报
 	 */
-	SUPER_DELIVER(2),
+	REPORT(3),
 	
 	/**
-	 * 工厂发货
+	 * 完成
 	 */
-	FACTORY_DELIVER(3);
+	COMPLETE(4);
 	
 	/**
 	 * 状态
 	 */
 	private Integer value;
 	
-	private DeliverTypeEnum(Integer value){
+	private FlowStatusEnum(Integer value){
 		this.value= value;
 	}
 

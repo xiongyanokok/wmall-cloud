@@ -3,7 +3,7 @@ package com.xy.wmall.service;
 import java.util.List;
 import java.util.Map;
 
-import com.xy.wmall.model.ProxyDeliver;
+import com.xy.wmall.model.DeliverFlow;
 
 /**
  * Service 接口
@@ -11,7 +11,7 @@ import com.xy.wmall.model.ProxyDeliver;
  * @author admin
  * @date 2018年01月28日 上午11:34:02
  */
-public interface ProxyDeliverService {
+public interface DeliverFlowService {
 
 	/**
      * 根据主键查询
@@ -19,7 +19,7 @@ public interface ProxyDeliverService {
      * @param id
      * @return
      */
-    ProxyDeliver selectByPrimaryKey(Integer id);
+    DeliverFlow selectByPrimaryKey(Integer id);
     
     /**
      * 根据ID查询
@@ -27,21 +27,21 @@ public interface ProxyDeliverService {
      * @param id
      * @return
      */
-    ProxyDeliver getProxyDeliverById(Integer id);
+    DeliverFlow getDeliverFlowById(Integer id);
     
     /**
      * 保存数据
      *
-     * @param proxyDeliver
+     * @param deliverFlow
      */
-    void save(ProxyDeliver proxyDeliver);
+    void save(DeliverFlow deliverFlow);
 
     /**
      * 修改数据
      *
-     * @param proxyDeliver
+     * @param deliverFlow
      */
-    void update(ProxyDeliver proxyDeliver);
+    void update(DeliverFlow deliverFlow);
     
     /**
      * 根据map查询
@@ -49,7 +49,7 @@ public interface ProxyDeliverService {
      * @param map
      * @return
      */
-    ProxyDeliver getProxyDeliver(Map<String, Object> map);
+    DeliverFlow getDeliverFlow(Map<String, Object> map);
     
     /**
      * 根据map查询
@@ -57,20 +57,20 @@ public interface ProxyDeliverService {
      * @param map
      * @return
      */
-    List<ProxyDeliver> listProxyDeliver(Map<String, Object> map);
+    List<DeliverFlow> listDeliverFlow(Map<String, Object> map);
     
     /**
      * 批量保存
      * 
      * @param list
      */
-    void batchSave(List<ProxyDeliver> list);
+    void batchSave(List<DeliverFlow> list);
     
     /**
      * 批量更新
      * 
      * @param list
      */
-    void batchUpdate(List<ProxyDeliver> list);
+    void batchUpdate(List<DeliverFlow> list);
     
 }

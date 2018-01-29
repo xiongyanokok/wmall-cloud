@@ -1,6 +1,5 @@
 package com.xy.wmall.controller;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.xy.wmall.common.utils.BeanUtils;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
-import com.xy.wmall.enums.DeliverTypeEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Product;
 import com.xy.wmall.pojo.Statistics;
@@ -94,7 +92,6 @@ public class StatisticsController extends BaseController {
 		// 老大发货统计
 		Map<Integer, Integer> deliverStatisticsMap = new HashMap<>();
 		map.remove("parentProxyId");
-		map.put("deliverTypes", Arrays.asList(DeliverTypeEnum.SUPER_DELIVER.getValue(), DeliverTypeEnum.FACTORY_DELIVER.getValue()));
 		List<Statistics> deliverStatistics = deliverService.deliverStatistics(map);
 		if (CollectionUtils.isNotEmpty(deliverStatistics)) {
 			for (Statistics statistics : deliverStatistics) {
@@ -104,7 +101,6 @@ public class StatisticsController extends BaseController {
 		// 我的发货统计
 		Map<Integer, Integer> myDeliverStatisticsMap = new HashMap<>();
 		map.remove("deliverTypes");
-		map.put("deliverType", DeliverTypeEnum.SELF_DELIVER.getValue());
 		List<Statistics> myDeliverStatistics = deliverService.deliverStatistics(map);
 		if (CollectionUtils.isNotEmpty(myDeliverStatistics)) {
 			for (Statistics statistics : myDeliverStatistics) {

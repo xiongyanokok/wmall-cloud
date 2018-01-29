@@ -3,7 +3,7 @@ package com.xy.wmall.mapper;
 import java.util.List;
 import java.util.Map;
 
-import com.xy.wmall.model.ProxyDeliver;
+import com.xy.wmall.model.DeliverFlow;
 
 /**
  * Mapper
@@ -11,7 +11,7 @@ import com.xy.wmall.model.ProxyDeliver;
  * @author admin
  * @date 2018年01月26日 下午02:19:05
  */
-public interface ProxyDeliverMapper {
+public interface DeliverFlowMapper {
 
 	/**
      * 根据主键查询
@@ -19,21 +19,21 @@ public interface ProxyDeliverMapper {
      * @param id
      * @return
      */
-    ProxyDeliver selectByPrimaryKey(Integer id);
+    DeliverFlow selectByPrimaryKey(Integer id);
 
     /**
      * 新增数据库记录
      *
-     * @param proxyDeliver
+     * @param deliverFlow
      */
-    void insert(ProxyDeliver proxyDeliver);
+    void insert(DeliverFlow deliverFlow);
 
     /**
      * 更新数据库记录
      *
-     * @param proxyDeliver
+     * @param deliverFlow
      */
-    void update(ProxyDeliver proxyDeliver);
+    void update(DeliverFlow deliverFlow);
 
     /**
      * 根据map查询
@@ -41,7 +41,7 @@ public interface ProxyDeliverMapper {
      * @param map
      * @return
      */
-    ProxyDeliver getProxyDeliver(Map<String, Object> map);
+    DeliverFlow getDeliverFlow(Map<String, Object> map);
     
     /**
      * 根据map查询
@@ -49,20 +49,20 @@ public interface ProxyDeliverMapper {
      * @param map
      * @return
      */
-    List<ProxyDeliver> listProxyDeliver(Map<String, Object> map);
+    List<DeliverFlow> listDeliverFlow(Map<String, Object> map);
     
     /**
      * 批量保存
      * 
      * @param list
      */
-    void batchInsert(List<ProxyDeliver> list);
+    void batchInsert(List<DeliverFlow> list);
     
     /**
      * 批量更新
      * 
      * @param list
      */
-    void batchUpdate(List<ProxyDeliver> list);
+    void batchUpdate(List<DeliverFlow> list);
     
 }

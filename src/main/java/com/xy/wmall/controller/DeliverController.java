@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
+import com.xy.wmall.enums.FlowStatusEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Deliver;
 import com.xy.wmall.model.DeliverDetail;
@@ -38,13 +39,13 @@ import com.xy.wmall.model.Logistics;
 import com.xy.wmall.model.LogisticsCompany;
 import com.xy.wmall.model.Product;
 import com.xy.wmall.model.Proxy;
-import com.xy.wmall.model.ProxyDeliver;
+import com.xy.wmall.model.DeliverFlow;
 import com.xy.wmall.service.DeliverDetailService;
 import com.xy.wmall.service.DeliverService;
 import com.xy.wmall.service.LogisticsCompanyService;
 import com.xy.wmall.service.LogisticsService;
 import com.xy.wmall.service.ProductService;
-import com.xy.wmall.service.ProxyDeliverService;
+import com.xy.wmall.service.DeliverFlowService;
 import com.xy.wmall.service.ProxyService;
 
 /**
@@ -81,7 +82,7 @@ public class DeliverController extends BaseController {
     private LogisticsCompanyService logisticsCompanyService;
     
     @Autowired
-    private ProxyDeliverService proxyDeliverService;
+    private DeliverFlowService deliverFlowService;
     
 	
 	/**
@@ -334,24 +335,29 @@ public class DeliverController extends BaseController {
 	/**
 	 * 上报发货
 	 * 
-	 * @param id
+	 * @param flowId
 	 * @return
 	 */
 	@RequestMapping(value = "/report", method = { RequestMethod.POST })
 	@ResponseBody
-	public Map<String, Object> report(Integer id) {
-		Assert.notNull(id, "id为空");
-		Deliver deliver = deliverService.getDeliverById(id);
-		Assert.notNull(deliver, "数据不存在");
-		Proxy proxy = proxyService.getProxyById(deliver.getParentProxyId());
-		Assert.notNull(proxy, "代理不存在");
-		ProxyDeliver proxyDeliver = new ProxyDeliver();
-		proxyDeliver.setDeliverId(id);
-		proxyDeliver.setProxyId(proxy.getId());
-		proxyDeliver.setParentProxyId(proxy.getParentId());
-		proxyDeliver.setCreateTime(new Date());
-		proxyDeliverService.save(proxyDeliver);;
-		logger.info("【{}】上报成功", proxyDeliver);
+	public Map<String, Object> report(Integer flowId) {
+		Assert.notNull(flowId, "flowId为空");
+		DeliverFlow deliverFlow = deliverFlowService.getDeliverFlowById(flowId);
+		Assert.notNull(deliverFlow, "数据不存在");
+		
+		if (!FlowStatusEnum.START.getValue().equals(deliverFlow.getFlowStatus())) {
+			deliverFlow.setFlowStatus(FlowStatusEnum.REPORT.getValue());
+			deliverFlowService.update(deliverFlow);
+		}
+		
+		DeliverFlow flow = new DeliverFlow();
+		flow.setDeliverId(deliverFlow.getDeliverId());
+		flow.setProxyId(deliverFlow.getParentProxyId());
+		flow.setParentProxyId(getParentProxyId());
+		flow.setFlowStatus(FlowStatusEnum.HANDLE.getValue());
+		flow.setCreateTime(new Date());
+		deliverFlowService.save(flow);
+		logger.info("【{}】上报成功", flow);
 		return buildSuccess("上报成功");
 	}
 	

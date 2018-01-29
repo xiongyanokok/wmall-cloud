@@ -1,6 +1,7 @@
 package com.xy.wmall.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,12 +12,15 @@ import org.springframework.stereotype.Service;
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.utils.ListPageUtils;
 import com.xy.wmall.enums.ErrorCodeEnum;
+import com.xy.wmall.enums.FlowStatusEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.exception.WmallException;
 import com.xy.wmall.mapper.DeliverDetailMapper;
+import com.xy.wmall.mapper.DeliverFlowMapper;
 import com.xy.wmall.mapper.DeliverMapper;
 import com.xy.wmall.model.Deliver;
 import com.xy.wmall.model.DeliverDetail;
+import com.xy.wmall.model.DeliverFlow;
 import com.xy.wmall.pojo.Statistics;
 import com.xy.wmall.service.DeliverService;
 
@@ -34,6 +38,9 @@ public class DeliverServiceImpl implements DeliverService {
     
     @Autowired
     private DeliverDetailMapper deliverDetailMapper;
+    
+    @Autowired
+    private DeliverFlowMapper deliverFlowMapper;
 	
 	/**
      * 根据主键查询
@@ -84,6 +91,15 @@ public class DeliverServiceImpl implements DeliverService {
     	try {
     		// 保存发货信息
 			deliverMapper.insert(deliver);
+			
+			// 保存发货流程
+			DeliverFlow deliverFlow = new DeliverFlow();
+			deliverFlow.setDeliverId(deliver.getId());
+			deliverFlow.setProxyId(deliver.getProxyId());
+			deliverFlow.setParentProxyId(deliver.getParentProxyId());
+			deliverFlow.setFlowStatus(FlowStatusEnum.START.getValue());
+			deliverFlow.setCreateTime(new Date());
+			deliverFlowMapper.insert(deliverFlow);
 			
 			// 产品id
 			Integer[] productId = deliver.getProductId();

@@ -242,7 +242,6 @@ public class OrderController extends BaseController {
 			order.setOrderType(OrderTypeEnum.PROXY_ORDER.getValue()); 
 		} else {
 			// 零售订单
-			order.setProxyId(getProxyId());
 			order.setIsAccumulate(TrueFalseStatusEnum.FALSE.getValue());
 			order.setOrderType(OrderTypeEnum.RETAIL_ORDER.getValue()); 
 		}

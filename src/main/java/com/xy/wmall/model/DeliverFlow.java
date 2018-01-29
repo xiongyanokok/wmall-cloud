@@ -9,10 +9,10 @@ import lombok.Data;
  * model 实体类
  * 
  * @author admin
- * @date 2018年01月28日 上午11:34:02
+ * @date 2018年01月29日 下午09:50:33
  */
 @Data
-public class ProxyDeliver implements Serializable {
+public class DeliverFlow implements Serializable {
 
 	/**
 	 * 
@@ -38,6 +38,11 @@ public class ProxyDeliver implements Serializable {
      * 上级代理ID
      */
 	private Integer parentProxyId;
+	
+	/**
+     * 流程状态：1开始，2处理，3上报，4完成
+     */
+	private Integer flowStatus;
 	
 	/**
      * 创建时间
