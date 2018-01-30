@@ -210,7 +210,7 @@
   	<!-- 根据map查询-->
   	<select id="listDeliver" resultMap="BaseResultMap" parameterType="java.util.Map">
   		select 
-  			t1.*
+  			t1.*, t3.id flowId, t3.flow_status flowStatus
         from 
         	t_deliver t1, t_deliver_detail t2, t_deliver_flow t3
         <where>

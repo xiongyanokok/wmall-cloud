@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,14 +89,10 @@ public class OrderController extends BaseController {
 	public Map<String, Object> query() {
 		return pageInfoResult(map -> {
 			// 查询条件
-			String proxyId = request.getParameter("proxyId");
-			if (StringUtils.isNotEmpty(proxyId)) {
-				// 代理ID
-				map.put("proxyId", proxyId); 
-			} else {
-				// 上级代理ID
-				map.put("parentProxyId", getProxyId()); 
-			}
+			// 代理ID
+			map.put("proxyId", request.getParameter("proxyId")); 
+			// 上级代理ID
+			map.put("parentProxyId", getProxyId()); 
 			// 产品id
 			map.put("productId", request.getParameter("productId")); 
 			// 微信昵称

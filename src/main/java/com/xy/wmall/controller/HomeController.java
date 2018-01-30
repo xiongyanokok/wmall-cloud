@@ -57,27 +57,29 @@ public class HomeController extends BaseController {
 		List<Product> products = productService.listProduct();
 		model.addAttribute("products", products);
 		
-		Map<String, Object> map = new HashMap<>();
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
-		map.put("operator", "<>");
-		map.put("proxyId", getProxyId());
-		// 代理存款
-		Integer proxyWallet = walletService.getStatisticsWallet(map);
-		if (null != proxyWallet) {
-			model.addAttribute("proxyWallet", proxyWallet);
+		Integer proxyId = getProxyId();
+		if (null != proxyId) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+			map.put("operator", "<>");
+			map.put("proxyId", proxyId);
+			// 代理存款
+			Integer proxyWallet = walletService.getStatisticsWallet(map);
+			if (null != proxyWallet) {
+				model.addAttribute("proxyWallet", proxyWallet);
+			}
+			// 自己存款
+			map.put("operator", "=");
+			proxyWallet = walletService.getStatisticsWallet(map);
+			if (null != proxyWallet) {
+				model.addAttribute("myWallet", proxyWallet);
+			}
+			// 待发货
+			map = new HashMap<>();
+			map.put("parentProxyId", proxyId);
+			int waitDeliver = deliverService.countWaitDeliver(map);
+			model.addAttribute("waitDeliver", waitDeliver);
 		}
-		// 自己存款
-		map.put("operator", "=");
-		proxyWallet = walletService.getStatisticsWallet(map);
-		if (null != proxyWallet) {
-			model.addAttribute("myWallet", proxyWallet);
-		}
-		// 待发货
-		map = new HashMap<>();
-		map.put("parentProxyId", getProxyId());
-		int waitDeliver = deliverService.countWaitDeliver(map);
-		model.addAttribute("waitDeliver", waitDeliver);
-		
 		return "home/index";
 	}
 	

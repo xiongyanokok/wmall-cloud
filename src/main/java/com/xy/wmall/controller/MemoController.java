@@ -55,6 +55,8 @@ public class MemoController extends BaseController {
 	public Map<String, Object> query() {
 		return pageInfoResult(map -> {
 			// 查询条件
+			// 创建人
+			map.put("createUserId", getUserId()); 
 			// 标题
 			map.put("title", request.getParameter("title")); 
 			// 内容
