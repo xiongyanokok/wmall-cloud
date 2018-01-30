@@ -9,7 +9,7 @@ import com.xy.wmall.model.UserRole;
  * Mapper
  * 
  * @author admin
- * @date 2018年01月26日 下午02:19:26
+ * @date 2018年01月29日 下午02:43:36
  */
 public interface UserRoleMapper {
 

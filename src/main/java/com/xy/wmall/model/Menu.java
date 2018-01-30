@@ -9,7 +9,7 @@ import lombok.Data;
  * model 实体类
  * 
  * @author admin
- * @date 2018年01月26日 下午02:19:01
+ * @date 2018年01月30日 下午02:31:50
  */
 @Data
 public class Menu implements Serializable {
@@ -25,12 +25,12 @@ public class Menu implements Serializable {
 	private Integer id;
 	
 	/**
-     * 上级ID
+     * 父菜单ID
      */
 	private Integer parentId;
 	
 	/**
-     * 排序
+     * 菜单排序
      */
 	private Integer order;
 	
@@ -38,6 +38,11 @@ public class Menu implements Serializable {
      * 菜单名称
      */
 	private String name;
+	
+	/**
+     * 菜单图标
+     */
+	private String icon;
 	
 	/**
      * 菜单地址

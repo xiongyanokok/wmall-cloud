@@ -398,4 +398,17 @@
 		</foreach>
 	</update>
 	
+	<!-- 根据map查询 -->
+  	<select id="getUserProxy" resultMap="BaseResultMap" parameterType="java.util.Map">
+  		select
+        	t1.id, t1.parent_id, t1.wechat_name, t1.is_delete
+        from t_proxy t1, t_user_proxy t2
+        <where>
+        	t1.id = t2.proxy_id
+  			<if test="userId != null">
+    			and t2.user_id = #{userId}
+  			</if>
+        </where>
+  	</select>
+	
 </mapper>

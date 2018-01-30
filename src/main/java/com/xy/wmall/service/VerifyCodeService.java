@@ -3,15 +3,15 @@ package com.xy.wmall.service;
 import java.util.List;
 import java.util.Map;
 
-import com.xy.wmall.model.Proxy;
+import com.xy.wmall.model.VerifyCode;
 
 /**
  * Service 接口
  * 
  * @author admin
- * @date 2017年10月28日 上午08:54:21
+ * @date 2018年01月29日 下午02:43:45
  */
-public interface ProxyService {
+public interface VerifyCodeService {
 
 	/**
      * 根据主键查询
@@ -19,7 +19,7 @@ public interface ProxyService {
      * @param id
      * @return
      */
-    Proxy selectByPrimaryKey(Integer id);
+    VerifyCode selectByPrimaryKey(Integer id);
     
     /**
      * 根据ID查询
@@ -27,28 +27,28 @@ public interface ProxyService {
      * @param id
      * @return
      */
-    Proxy getProxyById(Integer id);
+    VerifyCode getVerifyCodeById(Integer id);
     
     /**
      * 保存数据
      *
-     * @param proxy
+     * @param verifyCode
      */
-    void save(Proxy proxy);
+    void save(VerifyCode verifyCode);
 
     /**
      * 修改数据
      *
-     * @param proxy
+     * @param verifyCode
      */
-    void update(Proxy proxy);
+    void update(VerifyCode verifyCode);
     
     /**
      * 删除数据
      * 
-     * @param proxy
+     * @param verifyCode
      */
-    void remove(Proxy proxy);
+    void remove(VerifyCode verifyCode);
     
     /**
      * 根据map查询
@@ -56,7 +56,7 @@ public interface ProxyService {
      * @param map
      * @return
      */
-    Proxy getProxy(Map<String, Object> map);
+    VerifyCode getVerifyCode(Map<String, Object> map);
     
     /**
      * 根据map查询
@@ -64,28 +64,20 @@ public interface ProxyService {
      * @param map
      * @return
      */
-    List<Proxy> listProxy(Map<String, Object> map);
+    List<VerifyCode> listVerifyCode(Map<String, Object> map);
     
     /**
      * 批量保存
      * 
      * @param list
      */
-    void batchSave(List<Proxy> list);
+    void batchSave(List<VerifyCode> list);
     
     /**
      * 批量更新
      * 
      * @param list
      */
-    void batchUpdate(List<Proxy> list);
-    
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     */
-    Proxy getUserProxy(Map<String, Object> map);
+    void batchUpdate(List<VerifyCode> list);
     
 }

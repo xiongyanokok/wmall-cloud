@@ -7,20 +7,20 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xy.wmall.common.Assert;
-import com.xy.wmall.common.utils.ListPageUtils;
 import com.xy.wmall.enums.ErrorCodeEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
+import com.xy.wmall.common.Assert;
 import com.xy.wmall.exception.WmallException;
 import com.xy.wmall.mapper.MenuMapper;
 import com.xy.wmall.model.Menu;
 import com.xy.wmall.service.MenuService;
+import com.xy.wmall.common.utils.ListPageUtils;
 
 /**
  * Service 实现
  * 
  * @author admin
- * @date 2018年01月26日 下午02:19:01
+ * @date 2018年01月29日 下午02:43:20
  */
 @Service
 public class MenuServiceImpl implements MenuService {
@@ -185,6 +185,21 @@ public class MenuServiceImpl implements MenuService {
 			}
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_BATCH_ERROR, "批量修改失败", e);
+		}
+    }
+    
+    /**
+     * 根据map查询
+     * 
+     * @param map
+     * @return
+     */
+    public List<Menu> listUserRoleMenu(Map<String, Object> map) {
+    	Assert.notEmpty(map, "查询数据为空");
+    	try {
+	    	return menuMapper.listUserRoleMenu(map);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询列表失败", e);
 		}
     }
     

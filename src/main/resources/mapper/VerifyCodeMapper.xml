@@ -1,46 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xy.wmall.mapper.RoleMapper">
+<mapper namespace="com.xy.wmall.mapper.VerifyCodeMapper">
 	
-  	<resultMap id="BaseResultMap" type="com.xy.wmall.model.Role">
+  	<resultMap id="BaseResultMap" type="com.xy.wmall.model.VerifyCode">
 		<id column="id" property="id" />	
-	    <result column="name" property="name" />
-	    <result column="remark" property="remark" />
+	    <result column="proxy_id" property="proxyId" />
+	    <result column="code" property="code" />
 	    <result column="create_user_id" property="createUserId" />
 	    <result column="create_time" property="createTime" />
-	    <result column="update_user_id" property="updateUserId" />
-	    <result column="update_time" property="updateTime" />
-	    <result column="is_delete" property="isDelete" />
+	    <result column="effective_time" property="effectiveTime" />
+	    <result column="use_status" property="useStatus" />
   	</resultMap>
   	
   	<!-- 表所有字段 -->
   	<sql id="Base_Column_List">
-  		id, name, remark, create_user_id, create_time, update_user_id, update_time, is_delete
+  		id, proxy_id, code, create_user_id, create_time, effective_time, use_status
   	</sql>
   	
   	<!-- 根据主键查询 -->
   	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     	select 
     	<include refid="Base_Column_List" />
-    	from t_role
+    	from t_verify_code
 		where id = #{id}
   	</select>
   	
   	<!-- 新增数据库记录 -->
-  	<insert id="insert" parameterType="com.xy.wmall.model.Role">
+  	<insert id="insert" parameterType="com.xy.wmall.model.VerifyCode">
     	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-	    insert into t_role
+	    insert into t_verify_code
     		<trim prefix="(" suffix=")" suffixOverrides=",">
 		      	<if test="id != null">
 		        	id,
 		      	</if>
-		      	<if test="name != null">
-		        	name,
+		      	<if test="proxyId != null">
+		        	proxy_id,
 		      	</if>
-		      	<if test="remark != null">
-		        	remark,
+		      	<if test="code != null">
+		        	code,
 		      	</if>
 		      	<if test="createUserId != null">
 		        	create_user_id,
@@ -48,14 +47,11 @@
 		      	<if test="createTime != null">
 		        	create_time,
 		      	</if>
-		      	<if test="updateUserId != null">
-		        	update_user_id,
+		      	<if test="effectiveTime != null">
+		        	effective_time,
 		      	</if>
-		      	<if test="updateTime != null">
-		        	update_time,
-		      	</if>
-		      	<if test="isDelete != null">
-		        	is_delete,
+		      	<if test="useStatus != null">
+		        	use_status,
 		      	</if>
     		</trim>
     	values
@@ -63,11 +59,11 @@
       			<if test="id != null">
         			#{id},
       			</if>
-      			<if test="name != null">
-        			#{name},
+      			<if test="proxyId != null">
+        			#{proxyId},
       			</if>
-      			<if test="remark != null">
-        			#{remark},
+      			<if test="code != null">
+        			#{code},
       			</if>
       			<if test="createUserId != null">
         			#{createUserId},
@@ -75,33 +71,30 @@
       			<if test="createTime != null">
         			#{createTime},
       			</if>
-      			<if test="updateUserId != null">
-        			#{updateUserId},
+      			<if test="effectiveTime != null">
+        			#{effectiveTime},
       			</if>
-      			<if test="updateTime != null">
-        			#{updateTime},
-      			</if>
-      			<if test="isDelete != null">
-        			#{isDelete},
+      			<if test="useStatus != null">
+        			#{useStatus},
       			</if>
     		</trim>
   	</insert>
   	
   	<!-- 更新数据库记录 -->
-  	<update id="update" parameterType="com.xy.wmall.model.Role">
-    	update t_role
+  	<update id="update" parameterType="com.xy.wmall.model.VerifyCode">
+    	update t_verify_code
     	<set>
-			<if test="name != null">
-    			name = #{name},
+			<if test="proxyId != null">
+    			proxy_id = #{proxyId},
   			</if>
-			<if test="remark != null">
-    			remark = #{remark},
+			<if test="code != null">
+    			code = #{code},
   			</if>
-			<if test="updateUserId != null">
-    			update_user_id = #{updateUserId},
+			<if test="effectiveTime != null">
+    			effective_time = #{effectiveTime},
   			</if>
-			<if test="isDelete != null">
-    			is_delete = #{isDelete},
+			<if test="useStatus != null">
+    			use_status = #{useStatus},
   			</if>
     	</set>
     	<where>
@@ -110,19 +103,19 @@
   	</update>
   	
 	<!-- 根据map查询 -->
-  	<select id="getRole" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	<select id="getVerifyCode" resultMap="BaseResultMap" parameterType="java.util.Map">
   		select
         <include refid="Base_Column_List"/>
-        from t_role
+        from t_verify_code
         <where>
   			<if test="id != null">
     			and id = #{id}
   			</if>
-  			<if test="name != null">
-    			and name = #{name}
+  			<if test="proxyId != null">
+    			and proxy_id = #{proxyId}
   			</if>
-  			<if test="remark != null">
-    			and remark = #{remark}
+  			<if test="code != null">
+    			and code = #{code}
   			</if>
   			<if test="createUserId != null">
     			and create_user_id = #{createUserId}
@@ -130,29 +123,26 @@
   			<if test="createTime != null">
     			and create_time = #{createTime}
   			</if>
-  			<if test="updateUserId != null">
-    			and update_user_id = #{updateUserId}
+  			<if test="effectiveTime != null">
+    			and effective_time = #{effectiveTime}
   			</if>
-  			<if test="updateTime != null">
-    			and update_time = #{updateTime}
-  			</if>
-  			<if test="isDelete != null">
-    			and is_delete = #{isDelete}
+  			<if test="useStatus != null">
+    			and use_status = #{useStatus}
   			</if>
         </where>
   	</select>
   
   	<!-- 根据map查询 -->
-  	<select id="listRole" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	<select id="listVerifyCode" resultMap="BaseResultMap" parameterType="java.util.Map">
   		select
         <include refid="Base_Column_List"/>
-        from t_role
+        from t_verify_code
         <where>
-  			<if test="name != null">
-    			and name = #{name}
+  			<if test="proxyId != null">
+    			and proxy_id = #{proxyId}
   			</if>
-  			<if test="remark != null">
-    			and remark = #{remark}
+  			<if test="code != null">
+    			and code = #{code}
   			</if>
   			<if test="createUserId != null">
     			and create_user_id = #{createUserId}
@@ -160,14 +150,11 @@
   			<if test="createTime != null">
     			and create_time = #{createTime}
   			</if>
-  			<if test="updateUserId != null">
-    			and update_user_id = #{updateUserId}
+  			<if test="effectiveTime != null">
+    			and effective_time = #{effectiveTime}
   			</if>
-  			<if test="updateTime != null">
-    			and update_time = #{updateTime}
-  			</if>
-  			<if test="isDelete != null">
-    			and is_delete = #{isDelete}
+  			<if test="useStatus != null">
+    			and use_status = #{useStatus}
   			</if>
         </where>
         <if test="groupBy != null">
@@ -180,18 +167,17 @@
   	
   	<!-- 批量保存 -->
 	<insert id="batchInsert" parameterType="java.util.List">
-		insert into t_role (<include refid="Base_Column_List" />)
+		insert into t_verify_code (<include refid="Base_Column_List" />)
 		values 
 		<foreach collection="list" index="index" item="item" separator=",">
 			<trim prefix="(" suffix=")" suffixOverrides=",">
 				#{item.id},
-				#{item.name},
-				#{item.remark},
+				#{item.proxyId},
+				#{item.code},
 				#{item.createUserId},
 				#{item.createTime},
-				#{item.updateUserId},
-				#{item.updateTime},
-				#{item.isDelete},
+				#{item.effectiveTime},
+				#{item.useStatus},
 			</trim>
 		</foreach>
 	</insert>
@@ -199,19 +185,19 @@
 	<!-- 批量更新 -->
   	<update id="batchUpdate" parameterType="java.util.List">
 		<foreach collection="list" index="index" item="item" separator=";">
-			update t_role
+			update t_verify_code
 			<set>
-        		<if test="item.name != null">
-        			name = #{item.name},
+        		<if test="item.proxyId != null">
+        			proxy_id = #{item.proxyId},
         		</if>
-        		<if test="item.remark != null">
-        			remark = #{item.remark},
+        		<if test="item.code != null">
+        			code = #{item.code},
         		</if>
-        		<if test="item.updateUserId != null">
-        			update_user_id = #{item.updateUserId},
+        		<if test="item.effectiveTime != null">
+        			effective_time = #{item.effectiveTime},
         		</if>
-        		<if test="item.isDelete != null">
-        			is_delete = #{item.isDelete},
+        		<if test="item.useStatus != null">
+        			use_status = #{item.useStatus},
         		</if>
 			</set>
             where id = #{item.id}

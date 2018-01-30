@@ -4,8 +4,6 @@
 	
   	<resultMap id="BaseResultMap" type="com.xy.wmall.model.Deliver">
 		<id column="id" property="id" />	
-	    <result column="proxy_id" property="proxyId" />
-	    <result column="parent_proxy_id" property="parentProxyId" />
 	    <result column="receive_name" property="receiveName" />
 	    <result column="receive_phone" property="receivePhone" />
 	    <result column="receive_address" property="receiveAddress" />
@@ -22,7 +20,7 @@
   	
   	<!-- 表所有字段 -->
   	<sql id="Base_Column_List">
-  		id, proxy_id, parent_proxy_id, receive_name, receive_phone, receive_address, courier_price, deliver_status, authorization_code, remark, create_user_id, create_time, update_user_id, update_time, is_delete
+  		id, receive_name, receive_phone, receive_address, courier_price, deliver_status, authorization_code, remark, create_user_id, create_time, update_user_id, update_time, is_delete
   	</sql>
   	
   	<!-- 根据主键查询 -->
@@ -42,12 +40,6 @@
     		<trim prefix="(" suffix=")" suffixOverrides=",">
 		      	<if test="id != null">
 		        	id,
-		      	</if>
-		      	<if test="proxyId != null">
-		        	proxy_id,
-		      	</if>
-		      	<if test="parentProxyId != null">
-		        	parent_proxy_id,
 		      	</if>
 		      	<if test="receiveName != null">
 		        	receive_name,
@@ -90,12 +82,6 @@
     		<trim prefix="(" suffix=")" suffixOverrides=",">
       			<if test="id != null">
         			#{id},
-      			</if>
-      			<if test="proxyId != null">
-        			#{proxyId},
-      			</if>
-      			<if test="parentProxyId != null">
-        			#{parentProxyId},
       			</if>
       			<if test="receiveName != null">
         			#{receiveName},
@@ -140,12 +126,6 @@
   	<update id="update" parameterType="com.xy.wmall.model.Deliver">
     	update t_deliver
     	<set>
-			<if test="proxyId != null">
-    			proxy_id = #{proxyId},
-  			</if>
-			<if test="parentProxyId != null">
-    			parent_proxy_id = #{parentProxyId},
-  			</if>
 			<if test="receiveName != null">
     			receive_name = #{receiveName},
   			</if>
@@ -187,12 +167,6 @@
         <where>
   			<if test="id != null">
     			and id = #{id}
-  			</if>
-  			<if test="proxyId != null">
-    			and proxy_id = #{proxyId}
-  			</if>
-  			<if test="parentProxyId != null">
-    			and parent_proxy_id = #{parentProxyId}
   			</if>
   			<if test="receiveName != null">
     			and receive_name = #{receiveName}
@@ -312,8 +286,6 @@
 		<foreach collection="list" index="index" item="item" separator=",">
 			<trim prefix="(" suffix=")" suffixOverrides=",">
 				#{item.id},
-				#{item.proxyId},
-				#{item.parentProxyId},
 				#{item.receiveName},
 				#{item.receivePhone},
 				#{item.receiveAddress},
@@ -335,12 +307,6 @@
 		<foreach collection="list" index="index" item="item" separator=";">
 			update t_deliver
 			<set>
-        		<if test="item.proxyId != null">
-        			proxy_id = #{item.proxyId},
-        		</if>
-        		<if test="item.parentProxyId != null">
-        			parent_proxy_id = #{item.parentProxyId},
-        		</if>
         		<if test="item.receiveName != null">
         			receive_name = #{item.receiveName},
         		</if>
@@ -378,15 +344,15 @@
   		select 
   			t2.product_id productId, 
   			sum(t2.amount) deliverNumber
-		from t_deliver t1, t_deliver_detail t2, t_proxy_deliver t3
+		from t_deliver t1, t_deliver_detail t2, t_deliver_flow t3
         <where>
         	t1.id = t2.deliver_id
         	and t1.id = t3.deliver_id
         	<if test="proxyId != null">
-        		and (t1.proxy_id = #{proxyId} or t3.proxy_id = #{proxyId})
+        		and t3.proxy_id = #{proxyId}
         	</if>
         	<if test="parentProxyId != null">
-        		and (t1.parent_proxy_id = #{parentProxyId} or t3.parent_proxy_id = #{parentProxyId})
+        		and t3.parent_proxy_id = #{parentProxyId}
         	</if>
         	<if test="natureMonth != null">
         		and t1.create_time like CONCAT('%', #{natureMonth}, '%')

@@ -52,4 +52,14 @@ public final class Constant {
 	 */
 	public static final String PRODUCT_CACHE = "product";
 	
+	/**
+	 * logistics cache
+	 */
+	public static final String LOGISTICS_CACHE = "logistics";
+	
+	/**
+	 * 验证码有效时间10分钟
+	 */
+	public static final Integer CODE_EFFECTIVE_TIME = 10;
+	
 }

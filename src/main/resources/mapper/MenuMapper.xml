@@ -7,6 +7,7 @@
 	    <result column="parent_id" property="parentId" />
 	    <result column="order" property="order" />
 	    <result column="name" property="name" />
+	    <result column="icon" property="icon" />
 	    <result column="uri" property="uri" />
 	    <result column="create_user_id" property="createUserId" />
 	    <result column="create_time" property="createTime" />
@@ -17,7 +18,7 @@
   	
   	<!-- 表所有字段 -->
   	<sql id="Base_Column_List">
-  		id, parent_id, order, name, uri, create_user_id, create_time, update_user_id, update_time, is_delete
+  		id, parent_id, order, name, icon, uri, create_user_id, create_time, update_user_id, update_time, is_delete
   	</sql>
   	
   	<!-- 根据主键查询 -->
@@ -46,6 +47,9 @@
 		      	</if>
 		      	<if test="name != null">
 		        	name,
+		      	</if>
+		      	<if test="icon != null">
+		        	icon,
 		      	</if>
 		      	<if test="uri != null">
 		        	uri,
@@ -79,6 +83,9 @@
       			</if>
       			<if test="name != null">
         			#{name},
+      			</if>
+      			<if test="icon != null">
+        			#{icon},
       			</if>
       			<if test="uri != null">
         			#{uri},
@@ -114,6 +121,9 @@
 			<if test="name != null">
     			name = #{name},
   			</if>
+			<if test="icon != null">
+    			icon = #{icon},
+  			</if>
 			<if test="uri != null">
     			uri = #{uri},
   			</if>
@@ -146,6 +156,9 @@
   			</if>
   			<if test="name != null">
     			and name = #{name}
+  			</if>
+  			<if test="icon != null">
+    			and icon = #{icon}
   			</if>
   			<if test="uri != null">
     			and uri = #{uri}
@@ -182,6 +195,9 @@
   			</if>
   			<if test="name != null">
     			and name = #{name}
+  			</if>
+  			<if test="icon != null">
+    			and icon = #{icon}
   			</if>
   			<if test="uri != null">
     			and uri = #{uri}
@@ -220,6 +236,7 @@
 				#{item.parentId},
 				#{item.order},
 				#{item.name},
+				#{item.icon},
 				#{item.uri},
 				#{item.createUserId},
 				#{item.createTime},
@@ -244,6 +261,9 @@
         		<if test="item.name != null">
         			name = #{item.name},
         		</if>
+        		<if test="item.icon != null">
+        			icon = #{item.icon},
+        		</if>
         		<if test="item.uri != null">
         			uri = #{item.uri},
         		</if>
@@ -257,5 +277,23 @@
             where id = #{item.id}
 		</foreach>
 	</update>
+	
+	<!-- 根据map查询 -->
+  	<select id="listUserRoleMenu" resultMap="BaseResultMap" parameterType="java.util.Map">
+  		select
+        	t3.*
+        from t_user_role t1, t_role_menu t2, t_menu t3
+        <where>
+        	t1.role_id = t2.role_id
+        	and t2.menu_id = t3.id
+  			<if test="userId != null">
+    			and t1.user_id = #{userId}
+  			</if>
+  			<if test="isDelete != null">
+    			and t3.is_delete = #{isDelete}
+  			</if>
+        </where>
+        order by t3.order, t3.create_time
+  	</select>
 	
 </mapper>

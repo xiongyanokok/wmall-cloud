@@ -9,7 +9,7 @@ import lombok.Data;
  * model 实体类
  * 
  * @author admin
- * @date 2018年01月26日 下午02:19:13
+ * @date 2018年01月30日 下午02:32:00
  */
 @Data
 public class Role implements Serializable {
@@ -28,6 +28,11 @@ public class Role implements Serializable {
      * 角色名称
      */
 	private String name;
+	
+	/**
+     * 角色描述
+     */
+	private String remark;
 	
 	/**
      * 创建人ID

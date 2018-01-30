@@ -304,4 +304,20 @@ public class ProxyServiceImpl implements ProxyService {
 		}
     }
     
+    /**
+     * 根据map查询
+     * 
+     * @param map
+     * @return
+     */
+    @Override
+    public Proxy getUserProxy(Map<String, Object> map) {
+    	Assert.notEmpty(map, "查询数据为空");
+    	try {
+	    	return proxyMapper.getUserProxy(map);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询对象失败", e);
+		}
+    }
+    
 }

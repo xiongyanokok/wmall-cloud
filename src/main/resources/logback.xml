@@ -2,7 +2,7 @@
 <configuration scan="true" scanPeriod="1 seconds" debug="false">
 
     <!-- set env -->
-    <property name="LOGDROOT" value="E:/wmall-cloud"/>
+    <property name="LOGDROOT" value="E:/wmall"/>
     <property name="APP_NAME" value="wmall"/>
     <property name="DEBUG_LOG_PATH" value="${LOGDROOT}/logs/${APP_NAME}_debug"/>
     <property name="INFO_LOG_PATH" value="${LOGDROOT}/logs/${APP_NAME}_info"/>
@@ -91,6 +91,7 @@
     <logger name="java.sql" level="debug"/>
     
     <root level="debug">
+        <appender-ref ref="console"/>
         <appender-ref ref="debug"/>
         <appender-ref ref="info"/>
         <appender-ref ref="error"/>

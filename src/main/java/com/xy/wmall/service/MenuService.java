@@ -9,7 +9,7 @@ import com.xy.wmall.model.Menu;
  * Service 接口
  * 
  * @author admin
- * @date 2018年01月26日 下午02:19:01
+ * @date 2018年01月29日 下午02:43:20
  */
 public interface MenuService {
 
@@ -79,5 +79,13 @@ public interface MenuService {
      * @param list
      */
     void batchUpdate(List<Menu> list);
+    
+    /**
+     * 根据map查询
+     * 
+     * @param map
+     * @return
+     */
+    List<Menu> listUserRoleMenu(Map<String, Object> map);
     
 }

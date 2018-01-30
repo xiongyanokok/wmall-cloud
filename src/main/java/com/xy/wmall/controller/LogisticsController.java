@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.WmallCache;
 import com.xy.wmall.common.utils.HttpClientUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
@@ -229,7 +230,7 @@ public class LogisticsController extends BaseController {
 		model.addAttribute("logistics", logistics);
 		
 		// 物流公司信息
-		LogisticsCompany logisticsCompany = logisticsCompanyService.getLogisticsCompanyById(logistics.getCompanyId());
+		LogisticsCompany logisticsCompany = WmallCache.getLogisticsCompany(logistics.getCompanyId());
 		Assert.notNull(logisticsCompany, "数据不存在");
 		model.addAttribute("logisticsCompany", logisticsCompany);
 		

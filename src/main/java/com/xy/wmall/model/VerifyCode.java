@@ -9,10 +9,10 @@ import lombok.Data;
  * model 实体类
  * 
  * @author admin
- * @date 2018年01月29日 下午02:43:39
+ * @date 2018年01月30日 下午02:49:36
  */
 @Data
-public class User implements Serializable {
+public class VerifyCode implements Serializable {
 
 	/**
 	 * 
@@ -25,19 +25,19 @@ public class User implements Serializable {
 	private Integer id;
 	
 	/**
-     * 用户名
+     * 代理ID
      */
-	private String username;
+	private Integer proxyId;
 	
 	/**
-     * 密码
+     * 验证码
      */
-	private String password;
+	private String code;
 	
 	/**
-     * 是否禁用：1是，0否
+     * 创建人ID
      */
-	private Boolean disabled;
+	private Integer createUserId;
 	
 	/**
      * 创建时间
@@ -45,19 +45,13 @@ public class User implements Serializable {
 	private Date createTime;
 	
 	/**
-     * 修改时间
+     * 有效时间
      */
-	private Date updateTime;
+	private Date effectiveTime;
 	
 	/**
-     * 删除：1删除，0未删除
+     * 使用状态：0未使用，1已使用
      */
-	private Boolean isDelete;
-	
-	
-	/**
-	 * 代理ID
-	 */
-	private Integer proxyId;
+	private Boolean useStatus;
 	
 }

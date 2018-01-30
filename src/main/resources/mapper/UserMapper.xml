@@ -4,10 +4,9 @@
 	
   	<resultMap id="BaseResultMap" type="com.xy.wmall.model.User">
 		<id column="id" property="id" />	
-	    <result column="proxy_id" property="proxyId" />
 	    <result column="username" property="username" />
 	    <result column="password" property="password" />
-	    <result column="type" property="type" />
+	    <result column="disabled" property="disabled" />
 	    <result column="create_time" property="createTime" />
 	    <result column="update_time" property="updateTime" />
 	    <result column="is_delete" property="isDelete" />
@@ -15,7 +14,7 @@
   	
   	<!-- 表所有字段 -->
   	<sql id="Base_Column_List">
-  		id, proxy_id, username, password, type, create_time, update_time, is_delete
+  		id, username, password, disabled, create_time, update_time, is_delete
   	</sql>
   	
   	<!-- 根据主键查询 -->
@@ -36,17 +35,14 @@
 		      	<if test="id != null">
 		        	id,
 		      	</if>
-		      	<if test="proxyId != null">
-		        	proxy_id,
-		      	</if>
 		      	<if test="username != null">
 		        	username,
 		      	</if>
 		      	<if test="password != null">
 		        	password,
 		      	</if>
-		      	<if test="type != null">
-		        	type,
+		      	<if test="disabled != null">
+		        	disabled,
 		      	</if>
 		      	<if test="createTime != null">
 		        	create_time,
@@ -63,17 +59,14 @@
       			<if test="id != null">
         			#{id},
       			</if>
-      			<if test="proxyId != null">
-        			#{proxyId},
-      			</if>
       			<if test="username != null">
         			#{username},
       			</if>
       			<if test="password != null">
         			#{password},
       			</if>
-      			<if test="type != null">
-        			#{type},
+      			<if test="disabled != null">
+        			#{disabled},
       			</if>
       			<if test="createTime != null">
         			#{createTime},
@@ -91,17 +84,14 @@
   	<update id="update" parameterType="com.xy.wmall.model.User">
     	update t_user
     	<set>
-			<if test="proxyId != null">
-    			proxy_id = #{proxyId},
-  			</if>
 			<if test="username != null">
     			username = #{username},
   			</if>
 			<if test="password != null">
     			password = #{password},
   			</if>
-			<if test="type != null">
-    			type = #{type},
+			<if test="disabled != null">
+    			disabled = #{disabled},
   			</if>
 			<if test="isDelete != null">
     			is_delete = #{isDelete},
@@ -121,17 +111,14 @@
   			<if test="id != null">
     			and id = #{id}
   			</if>
-  			<if test="proxyId != null">
-    			and proxy_id = #{proxyId}
-  			</if>
   			<if test="username != null">
     			and username = #{username}
   			</if>
   			<if test="password != null">
     			and password = #{password}
   			</if>
-  			<if test="type != null">
-    			and type = #{type}
+  			<if test="disabled != null">
+    			and disabled = #{disabled}
   			</if>
   			<if test="createTime != null">
     			and create_time = #{createTime}
@@ -145,23 +132,20 @@
         </where>
   	</select>
   
-  	<!-- 根据map查询-->
+  	<!-- 根据map查询 -->
   	<select id="listUser" resultMap="BaseResultMap" parameterType="java.util.Map">
   		select
         <include refid="Base_Column_List"/>
         from t_user
         <where>
-  			<if test="proxyId != null">
-    			and proxy_id = #{proxyId}
-  			</if>
   			<if test="username != null">
     			and username = #{username}
   			</if>
   			<if test="password != null">
     			and password = #{password}
   			</if>
-  			<if test="type != null">
-    			and type = #{type}
+  			<if test="disabled != null">
+    			and disabled = #{disabled}
   			</if>
   			<if test="createTime != null">
     			and create_time = #{createTime}
@@ -183,15 +167,14 @@
   	
   	<!-- 批量保存 -->
 	<insert id="batchInsert" parameterType="java.util.List">
-		insert into t_user (<include refid="Base_Column_List"/>)
+		insert into t_user (<include refid="Base_Column_List" />)
 		values 
 		<foreach collection="list" index="index" item="item" separator=",">
 			<trim prefix="(" suffix=")" suffixOverrides=",">
 				#{item.id},
-				#{item.proxyId},
 				#{item.username},
 				#{item.password},
-				#{item.type},
+				#{item.disabled},
 				#{item.createTime},
 				#{item.updateTime},
 				#{item.isDelete},
@@ -204,17 +187,14 @@
 		<foreach collection="list" index="index" item="item" separator=";">
 			update t_user
 			<set>
-        		<if test="item.proxyId != null">
-        			proxy_id = #{item.proxyId},
-        		</if>
         		<if test="item.username != null">
         			username = #{item.username},
         		</if>
         		<if test="item.password != null">
         			password = #{item.password},
         		</if>
-        		<if test="item.type != null">
-        			type = #{item.type},
+        		<if test="item.disabled != null">
+        			disabled = #{item.disabled},
         		</if>
         		<if test="item.isDelete != null">
         			is_delete = #{item.isDelete},

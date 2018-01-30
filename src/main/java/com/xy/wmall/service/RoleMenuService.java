@@ -3,15 +3,15 @@ package com.xy.wmall.service;
 import java.util.List;
 import java.util.Map;
 
-import com.xy.wmall.model.Proxy;
+import com.xy.wmall.model.RoleMenu;
 
 /**
  * Service 接口
  * 
  * @author admin
- * @date 2017年10月28日 上午08:54:21
+ * @date 2018年01月29日 下午02:43:31
  */
-public interface ProxyService {
+public interface RoleMenuService {
 
 	/**
      * 根据主键查询
@@ -19,7 +19,7 @@ public interface ProxyService {
      * @param id
      * @return
      */
-    Proxy selectByPrimaryKey(Integer id);
+    RoleMenu selectByPrimaryKey(Integer id);
     
     /**
      * 根据ID查询
@@ -27,28 +27,28 @@ public interface ProxyService {
      * @param id
      * @return
      */
-    Proxy getProxyById(Integer id);
+    RoleMenu getRoleMenuById(Integer id);
     
     /**
      * 保存数据
      *
-     * @param proxy
+     * @param roleMenu
      */
-    void save(Proxy proxy);
+    void save(RoleMenu roleMenu);
 
     /**
      * 修改数据
      *
-     * @param proxy
+     * @param roleMenu
      */
-    void update(Proxy proxy);
+    void update(RoleMenu roleMenu);
     
     /**
      * 删除数据
      * 
-     * @param proxy
+     * @param roleMenu
      */
-    void remove(Proxy proxy);
+    void remove(RoleMenu roleMenu);
     
     /**
      * 根据map查询
@@ -56,7 +56,7 @@ public interface ProxyService {
      * @param map
      * @return
      */
-    Proxy getProxy(Map<String, Object> map);
+    RoleMenu getRoleMenu(Map<String, Object> map);
     
     /**
      * 根据map查询
@@ -64,28 +64,20 @@ public interface ProxyService {
      * @param map
      * @return
      */
-    List<Proxy> listProxy(Map<String, Object> map);
+    List<RoleMenu> listRoleMenu(Map<String, Object> map);
     
     /**
      * 批量保存
      * 
      * @param list
      */
-    void batchSave(List<Proxy> list);
+    void batchSave(List<RoleMenu> list);
     
     /**
      * 批量更新
      * 
      * @param list
      */
-    void batchUpdate(List<Proxy> list);
-    
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     */
-    Proxy getUserProxy(Map<String, Object> map);
+    void batchUpdate(List<RoleMenu> list);
     
 }

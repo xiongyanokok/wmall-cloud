@@ -8,10 +8,10 @@ import lombok.Data;
  * model 实体类
  * 
  * @author admin
- * @date 2018年01月30日 下午02:32:03
+ * @date 2018年01月30日 下午03:45:09
  */
 @Data
-public class RoleMenu implements Serializable {
+public class UserProxy implements Serializable {
 
 	/**
 	 * 
@@ -24,13 +24,13 @@ public class RoleMenu implements Serializable {
 	private Integer id;
 	
 	/**
-     * 角色ID
+     * 用户ID
      */
-	private Integer roleId;
+	private Integer userId;
 	
 	/**
-     * 菜单ID
+     * 代理ID
      */
-	private Integer menuId;
+	private Integer proxyId;
 	
 }

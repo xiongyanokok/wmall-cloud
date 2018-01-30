@@ -11,22 +11,22 @@ import com.xy.wmall.enums.ErrorCodeEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.exception.WmallException;
-import com.xy.wmall.mapper.RoleMapper;
-import com.xy.wmall.model.Role;
-import com.xy.wmall.service.RoleService;
+import com.xy.wmall.mapper.UserRoleMapper;
+import com.xy.wmall.model.UserRole;
+import com.xy.wmall.service.UserRoleService;
 import com.xy.wmall.common.utils.ListPageUtils;
 
 /**
  * Service 实现
  * 
  * @author admin
- * @date 2018年01月29日 下午02:43:26
+ * @date 2018年01月29日 下午02:43:36
  */
 @Service
-public class RoleServiceImpl implements RoleService {
+public class UserRoleServiceImpl implements UserRoleService {
 
     @Autowired
-	private RoleMapper roleMapper;
+	private UserRoleMapper userRoleMapper;
 	
 	/**
      * 根据主键查询
@@ -36,10 +36,10 @@ public class RoleServiceImpl implements RoleService {
      * @throws WmallException
      */
     @Override
-    public Role selectByPrimaryKey(Integer id) {
+    public UserRole selectByPrimaryKey(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-	    	return roleMapper.selectByPrimaryKey(id);
+	    	return userRoleMapper.selectByPrimaryKey(id);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
 		}
@@ -53,13 +53,13 @@ public class RoleServiceImpl implements RoleService {
      * @throws WmallException
      */
     @Override
-    public Role getRoleById(Integer id) {
+    public UserRole getUserRoleById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
     		Map<String, Object> map = new HashMap<>(2);
     		map.put("id", id);
     		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
-	    	return roleMapper.getRole(map);
+	    	return userRoleMapper.getUserRole(map);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
 		}
@@ -68,51 +68,50 @@ public class RoleServiceImpl implements RoleService {
 	/**
      * 保存数据
      *
-     * @param role
+     * @param userRole
      * @throws WmallException
      */
     @Override
-    public void save(Role role) {
-    	Assert.notNull(role, "保存数据为空");
+    public void save(UserRole userRole) {
+    	Assert.notNull(userRole, "保存数据为空");
     	try {
-			roleMapper.insert(role);
+			userRoleMapper.insert(userRole);
 		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_INSERT_ERROR, "【" + role.toString() + "】保存失败", e);
+			throw new WmallException(ErrorCodeEnum.DB_INSERT_ERROR, "【" + userRole.toString() + "】保存失败", e);
 		}
     }
 
     /**
      * 修改数据
      *
-     * @param role
+     * @param userRole
      * @throws WmallException
      */
     @Override
-    public void update(Role role) {
-    	Assert.notNull(role, "修改数据为空");
+    public void update(UserRole userRole) {
+    	Assert.notNull(userRole, "修改数据为空");
     	try {
-    		roleMapper.update(role);
+    		userRoleMapper.update(userRole);
 		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_UPDATE_ERROR, "【" + role.toString() + "】修改失败", e);
+			throw new WmallException(ErrorCodeEnum.DB_UPDATE_ERROR, "【" + userRole.toString() + "】修改失败", e);
 		}
     }
     
     /**
      * 删除数据
      * 
-     * @param role
+     * @param userRole
      * @throws WmallException
      */
     @Override
-    public void remove(Role role) {
-    	Assert.notNull(role, "删除数据为空");
+    public void remove(UserRole userRole) {
+    	Assert.notNull(userRole, "删除数据为空");
 		try {
-    		Role deleteRole = new Role();
-    		deleteRole.setId(role.getId());
-    		deleteRole.setIsDelete(TrueFalseStatusEnum.TRUE.getValue());
-    		roleMapper.update(deleteRole);
+    		UserRole deleteUserRole = new UserRole();
+    		deleteUserRole.setId(userRole.getId());
+    		userRoleMapper.update(deleteUserRole);
 		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + role.toString() + "】删除失败", e);
+			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + userRole.toString() + "】删除失败", e);
     	}
     }
     
@@ -124,10 +123,10 @@ public class RoleServiceImpl implements RoleService {
      * @throws WmallException
      */
     @Override
-    public Role getRole(Map<String, Object> map) {
+    public UserRole getUserRole(Map<String, Object> map) {
     	Assert.notEmpty(map, "查询数据为空");
     	try {
-	    	return roleMapper.getRole(map);
+	    	return userRoleMapper.getUserRole(map);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询对象失败", e);
 		}
@@ -141,10 +140,10 @@ public class RoleServiceImpl implements RoleService {
      * @throws WmallException
      */
     @Override
-    public List<Role> listRole(Map<String, Object> map) {
+    public List<UserRole> listUserRole(Map<String, Object> map) {
    	 	Assert.notEmpty(map, "查询数据为空");
     	try {
-	    	return roleMapper.listRole(map);
+	    	return userRoleMapper.listUserRole(map);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询列表失败", e);
 		}
@@ -157,12 +156,12 @@ public class RoleServiceImpl implements RoleService {
      * @throws WmallException
      */
     @Override
-    public void batchSave(List<Role> list) {
+    public void batchSave(List<UserRole> list) {
     	Assert.notEmpty(list, "批量保存数据为空");
     	try {
-			List<List<Role>> pageList = ListPageUtils.listPage(list, 1000);
-			for (List<Role> page : pageList) {
-				roleMapper.batchInsert(page);
+			List<List<UserRole>> pageList = ListPageUtils.listPage(list, 1000);
+			for (List<UserRole> page : pageList) {
+				userRoleMapper.batchInsert(page);
 			}
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_BATCH_ERROR, "批量保存失败", e);
@@ -176,12 +175,12 @@ public class RoleServiceImpl implements RoleService {
      * @throws WmallException
      */
     @Override
-    public void batchUpdate(List<Role> list) {
+    public void batchUpdate(List<UserRole> list) {
     	Assert.notEmpty(list, "批量修改数据为空");
     	try {
-			List<List<Role>> pageList = ListPageUtils.listPage(list, 1000);
-			for (List<Role> page : pageList) {
-				roleMapper.batchUpdate(page);
+			List<List<UserRole>> pageList = ListPageUtils.listPage(list, 1000);
+			for (List<UserRole> page : pageList) {
+				userRoleMapper.batchUpdate(page);
 			}
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_BATCH_ERROR, "批量修改失败", e);

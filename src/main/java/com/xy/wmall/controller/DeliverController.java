@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.WmallCache;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
 import com.xy.wmall.enums.DeliverTypeEnum;
@@ -36,17 +37,15 @@ import com.xy.wmall.enums.FlowStatusEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Deliver;
 import com.xy.wmall.model.DeliverDetail;
+import com.xy.wmall.model.DeliverFlow;
 import com.xy.wmall.model.Logistics;
-import com.xy.wmall.model.LogisticsCompany;
 import com.xy.wmall.model.Product;
 import com.xy.wmall.model.Proxy;
-import com.xy.wmall.model.DeliverFlow;
 import com.xy.wmall.service.DeliverDetailService;
+import com.xy.wmall.service.DeliverFlowService;
 import com.xy.wmall.service.DeliverService;
-import com.xy.wmall.service.LogisticsCompanyService;
 import com.xy.wmall.service.LogisticsService;
 import com.xy.wmall.service.ProductService;
-import com.xy.wmall.service.DeliverFlowService;
 import com.xy.wmall.service.ProxyService;
 
 /**
@@ -78,9 +77,6 @@ public class DeliverController extends BaseController {
     
     @Autowired
     private LogisticsService logisticsService;
-    
-    @Autowired
-    private LogisticsCompanyService logisticsCompanyService;
     
     @Autowired
     private DeliverFlowService deliverFlowService;
@@ -382,8 +378,7 @@ public class DeliverController extends BaseController {
 		Logistics logistics = logisticsService.getLogistics(map);
 		if (null != logistics) {
 			model.addAttribute("logistics", logistics);
-			LogisticsCompany logisticsCompany = logisticsCompanyService.getLogisticsCompanyById(logistics.getCompanyId());
-			logistics.setName(logisticsCompany.getName());
+			logistics.setName(WmallCache.getLogisticsCompany(logistics.getCompanyId()).getName());
 		}
 		return "deliver/detail";
 	}
@@ -561,13 +556,6 @@ public class DeliverController extends BaseController {
 			productMap.put(product.getId(), product.getProductName());
 		}
 		
-		// 物流公司信息
-		Map<Integer, String> logisticsCompanyMap = new HashMap<>();
-		List<LogisticsCompany> logisticsCompanies = logisticsCompanyService.listLogisticsCompany();
-		for (LogisticsCompany logisticsCompany : logisticsCompanies) {
-			logisticsCompanyMap.put(logisticsCompany.getId(), logisticsCompany.getName());
-		}
-
 		// 新增数据行，并且设置单元格数据
 		int rowNum = 1;
 		Map<Integer, AtomicInteger> productCountMap = new HashMap<>();
@@ -600,7 +588,7 @@ public class DeliverController extends BaseController {
 			}
 			Logistics logistics = deliver.getLogistics(); 
 			if (null != logistics) {
-				row.createCell(7).setCellValue(logisticsCompanyMap.get(logistics.getCompanyId()));
+				row.createCell(7).setCellValue(WmallCache.getLogisticsCompany(logistics.getCompanyId()).getName());
 				row.createCell(8).setCellValue(logistics.getNumber());
 				row.createCell(9).setCellValue(logistics.getPrice()+logistics.getCost());
 			}

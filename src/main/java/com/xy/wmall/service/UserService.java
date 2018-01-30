@@ -9,7 +9,7 @@ import com.xy.wmall.model.User;
  * Service 接口
  * 
  * @author admin
- * @date 2017年12月01日 下午12:31:03
+ * @date 2018年01月29日 下午02:43:39
  */
 public interface UserService {
 

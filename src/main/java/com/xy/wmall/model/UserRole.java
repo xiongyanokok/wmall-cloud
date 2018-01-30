@@ -8,7 +8,7 @@ import lombok.Data;
  * model 实体类
  * 
  * @author admin
- * @date 2018年01月26日 下午02:19:26
+ * @date 2018年01月30日 下午02:32:23
  */
 @Data
 public class UserRole implements Serializable {

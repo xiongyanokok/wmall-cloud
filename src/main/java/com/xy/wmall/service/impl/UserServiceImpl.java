@@ -12,7 +12,11 @@ import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.exception.WmallException;
 import com.xy.wmall.mapper.UserMapper;
+import com.xy.wmall.mapper.UserProxyMapper;
+import com.xy.wmall.mapper.UserRoleMapper;
 import com.xy.wmall.model.User;
+import com.xy.wmall.model.UserProxy;
+import com.xy.wmall.model.UserRole;
 import com.xy.wmall.service.UserService;
 import com.xy.wmall.common.utils.ListPageUtils;
 
@@ -20,13 +24,19 @@ import com.xy.wmall.common.utils.ListPageUtils;
  * Service 实现
  * 
  * @author admin
- * @date 2017年12月01日 下午12:35:35
+ * @date 2018年01月29日 下午02:43:39
  */
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
 	private UserMapper userMapper;
+    
+    @Autowired
+    private UserProxyMapper userProxyMapper;
+    
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 	
 	/**
      * 根据主键查询
@@ -56,7 +66,7 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>();
+    		Map<String, Object> map = new HashMap<>(2);
     		map.put("id", id);
     		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return userMapper.getUser(map);
@@ -76,6 +86,16 @@ public class UserServiceImpl implements UserService {
     	Assert.notNull(user, "保存数据为空");
     	try {
 			userMapper.insert(user);
+			
+			UserProxy userProxy = new UserProxy();
+			userProxy.setUserId(user.getId());
+			userProxy.setProxyId(user.getProxyId());
+			userProxyMapper.insert(userProxy);
+			
+			UserRole userRole = new UserRole();
+			userRole.setUserId(user.getId());
+			userRole.setRoleId(2);
+			userRoleMapper.insert(userRole);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_INSERT_ERROR, "【" + user.toString() + "】保存失败", e);
 		}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -17,13 +18,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.Constant;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
+import com.xy.wmall.common.utils.Md5Utils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Product;
 import com.xy.wmall.model.Proxy;
+import com.xy.wmall.model.VerifyCode;
 import com.xy.wmall.service.ProductService;
 import com.xy.wmall.service.ProxyService;
+import com.xy.wmall.service.VerifyCodeService;
 import com.xy.wmall.service.WalletService;
 
 /**
@@ -49,6 +54,9 @@ public class ProxyController extends BaseController {
     
     @Autowired
     private WalletService walletService;
+    
+    @Autowired
+    private VerifyCodeService verifyCodeService;
     
 	
 	/**
@@ -237,6 +245,31 @@ public class ProxyController extends BaseController {
 		model.addAttribute("products", products);
 		model.addAttribute("productsJson", JacksonUtils.serialize(products));
 		return "proxy/deliver_list";
+	}
+	
+	/**
+	 * 生成临时验证码
+	 * 
+	 * @param proxyId
+	 * @return
+	 */
+	@RequestMapping(value = "/code", method = { RequestMethod.POST })
+	@ResponseBody
+	public Map<String, Object> code(Integer proxyId) {
+		Assert.notNull(proxyId, "proxyId为空");
+		Proxy proxy = proxyService.getProxyById(proxyId);
+		Assert.notNull(proxy, "数据不存在");
+		// 生成临时验证码
+		VerifyCode verifyCode = new VerifyCode();
+		verifyCode.setProxyId(proxyId);
+		verifyCode.setCode(Md5Utils.md5(proxyId + getProxyId() + UUID.randomUUID().toString()));
+		Date date = new Date();
+		verifyCode.setCreateUserId(getProxyId());
+		verifyCode.setCreateTime(date);
+		verifyCode.setEffectiveTime(org.apache.commons.lang3.time.DateUtils.addMinutes(date, Constant.CODE_EFFECTIVE_TIME));
+		verifyCode.setUseStatus(TrueFalseStatusEnum.FALSE.getValue());
+		verifyCodeService.save(verifyCode);
+		return buildSuccess("保存成功");
 	}
 	
 }

@@ -9,7 +9,7 @@ import com.xy.wmall.model.RoleMenu;
  * Mapper
  * 
  * @author admin
- * @date 2018年01月26日 下午02:19:17
+ * @date 2018年01月29日 下午02:43:31
  */
 public interface RoleMenuMapper {
 

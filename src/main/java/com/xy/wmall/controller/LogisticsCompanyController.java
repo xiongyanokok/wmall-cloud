@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.WmallCache;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.LogisticsCompany;
 import com.xy.wmall.service.LogisticsCompanyService;
@@ -89,6 +90,8 @@ public class LogisticsCompanyController extends BaseController {
 		logisticsCompany.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		logisticsCompanyService.save(logisticsCompany);
 		logger.info("【{}】保存成功", logisticsCompany);
+		// 更新物流公司缓存
+		WmallCache.putLogisticsCompany(logisticsCompany);
 		return buildSuccess("保存成功");
 	}
 	
@@ -124,6 +127,8 @@ public class LogisticsCompanyController extends BaseController {
 		logisticsCompany.setUpdateTime(new Date());
 		logisticsCompanyService.update(logisticsCompany);
 		logger.info("【{}】修改成功", logisticsCompany);
+		// 更新物流公司缓存
+		WmallCache.putLogisticsCompany(logisticsCompany);
 		return buildSuccess("修改成功");
 	}
 	
@@ -141,6 +146,8 @@ public class LogisticsCompanyController extends BaseController {
 		Assert.notNull(logisticsCompany, "数据不存在");
 		logisticsCompanyService.remove(logisticsCompany);
 		logger.info("【{}】删除成功", logisticsCompany);
+		// 删除物流公司缓存
+		WmallCache.removeLogisticsCompany(id);
 		return buildSuccess("删除成功");
 	}
 	

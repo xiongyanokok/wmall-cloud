@@ -15,7 +15,9 @@ import com.xy.wmall.common.ThreadPoolContext;
 import com.xy.wmall.common.WmallCache;
 import com.xy.wmall.common.utils.HttpClientUtils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
+import com.xy.wmall.model.LogisticsCompany;
 import com.xy.wmall.model.Price;
+import com.xy.wmall.service.LogisticsCompanyService;
 import com.xy.wmall.service.PriceService;
 
 /**
@@ -30,6 +32,9 @@ public class SpringApplicationListener implements ApplicationListener<ContextRef
 	@Autowired
 	private PriceService priceService;
 	
+	@Autowired
+	private LogisticsCompanyService logisticsCompanyService;
+	
 	/**
 	 * 当spring容器初始化完成后执行该方法
 	 */
@@ -39,6 +44,8 @@ public class SpringApplicationListener implements ApplicationListener<ContextRef
 		ThreadPoolContext.init();
 		// 异步执行
 		ThreadPoolContext.execute(this::priceCache);
+		ThreadPoolContext.execute(this::logisticsCompanyCache);
+		ThreadPoolContext.execute(this::roleMenuCache);
 		// 初始化httpclient
 		HttpClientUtils.init();
 	}
@@ -47,6 +54,34 @@ public class SpringApplicationListener implements ApplicationListener<ContextRef
 	 * 产品价格 缓存
 	 */
 	private void priceCache() {
+		Map<String, Object> map = new HashMap<>(1);
+		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		List<Price> prices = priceService.listPrice(map);
+		if (CollectionUtils.isNotEmpty(prices)) {
+			for (Price price : prices) {
+				WmallCache.putPrice(price);
+			}
+		}
+	}
+	
+	/**
+	 * 物流公司 缓存
+	 */
+	private void logisticsCompanyCache() {
+		Map<String, Object> map = new HashMap<>(1);
+		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		List<LogisticsCompany> logisticsCompanies = logisticsCompanyService.listLogisticsCompany(map);
+		if (CollectionUtils.isNotEmpty(logisticsCompanies)) {
+			for (LogisticsCompany logisticsCompany : logisticsCompanies) {
+				WmallCache.putLogisticsCompany(logisticsCompany);
+			}
+		}
+	}
+	
+	/**
+	 * 角色权限 缓存
+	 */
+	private void roleMenuCache() {
 		Map<String, Object> map = new HashMap<>(1);
 		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		List<Price> prices = priceService.listPrice(map);

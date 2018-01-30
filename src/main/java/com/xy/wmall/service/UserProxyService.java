@@ -3,15 +3,15 @@ package com.xy.wmall.service;
 import java.util.List;
 import java.util.Map;
 
-import com.xy.wmall.model.Proxy;
+import com.xy.wmall.model.UserProxy;
 
 /**
  * Service 接口
  * 
  * @author admin
- * @date 2017年10月28日 上午08:54:21
+ * @date 2018年01月30日 下午02:32:17
  */
-public interface ProxyService {
+public interface UserProxyService {
 
 	/**
      * 根据主键查询
@@ -19,7 +19,7 @@ public interface ProxyService {
      * @param id
      * @return
      */
-    Proxy selectByPrimaryKey(Integer id);
+    UserProxy selectByPrimaryKey(Integer id);
     
     /**
      * 根据ID查询
@@ -27,28 +27,28 @@ public interface ProxyService {
      * @param id
      * @return
      */
-    Proxy getProxyById(Integer id);
+    UserProxy getUserProxyById(Integer id);
     
     /**
      * 保存数据
      *
-     * @param proxy
+     * @param userProxy
      */
-    void save(Proxy proxy);
+    void save(UserProxy userProxy);
 
     /**
      * 修改数据
      *
-     * @param proxy
+     * @param userProxy
      */
-    void update(Proxy proxy);
+    void update(UserProxy userProxy);
     
     /**
      * 删除数据
      * 
-     * @param proxy
+     * @param userProxy
      */
-    void remove(Proxy proxy);
+    void remove(UserProxy userProxy);
     
     /**
      * 根据map查询
@@ -56,7 +56,7 @@ public interface ProxyService {
      * @param map
      * @return
      */
-    Proxy getProxy(Map<String, Object> map);
+    UserProxy getUserProxy(Map<String, Object> map);
     
     /**
      * 根据map查询
@@ -64,28 +64,20 @@ public interface ProxyService {
      * @param map
      * @return
      */
-    List<Proxy> listProxy(Map<String, Object> map);
+    List<UserProxy> listUserProxy(Map<String, Object> map);
     
     /**
      * 批量保存
      * 
      * @param list
      */
-    void batchSave(List<Proxy> list);
+    void batchSave(List<UserProxy> list);
     
     /**
      * 批量更新
      * 
      * @param list
      */
-    void batchUpdate(List<Proxy> list);
-    
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     */
-    Proxy getUserProxy(Map<String, Object> map);
+    void batchUpdate(List<UserProxy> list);
     
 }

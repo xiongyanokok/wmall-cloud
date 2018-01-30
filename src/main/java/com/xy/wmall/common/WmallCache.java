@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import org.apache.commons.collections4.MapUtils;
 
 import com.xy.wmall.enums.PriceTypeEnum;
+import com.xy.wmall.model.LogisticsCompany;
 import com.xy.wmall.model.Price;
 
 /**
@@ -33,9 +34,14 @@ public final class WmallCache {
 	 */
 	private static Map<Integer, TreeMap<Integer, BigDecimal>> proxyPriceMap = new HashMap<>();
 	
+	/**
+	 * 物流公司
+	 */
+	private static Map<Integer, LogisticsCompany> logisticsCompanyMap = new HashMap<>();
+	
 	
 	/**
-	 * 产品价
+	 * 添加产品价
 	 * 
 	 * @param price
 	 */
@@ -104,4 +110,31 @@ public final class WmallCache {
 		return priceMap.get(key);
 	}
 	
+	/**
+	 * 添加物流公司缓存
+	 * 
+	 * @param logisticsCompany
+	 */
+	public static void putLogisticsCompany(LogisticsCompany logisticsCompany) {
+		logisticsCompanyMap.put(logisticsCompany.getId(), logisticsCompany);
+	}
+	
+	/**
+	 * 删除物流公司缓存
+	 * 
+	 * @param id
+	 */
+	public static void removeLogisticsCompany(Integer id) {
+		logisticsCompanyMap.remove(id);
+	}
+	
+	/**
+	 * 获取物流公司缓存
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static LogisticsCompany getLogisticsCompany(Integer id) {
+		return logisticsCompanyMap.get(id);
+	}
 }

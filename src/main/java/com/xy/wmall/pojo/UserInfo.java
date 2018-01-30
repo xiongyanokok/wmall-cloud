@@ -36,53 +36,8 @@ public class UserInfo implements Serializable {
 	private Integer parentProxyId;
 	
 	/**
-     * 微信号
-     */
-	private String wechatNumber;
-	
-	/**
-     * 微信昵称
-     */
-	private String wechatName;
-	
-	/**
-     * 姓名
-     */
+	 * 姓名
+	 */
 	private String name;
 	
-	/**
-     * 性别：1男，0女
-     */
-	private Boolean sex;
-	
-	/**
-     * 手机号
-     */
-	private String phone;
-	
-	/**
-     * 地址
-     */
-	private String address;
-	
-	/**
-     * 代理价
-     */
-	private Integer proxyPrice;
-	
-	/**
-     * 身份证号
-     */
-	private String idNumber;
-	
-	/**
-     * 授权码
-     */
-	private String authorizationCode;
-	
-	/**
-     * 级别：1小咖，2中咖，3大咖，4顶级大咖，5带砖大咖
-     */
-	private Integer level;
-
 }

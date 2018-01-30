@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.Constant;
 import com.xy.wmall.common.utils.ListPageUtils;
 import com.xy.wmall.enums.ErrorCodeEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
@@ -71,6 +74,7 @@ public class LogisticsCompanyServiceImpl implements LogisticsCompanyService {
      * @param logisticsCompany
      * @throws WmallException
      */
+    @CacheEvict(value = Constant.LOGISTICS_CACHE, allEntries = true)
     @Override
     public void save(LogisticsCompany logisticsCompany) {
     	Assert.notNull(logisticsCompany, "保存数据为空");
@@ -87,6 +91,7 @@ public class LogisticsCompanyServiceImpl implements LogisticsCompanyService {
      * @param logisticsCompany
      * @throws WmallException
      */
+    @CacheEvict(value = Constant.LOGISTICS_CACHE, allEntries = true)
     @Override
     public void update(LogisticsCompany logisticsCompany) {
     	Assert.notNull(logisticsCompany, "修改数据为空");
@@ -103,6 +108,7 @@ public class LogisticsCompanyServiceImpl implements LogisticsCompanyService {
      * @param logisticsCompany
      * @throws WmallException
      */
+    @CacheEvict(value = Constant.LOGISTICS_CACHE, allEntries = true)
     @Override
     public void remove(LogisticsCompany logisticsCompany) {
     	Assert.notNull(logisticsCompany, "删除数据为空");
@@ -193,6 +199,7 @@ public class LogisticsCompanyServiceImpl implements LogisticsCompanyService {
      * 
      * @return
      */
+    @Cacheable(value = Constant.LOGISTICS_CACHE)
     @Override
     public List<LogisticsCompany> listLogisticsCompany() {
     	try {

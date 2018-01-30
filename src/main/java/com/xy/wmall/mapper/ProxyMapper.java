@@ -65,4 +65,12 @@ public interface ProxyMapper {
      */
     void batchUpdate(List<Proxy> list);
     
+    /**
+     * 根据map查询
+     * 
+     * @param map
+     * @return
+     */
+    Proxy getUserProxy(Map<String, Object> map);
+    
 }
