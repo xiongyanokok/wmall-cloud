@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
+import com.xy.wmall.enums.DeliverTypeEnum;
 import com.xy.wmall.enums.FlowStatusEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Deliver;
@@ -100,16 +101,17 @@ public class DeliverController extends BaseController {
 	}
 	
 	/**
-	 * 进入自己发货列表页面
+	 * 进入我的发货列表页面
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/self_list", method = { RequestMethod.GET })
+	@RequestMapping(value = "/my_list", method = { RequestMethod.GET })
 	public String selfList(Model model) {
 		List<Product> products = productService.listProduct();
 		model.addAttribute("products", products);
 		model.addAttribute("productsJson", JacksonUtils.serialize(products));
-		return "deliver/self_list";
+		model.addAttribute("deliverType", DeliverTypeEnum.MY_DELIVER.getValue());
+		return "deliver/my_list";
 	}
 	
 	/**
@@ -122,7 +124,22 @@ public class DeliverController extends BaseController {
 		List<Product> products = productService.listProduct();
 		model.addAttribute("products", products);
 		model.addAttribute("productsJson", JacksonUtils.serialize(products));
+		model.addAttribute("deliverType", DeliverTypeEnum.PROXY_DELIVER.getValue());
 		return "deliver/proxy_list";
+	}
+	
+	/**
+	 * 进入零售发货列表页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/retail_list", method = { RequestMethod.GET })
+	public String retailList(Model model) {
+		List<Product> products = productService.listProduct();
+		model.addAttribute("products", products);
+		model.addAttribute("productsJson", JacksonUtils.serialize(products));
+		model.addAttribute("deliverType", DeliverTypeEnum.RETAIL_DELIVER.getValue());
+		return "deliver/retail_list";
 	}
 	
 	/**
@@ -135,12 +152,20 @@ public class DeliverController extends BaseController {
 	public Map<String, Object> query() {
 		return pageInfoResult(map -> {
 			// 查询条件
-			// 代理ID
-			map.put("proxyId", request.getParameter("proxyId")); 
-			// 上级代理ID
+			// 代理id
+			map.put("proxyId", request.getParameter("proxyId"));
+			// 上级代理id
 			map.put("parentProxyId", getProxyId()); 
-			// 代理昵称
-			map.put("wechatName", request.getParameter("wechatName")); 
+			// 发货类型
+			String deliverType = request.getParameter("deliverType");
+			if (StringUtils.isNotEmpty(deliverType)) {
+				if (DeliverTypeEnum.MY_DELIVER.getValue().equals(deliverType)) {
+					map.put("proxyId", getProxyId()); 
+					map.put("parentProxyId", getParentProxyId());
+				} else if (DeliverTypeEnum.RETAIL_DELIVER.getValue().equals(deliverType)) {
+					map.put("proxyId", 0); 
+				}
+			}
 			// 产品id
 			map.put("productId", request.getParameter("productId")); 
 			// 收件人姓名
@@ -155,60 +180,6 @@ public class DeliverController extends BaseController {
 			map.put("groupBy", "id"); 
 			// 查询发货单
 			List<Deliver> delivers = deliverService.listDeliver(map);
-			if (CollectionUtils.isEmpty(delivers)) {
-				return Collections.emptyList();
-			}
-			
-			// 获取发货单id
-			List<Integer> deliverIds = new ArrayList<>(delivers.size());
-			for (Deliver deliver : delivers) {
-				deliverIds.add(deliver.getId());
-			}
-			// 查询发货单详情
-			Map<String, Object> detailMap = new HashMap<>();
-			detailMap.put("deliverIds", deliverIds);
-			List<DeliverDetail> deliverDetails = deliverDetailService.listDeliverDetail(detailMap);
-			for (Deliver deliver : delivers) {
-				List<DeliverDetail> details = new ArrayList<>();
-				for (DeliverDetail deliverDetail : deliverDetails) {
-					if (deliver.getId().equals(deliverDetail.getDeliverId())) {
-						details.add(deliverDetail);
-					}
-				}
-				deliver.setDeliverDetails(details);
-			}
-			return delivers;
-		});
-	}
-	
-	/**
-	 * 代理发货列表分页查询
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "/proxy_deliver", method = { RequestMethod.POST })
-	@ResponseBody
-	public Map<String, Object> proxy_deliver() {
-		return pageInfoResult(map -> {
-			// 查询条件
-			// 上级代理ID
-			map.put("parentProxyId", getProxyId()); 
-			// 代理昵称
-			map.put("wechatName", request.getParameter("wechatName")); 
-			// 产品id
-			map.put("productId", request.getParameter("productId")); 
-			// 收件人姓名
-			map.put("receiveName", request.getParameter("receiveName"));
-			// 发货状态
-			map.put("deliverStatus", request.getParameter("deliverStatus")); 
-			// 发货开始时间
-			map.put("startDate", request.getParameter("startDate"));
-			// 发货结束时间
-			map.put("endDate", request.getParameter("endDate")); 
-			// 发货单id
-			map.put("groupBy", "id"); 
-			// 查询发货单
-			List<Deliver> delivers = deliverService.listProxyDeliver(map);
 			if (CollectionUtils.isEmpty(delivers)) {
 				return Collections.emptyList();
 			}
@@ -427,8 +398,6 @@ public class DeliverController extends BaseController {
 		// 代理id
 		String proxyId = request.getParameter("proxyId");
 		map.put("proxyId", proxyId); 
-		// 代理昵称
-		map.put("wechatName", request.getParameter("wechatName"));
 		// 产品id
 		map.put("productId", request.getParameter("productId")); 
 		// 收件人姓名
@@ -604,7 +573,7 @@ public class DeliverController extends BaseController {
 		Map<Integer, AtomicInteger> productCountMap = new HashMap<>();
 		for (Deliver deliver : delivers) {
 			HSSFRow row = sheet.createRow(rowNum++);
-			row.createCell(0).setCellValue(deliver.getWechatName());
+			row.createCell(0).setCellValue("xxxxxxxxx");
 			row.createCell(1).setCellValue(deliver.getReceiveName());
 			row.createCell(2).setCellValue(deliver.getReceivePhone());
 			row.createCell(3).setCellValue(deliver.getReceiveAddress());

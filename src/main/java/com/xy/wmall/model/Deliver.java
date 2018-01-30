@@ -107,11 +107,6 @@ public class Deliver implements Serializable {
     private Integer[] amount;
     
     /**
-     * 微信昵称
-     */
-    private String wechatName;
-    
-    /**
      * 发货详情
      */
     private List<DeliverDetail> deliverDetails;

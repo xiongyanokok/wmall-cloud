@@ -18,7 +18,6 @@
 	    <result column="update_user_id" property="updateUserId" />
 	    <result column="update_time" property="updateTime" />
 	    <result column="is_delete" property="isDelete" />
-	    <result column="wechat_name" property="wechatName" />
   	</resultMap>
   	
   	<!-- 表所有字段 -->
@@ -237,96 +236,20 @@
   	<!-- 根据map查询-->
   	<select id="listDeliver" resultMap="BaseResultMap" parameterType="java.util.Map">
   		select 
-  			t1.*, t3.wechat_name
+  			t1.*
         from 
-        	t_deliver t1, t_deliver_detail t2, t_proxy t3
+        	t_deliver t1, t_deliver_detail t2, t_deliver_flow t3
         <where>
         	t1.id = t2.deliver_id
-        	and t1.proxy_id = t3.id
+        	and t1.id = t3.deliver_id
         	<if test="id != null">
     			and t1.id = #{id}
-  			</if>
-        	<if test="wechatName != null">
-    			and t3.wechat_name like CONCAT('%', #{wechatName}, '%')
   			</if>
   			<if test="proxyId != null">
-    			and t1.proxy_id = #{proxyId}
+    			and t3.proxy_id = #{proxyId}
   			</if>
   			<if test="parentProxyId != null">
-    			and t1.parent_proxy_id = #{parentProxyId}
-  			</if>
-  			<if test="receiveName != null">
-    			and t1.receive_name like CONCAT('%', #{receiveName}, '%')
-  			</if>
-  			<if test="receivePhone != null">
-    			and t1.receive_phone = #{receivePhone}
-  			</if>
-  			<if test="receiveAddress != null">
-    			and t1.receive_address = #{receiveAddress}
-  			</if>
-  			<if test="courierPrice != null">
-    			and t1.courier_price = #{courierPrice}
-  			</if>
-  			<if test="deliverStatus != null">
-    			and t1.deliver_status = #{deliverStatus}
-  			</if>
-  			<if test="authorizationCode != null">
-    			and t1.authorization_code = #{authorizationCode}
-  			</if>
-  			<if test="remark != null">
-    			and t1.remark = #{remark}
-  			</if>
-  			<if test="createUserId != null">
-    			and t1.create_user_id = #{createUserId}
-  			</if>
-  			<if test="createTime != null">
-    			and t1.create_time = #{createTime}
-  			</if>
-  			<if test="updateUserId != null">
-    			and t1.update_user_id = #{updateUserId}
-  			</if>
-  			<if test="updateTime != null">
-    			and t1.update_time = #{updateTime}
-  			</if>
-  			<if test="isDelete != null">
-    			and t1.is_delete = #{isDelete}
-  			</if>
-  			<if test="productId != null">
-    			and t2.product_id = #{productId}
-  			</if>
-  			<if test="startDate != null">
-  			 	<![CDATA[ and t1.create_time >= CONCAT(#{startDate}, ' 00:00:00') ]]>
-  			</if>
-  			<if test="endDate != null">
-  			 	<![CDATA[ and t1.create_time <= CONCAT(#{endDate}, ' 23:59:59') ]]>
-  			</if>
-        </where>
-        <if test="groupBy != null">
-        	group by t1.${groupBy}
-        </if>
-        <if test="orderBy != null">
-        	order by t1.${orderBy}
-        </if>
-  	</select>
-  	
-  	<!-- 根据map查询-->
-  	<select id="listProxyDeliver" resultMap="BaseResultMap" parameterType="java.util.Map">
-  		select 
-  			t1.*, t3.wechat_name
-        from 
-        	t_deliver t1, t_deliver_detail t2, t_proxy t3, t_proxy_deliver t4
-        <where>
-        	t1.id = t2.deliver_id
-        	and t1.id = t4.deliver_id
-        	and t3.id = t4.proxy_id
-        	<if test="id != null">
-    			and t1.id = #{id}
-  			</if>
-        	<if test="wechatName != null">
-    			and t3.wechat_name like CONCAT('%', #{wechatName}, '%')
-  			</if>
-  			<if test="parentProxyId != null">
-    			and t4.parent_proxy_id = #{parentProxyId}
+    			and t3.parent_proxy_id = #{parentProxyId}
   			</if>
   			<if test="receiveName != null">
     			and t1.receive_name like CONCAT('%', #{receiveName}, '%')
@@ -485,13 +408,13 @@
   	<select id="countWaitDeliver" resultType="java.lang.Integer" parameterType="java.util.Map">
   		select 
   			count(t1.id) 
-  		from t_deliver t1, t_proxy_deliver t2
+  		from t_deliver t1, t_deliver_flow t2
   		<where>
   			t1.id = t2.deliver_id
   			and t1.is_delete = 0 
   			and t1.deliver_status = 0
   			<if test="parentProxyId != null">
-        		and (t1.parent_proxy_id = #{parentProxyId} or t2.parent_proxy_id = #{parentProxyId})
+        		and t2.parent_proxy_id = #{parentProxyId}
         	</if>
   		</where>
   	</select>

@@ -224,23 +224,6 @@ public class DeliverServiceImpl implements DeliverService {
     }
     
     /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public List<Deliver> listProxyDeliver(Map<String, Object> map) {
-    	Assert.notEmpty(map, "查询数据为空");
-    	try {
-    		return deliverMapper.listProxyDeliver(map);
-    	} catch (Exception e) {
-    		throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询列表失败", e);
-    	}
-    }
-    
-    /**
      * 批量保存
      * 
      * @param list

@@ -53,14 +53,6 @@ public interface DeliverMapper {
     List<Deliver> listDeliver(Map<String, Object> map);
     
     /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     */
-    List<Deliver> listProxyDeliver(Map<String, Object> map);
-    
-    /**
      * 批量保存
      * 
      * @param list

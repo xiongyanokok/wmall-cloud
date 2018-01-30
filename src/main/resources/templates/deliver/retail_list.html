@@ -15,13 +15,10 @@
 </head>
 <body>
 	<div style="position: fixed; width: 100%;">
-		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 发货管理 <span class="c-gray en">&gt;</span> 自己发货 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 发货管理 <span class="c-gray en">&gt;</span> 零售发货 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	</div>
 	<div class="pd-20" style="padding-top: 60px;">
 		<div class="text-l">
-			微信昵称：
-			<input type="text" class="input-text" style="width: 15%;" id="wechatName" name="wechatName" />
-			<span style="padding-right: 5%;"></span>
 			产品名称：
 			<span class="select-box inline" style="width: 15%;">
 				<select id="productId" name="productId" class="select" style="width: 100%;" onchange="query()">
@@ -42,13 +39,10 @@
 				</select>
 			</span>
 			<span style="padding-right: 5%;"></span>
-			发货时间：
+			　发货时间：
 			<input type="text" class="input-text Wdate" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'endDate\')||\'%y-%M-%d\'}' })" id="startDate" name="startDate" style="width:100px;"/><input type="text" class="input-text Wdate" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'%y-%M-%d' })" id="endDate" name="endDate" style="width:100px;"/>
 		</div>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
-			<span class="l">
-				<span onclick="exportExcel()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe644;</i> 导出Excel </span>
-			</span>
     		<span class="r">
     			<span onclick="query()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe665;</i> 查询发货 </span>
     		</span>
@@ -90,7 +84,7 @@
 			"bProcessing" : true, // 加载层
 	        "bServerSide" : true, // 服务器获取数据
 	        "iDisplayLength": page_size, // 每页显示条数
-	        "aaSorting" : [5, "desc"], //默认第几个排序
+	        "aaSorting" : [4, "desc"], //默认第几个排序
 			"sAjaxSource" : "/admin/deliver/query",
 			"fnServerData" : retrieveData,
 			"fnDrawCallback" : function(){
@@ -105,20 +99,15 @@
 				    "bSortable" : false,
 				    "sWidth" : "1%"
 				}, {
-                	"mData" : "wechatName",
-               		"sTitle" : "微信昵称",
-	                "bSortable": false,
-				    "sWidth" : "4%"
-            	}, {
                 	"mData" : "receiveName",
                		"sTitle" : "收件人姓名",
 	                "bSortable": false,
-				    "sWidth" : "4%"
+				    "sWidth" : "3%"
             	}, {
                 	"mData" : null,
                		"sTitle" : "产品信息",
 	                "bSortable": false,
-				    "sWidth" : "12%",
+				    "sWidth" : "15%",
 				    "mRender": function(data, type, full) {
 				    	var str = "";
 				    	var deliverDetails = full.deliverDetails;
@@ -151,7 +140,7 @@
 	                "mData" : "createTime",
 	                "sTitle" : "发货时间",
 	                "bSortable": true,
-	                "sWidth" : "5%"
+	                "sWidth" : "4%"
 	            }, {
 	            	"mData" : null,
 	            	"sTitle" : "操作",
@@ -160,17 +149,18 @@
 	            	"mRender": function(data, type, full) {
 	            		var button = "";
             			if (full.deliverStatus == 0) {
-	            			button += "<span class=\"btn btn-success radius size-MINI\" onclick=\"edit("+data.id+")\">修改</span> ";
-	            			button += "<span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span> ";
+            				button += "<span class=\"btn btn-success radius size-MINI\" onclick=\"edit("+data.id+")\">修改</span> ";
+            				button += "<span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span> ";
+            				button += "<span class=\"btn btn-warning radius size-MINI\" onclick=\"report("+data.id+")\">上报</span> ";
 	            			button += "<span class=\"btn btn-secondary radius size-MINI\" onclick=\"deliver("+data.id+")\">发货</span> ";
 	            		} else {
-			            	button = "<span class=\"btn btn-warning radius size-MINI\" onclick=\"logistics("+data.id+")\">物流</span> ";
+            				button += "<span class=\"btn btn-warning radius size-MINI\" onclick=\"logistics("+data.id+")\">物流</span> ";
 	            		}
-            			button += "<span class=\"btn btn-primary radius size-MINI\" onclick=\"detail("+data.id+")\">详情</span>";
+	            		button += "<span class=\"btn btn-primary radius size-MINI\" onclick=\"detail("+data.id+")\">详情</span>";
 	            		return button;
 	            	}
 	            }
-	        ],  
+	        ], 
             "oLanguage" : {
                 "sProcessing" : "<img src=\"/static/h-ui.admin/images/loading.gif\"/>正在加载中......",
                 "sLengthMenu" : "每页显示 _MENU_ 条记录",
@@ -187,7 +177,7 @@
 		
 		// 查询数据
 		function retrieveData(url, aoData, callback) {
-			var data = {};
+			var data = {"deliverType":[[${deliverType}]]};
 
 			// 分页参数
 			var index = "";
@@ -212,9 +202,6 @@
             }); 
 			
 			// 查询参数
-			if ($("#wechatName").val()) {
-				data.wechatName = $("#wechatName").val();
-			}
 			if ($("#productId").val()) {
 				data.productId = $("#productId").val();
 			}
@@ -282,6 +269,31 @@
 		dataTable.fnDraw();
 	}
 	
+	// 上报
+	function report(id) {
+		layer.confirm("确定要上报吗？", function(index) {
+			$.ajax({
+				url : "/admin/deliver/report",
+				data : {"id":id},
+				type : "POST",
+				dataType : "json",
+				success : function(result) {
+					if (result.code == "Y") {
+						dataTable.fnDraw();
+						layer.msg("上报成功", {icon:6, time:1000});
+					} else {
+						layer.alert(result.message);
+					}
+				}
+			});
+		});
+	}
+	
+	// 发货
+	function deliver(id) {
+		layer_show("物流发货", "/admin/logistics/add_edit?deliverId="+id, "", "450");
+	}
+	
 	// 物流
 	function logistics(id) {
 		layer_show("物流信息", "/admin/logistics/detail?deliverId="+id, "", "");
@@ -290,42 +302,6 @@
 	// 详情
 	function detail(id) {
 		layer_show("发货详情", "/admin/deliver/detail?id="+id, "", "");
-	}
-	
-	// 发货
-	function deliver(id) {
-		layer_show("物流发货", "/admin/logistics/add_edit?deliverId="+id, "", "450");
-	}
-	
-	// 导出
-	function exportExcel() {
-		var data = {};
-		if ($("#wechatName").val()) {
-			data.wechatName = $("#wechatName").val();
-		}
-		if ($("#productId").val()) {
-			data.productId = $("#productId").val();
-		}
-		if ($("#receiveName").val()) {
-			data.receiveName = $("#receiveName").val();
-		}
-		if ($("#deliverStatus").val()) {
-			data.deliverStatus = $("#deliverStatus").val();
-		}
-		if ($("#startDate").val()) {
-			data.startDate = $("#startDate").val();
-		}
-		if ($("#endDate").val()) {
-			data.endDate = $("#endDate").val();
-		}
-		var query = "";
-		$.each(data, function (n, value) { 
-			if (query.length > 0) {
-				query += "&";
-			}
-			query += n+"="+value;
-        });  
-		window.location.href="/admin/deliver/export?"+query;
 	}
 	
 </script>

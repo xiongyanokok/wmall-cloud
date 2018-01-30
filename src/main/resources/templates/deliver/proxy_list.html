@@ -19,9 +19,6 @@
 	</div>
 	<div class="pd-20" style="padding-top: 60px;">
 		<div class="text-l">
-			微信昵称：
-			<input type="text" class="input-text" style="width: 15%;" id="wechatName" name="wechatName" />
-			<span style="padding-right: 5%;"></span>
 			产品名称：
 			<span class="select-box inline" style="width: 15%;">
 				<select id="productId" name="productId" class="select" style="width: 100%;" onchange="query()">
@@ -42,7 +39,7 @@
 				</select>
 			</span>
 			<span style="padding-right: 5%;"></span>
-			发货时间：
+			　发货时间：
 			<input type="text" class="input-text Wdate" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'endDate\')||\'%y-%M-%d\'}' })" id="startDate" name="startDate" style="width:100px;"/><input type="text" class="input-text Wdate" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'%y-%M-%d' })" id="endDate" name="endDate" style="width:100px;"/>
 		</div>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -87,8 +84,8 @@
 			"bProcessing" : true, // 加载层
 	        "bServerSide" : true, // 服务器获取数据
 	        "iDisplayLength": page_size, // 每页显示条数
-	        "aaSorting" : [5, "desc"], //默认第几个排序
-			"sAjaxSource" : "/admin/deliver/proxy_deliver",
+	        "aaSorting" : [4, "desc"], //默认第几个排序
+			"sAjaxSource" : "/admin/deliver/query",
 			"fnServerData" : retrieveData,
 			"fnDrawCallback" : function(){
 				this.api().column(0).nodes().each(function(cell, i) {
@@ -102,11 +99,6 @@
 				    "bSortable" : false,
 				    "sWidth" : "1%"
 				}, {
-                	"mData" : "wechatName",
-               		"sTitle" : "微信昵称",
-	                "bSortable": false,
-				    "sWidth" : "3%"
-            	}, {
                 	"mData" : "receiveName",
                		"sTitle" : "收件人姓名",
 	                "bSortable": false,
@@ -115,7 +107,7 @@
                 	"mData" : null,
                		"sTitle" : "产品信息",
 	                "bSortable": false,
-				    "sWidth" : "10%",
+				    "sWidth" : "15%",
 				    "mRender": function(data, type, full) {
 				    	var str = "";
 				    	var deliverDetails = full.deliverDetails;
@@ -183,7 +175,7 @@
 		
 		// 查询数据
 		function retrieveData(url, aoData, callback) {
-			var data = {};
+			var data = {"deliverType":[[${deliverType}]]};
 
 			// 分页参数
 			var index = "";
@@ -208,9 +200,6 @@
             }); 
 			
 			// 查询参数
-			if ($("#wechatName").val()) {
-				data.wechatName = $("#wechatName").val();
-			}
 			if ($("#productId").val()) {
 				data.productId = $("#productId").val();
 			}
