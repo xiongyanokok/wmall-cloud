@@ -5,7 +5,7 @@
   	<resultMap id="BaseResultMap" type="com.xy.wmall.model.Menu">
 		<id column="id" property="id" />	
 	    <result column="parent_id" property="parentId" />
-	    <result column="order" property="order" />
+	    <result column="sort" property="sort" />
 	    <result column="name" property="name" />
 	    <result column="icon" property="icon" />
 	    <result column="uri" property="uri" />
@@ -18,7 +18,7 @@
   	
   	<!-- 表所有字段 -->
   	<sql id="Base_Column_List">
-  		id, parent_id, order, name, icon, uri, create_user_id, create_time, update_user_id, update_time, is_delete
+  		id, parent_id, sort, name, icon, uri, create_user_id, create_time, update_user_id, update_time, is_delete
   	</sql>
   	
   	<!-- 根据主键查询 -->
@@ -42,8 +42,8 @@
 		      	<if test="parentId != null">
 		        	parent_id,
 		      	</if>
-		      	<if test="order != null">
-		        	order,
+		      	<if test="sort != null">
+		        	sort,
 		      	</if>
 		      	<if test="name != null">
 		        	name,
@@ -78,8 +78,8 @@
       			<if test="parentId != null">
         			#{parentId},
       			</if>
-      			<if test="order != null">
-        			#{order},
+      			<if test="sort != null">
+        			#{sort},
       			</if>
       			<if test="name != null">
         			#{name},
@@ -115,8 +115,8 @@
 			<if test="parentId != null">
     			parent_id = #{parentId},
   			</if>
-			<if test="order != null">
-    			order = #{order},
+			<if test="sort != null">
+    			sort = #{sort},
   			</if>
 			<if test="name != null">
     			name = #{name},
@@ -151,8 +151,8 @@
   			<if test="parentId != null">
     			and parent_id = #{parentId}
   			</if>
-  			<if test="order != null">
-    			and order = #{order}
+  			<if test="sort != null">
+    			and sort = #{sort}
   			</if>
   			<if test="name != null">
     			and name = #{name}
@@ -190,8 +190,8 @@
   			<if test="parentId != null">
     			and parent_id = #{parentId}
   			</if>
-  			<if test="order != null">
-    			and order = #{order}
+  			<if test="sort != null">
+    			and sort = #{sort}
   			</if>
   			<if test="name != null">
     			and name = #{name}
@@ -234,7 +234,7 @@
 			<trim prefix="(" suffix=")" suffixOverrides=",">
 				#{item.id},
 				#{item.parentId},
-				#{item.order},
+				#{item.sort},
 				#{item.name},
 				#{item.icon},
 				#{item.uri},
@@ -255,8 +255,8 @@
         		<if test="item.parentId != null">
         			parent_id = #{item.parentId},
         		</if>
-        		<if test="item.order != null">
-        			order = #{item.order},
+        		<if test="item.sort != null">
+        			sort = #{item.sort},
         		</if>
         		<if test="item.name != null">
         			name = #{item.name},
@@ -293,7 +293,7 @@
     			and t3.is_delete = #{isDelete}
   			</if>
         </where>
-        order by t3.order, t3.create_time
+        order by t3.sort, t3.create_time
   	</select>
 	
 </mapper>

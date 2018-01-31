@@ -47,6 +47,26 @@ public class MenuController extends BaseController {
 	}
 	
 	/**
+	 * 进入列表页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/left_list", method = { RequestMethod.GET })
+	public String leftList(Model model) {
+		return "menu/left_list";
+	}
+	
+	/**
+	 * 进入列表页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/right_list", method = { RequestMethod.GET })
+	public String rightList(Model model) {
+		return "menu/right_list";
+	}
+	
+	/**
 	 * 列表分页查询
 	 * 
 	 * @return

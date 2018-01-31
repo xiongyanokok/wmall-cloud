@@ -40,9 +40,6 @@
 			</span>
 		</div>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
-    		<span class="l">
-    			<span onclick="add()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户 </span>
-    		</span>
     		<span class="r">
     			<span onclick="query()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe665;</i> 查询用户 </span>
     		</span>
@@ -120,8 +117,7 @@
 	            	"bSortable" : false,
 	            	"sWidth" : "5%",
 	            	"mRender": function(data, type, full) {
-	            		var button = "<span class=\"btn btn-success radius size-MINI\" onclick=\"edit("+data.id+")\">修改</span>"+
-	            			" <span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span>";
+	            		var button = "<span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span>";
 	            		if (full.disabled) {
 	            			button += " <span class=\"btn btn-primary radius size-MINI\" onclick=\"enabled("+data.id+")\">启用</span>";
 	            		} else {
@@ -200,12 +196,12 @@
 	
 	// 新增数据
 	function add() {
-		layer_show("添加用户", "/admin/user/add", "", "500");
+		layer_show("添加用户", "/admin/user/add", "", "400");
 	}
 	
 	// 修改数据
 	function edit(id) {
-		layer_show("修改用户", "/admin/user/edit?id="+id, "", "500");
+		layer_show("修改用户", "/admin/user/edit?id="+id, "", "400");
 	}
 	
 	// 查询数据

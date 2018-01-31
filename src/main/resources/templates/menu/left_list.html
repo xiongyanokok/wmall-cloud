@@ -11,20 +11,16 @@
 <link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/skin/default/skin.css}" id="skin" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/css/style.css}" />
-<title>角色管理</title>
+<title>菜单管理</title>
 </head>
 <body>
-	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 角色管理 <span class="c-gray en">&gt;</span> 角色列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="pd-20">
-		<div class="text-l">
-			角色名称：<input type="text" class="input-text" style="width: 15%;" id="name" name="name" />
-		</div>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
     		<span class="l">
-    			<span onclick="add()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加角色 </span>
+    			<span onclick="add()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加菜单 </span>
     		</span>
     		<span class="r">
-    			<span onclick="query()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe665;</i> 查询角色 </span>
+    			<span onclick="query()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe665;</i> 查询菜单 </span>
     		</span>
   		</div>
   		<table id="table" class="table table-border table-bordered table-striped table-hover table-bg"/>
@@ -43,14 +39,6 @@
 <script type="text/javascript" th:src="@{/lib/datatables/1.10.0/jquery.dataTables.min.js}"></script> 
 <script type="text/javascript" th:src="@{/lib/laypage/1.2/laypage.js}"></script>
 <script th:inline="javascript">
-	$(function(){
-		$("body").keydown(function(event) {
-	        if (event.keyCode == "13") {
-	        	query();
-	        }
-	    });
-	});
-	
 	var dataTable;
 	$(function(){
 		dataTable = $("#table").dataTable( {
@@ -61,8 +49,8 @@
 			"bProcessing" : true, // 加载层
 	        "bServerSide" : true, // 服务器获取数据
 	        "iDisplayLength": page_size, // 每页显示条数
-	        "aaSorting" : [ 3, "desc" ], //默认第几个排序
-			"sAjaxSource" : "/admin/role/query",
+	        "aaSorting" : [ 0, "desc" ], //默认第几个排序
+			"sAjaxSource" : "/admin/menu/query",
 			"fnServerData" : retrieveData,
 			"fnDrawCallback" : function(){
 				this.api().column(0).nodes().each(function(cell, i) {
@@ -77,24 +65,14 @@
 				    "sWidth" : "1%"
 				}, {
                 	"mData" : "name",
-               		"sTitle" : "角色名称",
+               		"sTitle" : "name",
 	                "bSortable": true,
 				    "sWidth" : "5%"
             	}, {
-                	"mData" : "remark",
-               		"sTitle" : "角色描述",
-	                "bSortable": true,
-				    "sWidth" : "10%"
-            	}, {
-	                "mData" : "createTime",
-	                "sTitle" : "创建时间",
-	                "bSortable": true,
-	                "sWidth" : "5%"
-	            }, {
 	            	"mData" : null,
 	            	"sTitle" : "操作",
 	            	"bSortable" : false,
-	            	"sWidth" : "5%",
+	            	"sWidth" : "10%",
 	            	"mRender": function(data, type, full) {
 	            		var button = "<span class=\"btn btn-success radius size-MINI\" onclick=\"edit("+data.id+")\">修改</span>"+
 	            			" <span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span>";
@@ -166,12 +144,12 @@
 	
 	// 新增数据
 	function add() {
-		layer_show("添加角色", "/admin/role/add", "", "400");
+		layer_show("添加菜单", "/admin/menu/add", "", "550");
 	}
 	
 	// 修改数据
 	function edit(id) {
-		layer_show("修改角色", "/admin/role/edit?id="+id, "", "400");
+		layer_show("修改菜单", "/admin/menu/edit?id="+id, "", "550");
 	}
 	
 	// 查询数据
@@ -183,7 +161,7 @@
 	function del(id) {
 		layer.confirm("确认要删除吗？", function(index) {
 			$.ajax({
-				url : "/admin/role/delete",
+				url : "/admin/menu/delete",
 				data : {"id":id},
 				type : "POST",
 				dataType : "json",

@@ -56,6 +56,8 @@ public class RoleController extends BaseController {
 	public Map<String, Object> query() {
 		return pageInfoResult(map -> {
 			// 查询条件
+			// 角色名称
+			map.put("name", request.getParameter("name"));
 			return roleService.listRole(map);
 		});
 	}

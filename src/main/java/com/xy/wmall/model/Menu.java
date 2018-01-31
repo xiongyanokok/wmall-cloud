@@ -32,7 +32,7 @@ public class Menu implements Serializable {
 	/**
      * 菜单排序
      */
-	private Integer order;
+	private Integer sort;
 	
 	/**
      * 菜单名称
