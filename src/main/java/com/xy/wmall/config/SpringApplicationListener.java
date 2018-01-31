@@ -1,24 +1,14 @@
 package com.xy.wmall.config;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import com.xy.wmall.common.ThreadPoolContext;
-import com.xy.wmall.common.WmallCache;
 import com.xy.wmall.common.utils.HttpClientUtils;
-import com.xy.wmall.enums.TrueFalseStatusEnum;
-import com.xy.wmall.model.LogisticsCompany;
-import com.xy.wmall.model.Price;
-import com.xy.wmall.service.LogisticsCompanyService;
-import com.xy.wmall.service.PriceService;
 
 /**
  * 服务器启动初始化数据
@@ -29,67 +19,26 @@ import com.xy.wmall.service.PriceService;
 @Component
 public class SpringApplicationListener implements ApplicationListener<ContextRefreshedEvent>, DisposableBean {
 	
-	@Autowired
-	private PriceService priceService;
+	/**
+	 * logger
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(SpringApplicationListener.class);
 	
 	@Autowired
-	private LogisticsCompanyService logisticsCompanyService;
+	private AsyncTask asyncTask;
 	
 	/**
 	 * 当spring容器初始化完成后执行该方法
 	 */
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		// 初始化线程池
-		ThreadPoolContext.init();
-		// 异步执行
-		ThreadPoolContext.execute(this::priceCache);
-		ThreadPoolContext.execute(this::logisticsCompanyCache);
-		ThreadPoolContext.execute(this::roleMenuCache);
-		// 初始化httpclient
-		HttpClientUtils.init();
-	}
-	
-	/**
-	 * 产品价格 缓存
-	 */
-	private void priceCache() {
-		Map<String, Object> map = new HashMap<>(1);
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
-		List<Price> prices = priceService.listPrice(map);
-		if (CollectionUtils.isNotEmpty(prices)) {
-			for (Price price : prices) {
-				WmallCache.putPrice(price);
-			}
-		}
-	}
-	
-	/**
-	 * 物流公司 缓存
-	 */
-	private void logisticsCompanyCache() {
-		Map<String, Object> map = new HashMap<>(1);
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
-		List<LogisticsCompany> logisticsCompanies = logisticsCompanyService.listLogisticsCompany(map);
-		if (CollectionUtils.isNotEmpty(logisticsCompanies)) {
-			for (LogisticsCompany logisticsCompany : logisticsCompanies) {
-				WmallCache.putLogisticsCompany(logisticsCompany);
-			}
-		}
-	}
-	
-	/**
-	 * 角色权限 缓存
-	 */
-	private void roleMenuCache() {
-		Map<String, Object> map = new HashMap<>(1);
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
-		List<Price> prices = priceService.listPrice(map);
-		if (CollectionUtils.isNotEmpty(prices)) {
-			for (Price price : prices) {
-				WmallCache.putPrice(price);
-			}
-		}
+		// 价格缓存
+		asyncTask.priceCache();
+		// 物流公司缓存
+		asyncTask.logisticsCompanyCache();
+		// 角色权限缓存
+		asyncTask.roleMenuCache();
+		logger.info("数据初始化完成");
 	}
 
 	/**
@@ -97,10 +46,8 @@ public class SpringApplicationListener implements ApplicationListener<ContextRef
 	 */
 	@Override
 	public void destroy() throws Exception {
-		// 销毁线程池
-		ThreadPoolContext.close();
 		// 关闭httpclient
-		HttpClientUtils.close();
+		HttpClientUtils.getInstance().close();
 	}
 
 }

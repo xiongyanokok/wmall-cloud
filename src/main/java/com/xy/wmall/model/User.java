@@ -60,4 +60,9 @@ public class User implements Serializable {
 	 */
 	private Integer proxyId;
 	
+	/**
+	 * 角色
+	 */
+	private String role;
+	
 }

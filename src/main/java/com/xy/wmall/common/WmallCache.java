@@ -21,7 +21,6 @@ import com.xy.wmall.model.Price;
 public final class WmallCache {
 
 	private WmallCache() {
-		
 	}
 	
 	/**
@@ -116,7 +115,10 @@ public final class WmallCache {
 	 * @param logisticsCompany
 	 */
 	public static void putLogisticsCompany(LogisticsCompany logisticsCompany) {
-		logisticsCompanyMap.put(logisticsCompany.getId(), logisticsCompany);
+		LogisticsCompany company = new LogisticsCompany();
+		company.setName(logisticsCompany.getName());
+		company.setPinyin(logisticsCompany.getPinyin());
+		logisticsCompanyMap.put(logisticsCompany.getId(), company);
 	}
 	
 	/**
@@ -129,12 +131,24 @@ public final class WmallCache {
 	}
 	
 	/**
-	 * 获取物流公司缓存
+	 * 获取物流公司名称
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public static LogisticsCompany getLogisticsCompany(Integer id) {
-		return logisticsCompanyMap.get(id);
+	public static String getLogisticsCompanyName(Integer id) {
+		LogisticsCompany logisticsCompany = logisticsCompanyMap.get(id);
+		return null != logisticsCompany ? logisticsCompany.getName() : null;
+	}
+	
+	/**
+	 * 获取物流公司拼音
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static String getLogisticsCompanyPinyin(Integer id) {
+		LogisticsCompany logisticsCompany = logisticsCompanyMap.get(id);
+		return null != logisticsCompany ? logisticsCompany.getPinyin() : null;
 	}
 }

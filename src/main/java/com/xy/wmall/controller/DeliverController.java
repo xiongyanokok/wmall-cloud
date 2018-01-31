@@ -377,8 +377,8 @@ public class DeliverController extends BaseController {
 		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		Logistics logistics = logisticsService.getLogistics(map);
 		if (null != logistics) {
+			logistics.setName(WmallCache.getLogisticsCompanyName(logistics.getCompanyId()));
 			model.addAttribute("logistics", logistics);
-			logistics.setName(WmallCache.getLogisticsCompany(logistics.getCompanyId()).getName());
 		}
 		return "deliver/detail";
 	}
@@ -461,16 +461,15 @@ public class DeliverController extends BaseController {
 		// 表头
 		HSSFRow row = sheet.createRow(0);
 		// 设置列宽，setColumnWidth的第二个参数要乘以256，这个参数的单位是1/256个字符宽度
-		sheet.setColumnWidth(0, 12 * 256);
+		sheet.setColumnWidth(0, 15 * 256);
 		sheet.setColumnWidth(1, 15 * 256);
-		sheet.setColumnWidth(2, 15 * 256);
-		sheet.setColumnWidth(3, 60 * 256);
-		sheet.setColumnWidth(4, 12 * 256);
-		sheet.setColumnWidth(5, 50 * 256);
-		sheet.setColumnWidth(6, 10 * 256);
-		sheet.setColumnWidth(7, 12 * 256);
-		sheet.setColumnWidth(8, 16 * 256);
-		sheet.setColumnWidth(9, 10 * 256);
+		sheet.setColumnWidth(2, 60 * 256);
+		sheet.setColumnWidth(3, 12 * 256);
+		sheet.setColumnWidth(4, 50 * 256);
+		sheet.setColumnWidth(5, 10 * 256);
+		sheet.setColumnWidth(6, 12 * 256);
+		sheet.setColumnWidth(7, 16 * 256);
+		sheet.setColumnWidth(8, 10 * 256);
 
 		// 设置为居中加粗
 		HSSFCellStyle style = workbook.createCellStyle();
@@ -496,42 +495,38 @@ public class DeliverController extends BaseController {
 
 		HSSFCell cell;
 		cell = row.createCell(0);
-		cell.setCellValue("代理昵称");
-		cell.setCellStyle(style);
-
-		cell = row.createCell(1);
 		cell.setCellValue("收件人姓名");
 		cell.setCellStyle(style);
 	
-		cell = row.createCell(2);
+		cell = row.createCell(1);
 		cell.setCellValue("收件人电话");
 		cell.setCellStyle(style);
 	
-		cell = row.createCell(3);
+		cell = row.createCell(2);
 		cell.setCellValue("收件人地址");
 		cell.setCellStyle(style);
 		
-		cell = row.createCell(4);
+		cell = row.createCell(3);
 		cell.setCellValue("发货时间");
 		cell.setCellStyle(style);
 		
-		cell = row.createCell(5);
+		cell = row.createCell(4);
 		cell.setCellValue("产品明细");
 		cell.setCellStyle(style);
 		
-		cell = row.createCell(6);
+		cell = row.createCell(5);
 		cell.setCellValue("快递费");
 		cell.setCellStyle(style);
 		
-		cell = row.createCell(7);
+		cell = row.createCell(6);
 		cell.setCellValue("物流公司");
 		cell.setCellStyle(style);
 		
-		cell = row.createCell(8);
+		cell = row.createCell(7);
 		cell.setCellValue("物流单号");
 		cell.setCellStyle(style);
 		
-		cell = row.createCell(9);
+		cell = row.createCell(8);
 		cell.setCellValue("物流价格");
 		cell.setCellStyle(style);
 	}
@@ -561,11 +556,10 @@ public class DeliverController extends BaseController {
 		Map<Integer, AtomicInteger> productCountMap = new HashMap<>();
 		for (Deliver deliver : delivers) {
 			HSSFRow row = sheet.createRow(rowNum++);
-			row.createCell(0).setCellValue("xxxxxxxxx");
-			row.createCell(1).setCellValue(deliver.getReceiveName());
-			row.createCell(2).setCellValue(deliver.getReceivePhone());
-			row.createCell(3).setCellValue(deliver.getReceiveAddress());
-			row.createCell(4).setCellValue(DateUtils.format(deliver.getCreateTime(), DateUtils.NORM_DATE_PATTERN));
+			row.createCell(0).setCellValue(deliver.getReceiveName());
+			row.createCell(1).setCellValue(deliver.getReceivePhone());
+			row.createCell(2).setCellValue(deliver.getReceiveAddress());
+			row.createCell(3).setCellValue(DateUtils.format(deliver.getCreateTime(), DateUtils.NORM_DATE_PATTERN));
 			List<DeliverDetail> deliverDetails = deliver.getDeliverDetails();
 			if (null != deliverDetails) {
 				StringBuilder details = new StringBuilder();
@@ -581,16 +575,16 @@ public class DeliverController extends BaseController {
 					}
 					productCount.addAndGet(deliverDetail.getAmount());
 				}
-				row.createCell(5).setCellValue(details.toString());
+				row.createCell(4).setCellValue(details.toString());
 			}
 			if (deliver.getCourierPrice() > 0) {
-				row.createCell(6).setCellValue(deliver.getCourierPrice());
+				row.createCell(5).setCellValue(deliver.getCourierPrice());
 			}
 			Logistics logistics = deliver.getLogistics(); 
 			if (null != logistics) {
-				row.createCell(7).setCellValue(WmallCache.getLogisticsCompany(logistics.getCompanyId()).getName());
-				row.createCell(8).setCellValue(logistics.getNumber());
-				row.createCell(9).setCellValue(logistics.getPrice()+logistics.getCost());
+				row.createCell(6).setCellValue(WmallCache.getLogisticsCompanyName(logistics.getCompanyId()));
+				row.createCell(7).setCellValue(logistics.getNumber());
+				row.createCell(8).setCellValue(logistics.getPrice() + logistics.getCost());
 			}
 		}
 		

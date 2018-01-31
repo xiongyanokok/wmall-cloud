@@ -154,7 +154,7 @@ public class LogisticsController extends BaseController {
 		Assert.notNull(deliverId, "deliverId为空");
 		List<LogisticsCompany> logisticsCompanies = logisticsCompanyService.listLogisticsCompany();
 		model.addAttribute("logisticsCompanies", logisticsCompanies);
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(2);
 		map.put("deliverId", deliverId);
 		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		Logistics logistics = logisticsService.getLogistics(map);
@@ -222,20 +222,16 @@ public class LogisticsController extends BaseController {
 	public String detail(Model model, Integer deliverId) {
 		Assert.notNull(deliverId, "deliverId为空");
 		// 发货物流信息
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(2);
 		map.put("deliverId", deliverId);
 		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		Logistics logistics = logisticsService.getLogistics(map);
 		Assert.notNull(logistics, "数据不存在");
+		logistics.setName(WmallCache.getLogisticsCompanyName(logistics.getCompanyId()));
 		model.addAttribute("logistics", logistics);
 		
-		// 物流公司信息
-		LogisticsCompany logisticsCompany = WmallCache.getLogisticsCompany(logistics.getCompanyId());
-		Assert.notNull(logisticsCompany, "数据不存在");
-		model.addAttribute("logisticsCompany", logisticsCompany);
-		
 		// 获取物流跟踪信息
-		String value = HttpClientUtils.get(String.format(logisticsUrl, logisticsCompany.getPinyin(), logistics.getNumber()));
+		String value = HttpClientUtils.getInstance().get(String.format(logisticsUrl, WmallCache.getLogisticsCompanyPinyin(logistics.getCompanyId()), logistics.getNumber()));
 		if (StringUtils.isNotEmpty(value)) {
 			value = value.substring(value.indexOf('['), value.lastIndexOf(']') + 1);
 			List<LogisticsInfo> logisticsInfos = JacksonUtils.deserialize(value, new TypeReference<List<LogisticsInfo>>() { });
@@ -243,4 +239,5 @@ public class LogisticsController extends BaseController {
 		}
 		return "logistics/detail";
 	}
+	
 }

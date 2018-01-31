@@ -108,7 +108,7 @@ public class MainController extends BaseController {
 		}
 		
 		// 查询用户代理
-		Map<String, Object> proxyMap = new HashMap<>();
+		Map<String, Object> proxyMap = new HashMap<>(1);
 		proxyMap.put("userId", user.getId());
 		Proxy proxy = proxyService.getUserProxy(proxyMap);
 		if (null != proxy && proxy.getIsDelete()) {
@@ -155,7 +155,7 @@ public class MainController extends BaseController {
 			throw new WmallException("注册失败");
 		}
 		
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(1);
 		map.put("code", code);
 		VerifyCode verifyCode = verifyCodeService.getVerifyCode(map);
 		if (null == verifyCode) {
@@ -194,7 +194,7 @@ public class MainController extends BaseController {
 	public String main(Model model) {
 		UserInfo userInfo = (UserInfo) session.getAttribute(Constant.SESSION_KEY);
 		// 查询权限
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(2);
 		map.put("userId", userInfo.getUserId());
 		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		List<Menu> menus = menuService.listUserRoleMenu(map);

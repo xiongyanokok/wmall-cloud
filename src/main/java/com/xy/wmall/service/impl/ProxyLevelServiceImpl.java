@@ -56,7 +56,7 @@ public class ProxyLevelServiceImpl implements ProxyLevelService {
     public ProxyLevel getProxyLevelById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>();
+    		Map<String, Object> map = new HashMap<>(2);
     		map.put("id", id);
     		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return proxyLevelMapper.getProxyLevel(map);

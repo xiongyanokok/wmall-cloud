@@ -65,4 +65,12 @@ public interface UserMapper {
      */
     void batchUpdate(List<User> list);
     
+    /**
+     * 根据map查询
+     * 
+     * @param map
+     * @return
+     */
+    List<User> listUserRole(Map<String, Object> map);
+    
 }

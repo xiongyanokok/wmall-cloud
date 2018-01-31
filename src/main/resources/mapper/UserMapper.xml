@@ -204,4 +204,30 @@
 		</foreach>
 	</update>
 	
+	<!-- 根据map查询 -->
+  	<select id="listUserRole" resultMap="BaseResultMap" parameterType="java.util.Map">
+  		select
+        	t1.*, t2.name role
+        from t_user t1, t_role t2, t_user_role t3
+        <where>
+        	t1.id = t3.user_id
+        	and t1.id = t3.role_id
+  			<if test="username != null">
+    			and t1.username = #{username}
+  			</if>
+  			<if test="disabled != null">
+    			and t1.disabled = #{disabled}
+  			</if>
+  			<if test="isDelete != null">
+    			and t1.is_delete = #{isDelete}
+  			</if>
+  			<if test="roleId != null">
+    			and t3.role_id = #{roleId}
+  			</if>
+        </where>
+        <if test="orderBy != null">
+        	order by t1.${orderBy}
+        </if>
+  	</select>
+	
 </mapper>

@@ -59,7 +59,7 @@ public class HomeController extends BaseController {
 		
 		Integer proxyId = getProxyId();
 		if (null != proxyId) {
-			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> map = new HashMap<>(3);
 			map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 			map.put("operator", "<>");
 			map.put("proxyId", proxyId);
@@ -75,7 +75,7 @@ public class HomeController extends BaseController {
 				model.addAttribute("myWallet", proxyWallet);
 			}
 			// 待发货
-			map = new HashMap<>();
+			map = new HashMap<>(1);
 			map.put("parentProxyId", proxyId);
 			int waitDeliver = deliverService.countWaitDeliver(map);
 			model.addAttribute("waitDeliver", waitDeliver);

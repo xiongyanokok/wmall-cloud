@@ -56,7 +56,7 @@ public class LogisticsServiceImpl implements LogisticsService {
     public Logistics getLogisticsById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>();
+    		Map<String, Object> map = new HashMap<>(2);
     		map.put("id", id);
     		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return logisticsMapper.getLogistics(map);

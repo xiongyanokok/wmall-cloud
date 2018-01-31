@@ -240,7 +240,7 @@
 	
 	<!-- 查询物流公司列表 -->
   	<select id="selectLogisticsCompany" resultMap="BaseResultMap">
-  		select id, name from t_logistics_company where is_delete = 0 order by create_time desc
+  		select id, name, pinyin from t_logistics_company where is_delete = 0 order by create_time desc
   	</select>
 	
 </mapper>

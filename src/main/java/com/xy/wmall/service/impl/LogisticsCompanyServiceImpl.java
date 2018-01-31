@@ -59,7 +59,7 @@ public class LogisticsCompanyServiceImpl implements LogisticsCompanyService {
     public LogisticsCompany getLogisticsCompanyById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>();
+    		Map<String, Object> map = new HashMap<>(2);
     		map.put("id", id);
     		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return logisticsCompanyMapper.getLogisticsCompany(map);

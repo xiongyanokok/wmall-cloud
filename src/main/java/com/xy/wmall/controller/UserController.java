@@ -1,6 +1,8 @@
 package com.xy.wmall.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -16,8 +18,10 @@ import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.utils.Md5Utils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Proxy;
+import com.xy.wmall.model.Role;
 import com.xy.wmall.model.User;
 import com.xy.wmall.service.ProxyService;
+import com.xy.wmall.service.RoleService;
 import com.xy.wmall.service.UserService;
 
 /**
@@ -40,6 +44,9 @@ public class UserController extends BaseController {
     
     @Autowired
 	private ProxyService proxyService;
+    
+    @Autowired
+    private RoleService roleService;
 	
     /**
 	 * 进入列表页面
@@ -48,6 +55,10 @@ public class UserController extends BaseController {
 	 */
 	@RequestMapping(value = "/list", method = { RequestMethod.GET })
 	public String list(Model model) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		List<Role> roles = roleService.listRole(map);
+		model.addAttribute("roles", roles);
 		return "user/list";
 	}
 	
@@ -61,7 +72,13 @@ public class UserController extends BaseController {
 	public Map<String, Object> query() {
 		return pageInfoResult(map -> {
 			// 查询条件
-			return userService.listUser(map);
+			// 用户名
+			map.put("username", request.getParameter("username")); 
+			// 是否禁用
+			map.put("disabled", request.getParameter("disabled")); 
+			// 角色id
+			map.put("roleId", request.getParameter("roleId")); 
+			return userService.listUserRole(map);
 		});
 	}
 	
@@ -184,18 +201,57 @@ public class UserController extends BaseController {
 	public Map<String, Object> password(String oldPassword, String newPassword) {
 		Assert.hasLength(oldPassword, "oldPassword为空");
 		Assert.hasLength(newPassword, "newPassword为空");
-		Integer userId = getUserId();
-		User user = userService.getUserById(userId);
+		User user = userService.getUserById(getUserId());
 		Assert.notNull(user, "用户不存在");
 		if (!user.getPassword().equals(Md5Utils.md5(oldPassword))) {
 			logger.error("当前密码错误：密码【{}】", oldPassword);
 			return buildFail("当前密码错误");
+		}
+		if (oldPassword.equals(newPassword)) {
+			logger.error("新密码不能和旧密码一致：新密码【{}】， 旧密码【{}】", newPassword, oldPassword);
+			return buildFail("密码不能一致");
 		}
 		// 修改密码
 		user.setPassword(Md5Utils.md5(newPassword));
 		userService.update(user);
 		logger.info("【{}】修改密码成功", user);
 		return buildSuccess("密码修改成功");
+	}
+	
+	/**
+	 * 用户禁用
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/disabled", method = { RequestMethod.POST })
+	@ResponseBody
+	public Map<String, Object> disabled(Integer id) {
+		Assert.notNull(id, "id为空");
+		User user = userService.getUserById(id);
+		Assert.notNull(user, "数据不存在");
+		user.setDisabled(TrueFalseStatusEnum.TRUE.getValue());
+		userService.update(user);
+		logger.info("【{}】禁用成功", user);
+		return buildSuccess("禁用成功");
+	}
+	
+	/**
+	 * 用户启用
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/enabled", method = { RequestMethod.POST })
+	@ResponseBody
+	public Map<String, Object> enabled(Integer id) {
+		Assert.notNull(id, "id为空");
+		User user = userService.getUserById(id);
+		Assert.notNull(user, "数据不存在");
+		user.setDisabled(TrueFalseStatusEnum.FALSE.getValue());
+		userService.update(user);
+		logger.info("【{}】启用成功", user);
+		return buildSuccess("启用成功");
 	}
 	
 }

@@ -208,4 +208,20 @@ public class UserServiceImpl implements UserService {
 		}
     }
     
+    /**
+     * 根据map查询
+     * 
+     * @param map
+     * @return
+     */
+    @Override
+    public List<User> listUserRole(Map<String, Object> map) {
+    	Assert.notEmpty(map, "查询数据为空");
+    	try {
+	    	return userMapper.listUserRole(map);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询列表失败", e);
+		}
+    }
+    
 }

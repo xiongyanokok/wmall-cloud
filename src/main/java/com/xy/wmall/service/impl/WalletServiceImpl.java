@@ -58,7 +58,7 @@ public class WalletServiceImpl implements WalletService {
     public Wallet getWalletById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>();
+    		Map<String, Object> map = new HashMap<>(2);
     		map.put("id", id);
     		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return walletMapper.getWallet(map);
@@ -228,7 +228,7 @@ public class WalletServiceImpl implements WalletService {
     public Integer getWalletBalance(Integer proxyId) {
     	Assert.notNull(proxyId, "查询数据为空");
     	try {
-    		Map<String, Object> map = new HashMap<>();
+    		Map<String, Object> map = new HashMap<>(2);
     		map.put("proxyId", proxyId);
     		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
     		List<Wallet> wallets = walletMapper.listWalletBalance(map);

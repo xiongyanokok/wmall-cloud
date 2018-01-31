@@ -194,6 +194,7 @@ public class MenuServiceImpl implements MenuService {
      * @param map
      * @return
      */
+    @Override
     public List<Menu> listUserRoleMenu(Map<String, Object> map) {
     	Assert.notEmpty(map, "查询数据为空");
     	try {
