@@ -11,40 +11,31 @@
 <link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/skin/default/skin.css}" id="skin" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/css/style.css}" />
-<title>修改xx</title>
+<title>角色权限</title>
 </head>
 <body>
 	<article class="page-container">
-		<form id="form" action="/admin/menu/update" method="post" class="form form-horizontal">
-			<input type="hidden" id="id" name="id" th:value="${menu.id}" />
-			<div class="row cl" th:if="${menu.parentId > 0}">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 父菜单：</label>
+		<form id="form" action="/admin/user/user_role" method="post" class="form form-horizontal">
+			<input type="hidden" id="roleId" name="roleId" th:value="${role.id}" />
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3">角色名称：</label>
 				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="supName" name="supName" th:value="${supName}" disabled="disabled" />
+					<input type="text" class="input-text" id="roleName" name="roleName" th:value="${role.name}" disabled="disabled" />
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 菜单排序：</label>
+				<label class="form-label col-xs-4 col-sm-3">菜单名称：</label>
 				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="order" name="order" placeholder="菜单排序" th:value="${menu.order}" maxlength="3" onkeyup="pureNumber(this)" onafterpaste="pureNumber(this)" />
-				</div>
-			</div>
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 菜单名称：</label>
-				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="name" name="name" placeholder="菜单名称" th:value="${menu.name}" maxlength="20" />
-				</div>
-			</div>
-			<div class="row cl" th:if="${menu.parentId == 0}">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 菜单图标：</label>
-				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="icon" name="icon" placeholder="菜单图标" th:value="${menu.icon}" maxlength="10" />
-				</div>
-			</div>
-			<div class="row cl" th:if="${menu.parentId > 0}">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 菜单地址：</label>
-				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="uri" name="uri" placeholder="菜单地址" th:value="${menu.uri}" maxlength="100" />
+					<dl class="permission-list" th:each="menu : ${menus}" th:if="${menu.parentId == 0}">
+						<dt>
+							<label><input type="checkbox" th:value="${menu.id}" name="user-Character-0" id="user-Character-0"> [[${menu.name}]]</label>
+						</dt>
+						<dd>
+							<dl th:each="subMenu : ${menus}" th:if="${subMenu.parentId == menu.id}">
+								<label><input type="checkbox" th:value="${subMenu.id}" name="user-Character-0-0-0" id="user-Character-0-0-0"> [[${subMenu.name}]]</label>
+							</dl>
+						</dd>
+					</dl>
 				</div>
 			</div>
 			
@@ -62,7 +53,7 @@
 <script type="text/javascript" th:src="@{/lib/jquery/1.9.1/jquery.min.js}"></script> 
 <script type="text/javascript" th:src="@{/lib/layer/2.4/layer.js}"></script>
 <script type="text/javascript" th:src="@{/static/h-ui/js/H-ui.min.js}"></script> 
-<script type="text/javascript" th:src="@{/static/h-ui.admin/js/H-ui.admin.js}"></script>
+<script type="text/javascript" th:src="@{/static/h-ui.admin/js/H-ui.admin.js}"></script> 
 <script type="text/javascript" th:src="@{/js/common.js}"></script> 
 <!--/_footer 作为公共模版分离出去-->
 
@@ -74,17 +65,8 @@
 	$(function(){
 		$("#form").validate({
 			rules:{
-				sort:{
+				roleId:{
 					required:true
-				},
-				name:{
-					required:true
-				},
-				icon:{
-					required:[[${menu.parentId == 0}]] ? true : false
-				},
-				uri:{
-					required:[[${menu.parentId > 0}]] ? true : false
 				}
 			},
 			onkeyup:false,
@@ -94,7 +76,7 @@
 				$(form).ajaxSubmit(function(result) {
 					if (result.code == "Y") {
 						parent.dataTable.fnDraw();
-						parent.layer.msg("修改成功", {icon:6, time:1000});
+						parent.layer.msg("权限分配成功", {icon:6, time:1000});
 						var index = parent.layer.getFrameIndex(window.name);
 						parent.layer.close(index);
 					} else {

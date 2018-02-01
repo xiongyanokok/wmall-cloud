@@ -20,8 +20,10 @@ import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Proxy;
 import com.xy.wmall.model.Role;
 import com.xy.wmall.model.User;
+import com.xy.wmall.model.UserRole;
 import com.xy.wmall.service.ProxyService;
 import com.xy.wmall.service.RoleService;
+import com.xy.wmall.service.UserRoleService;
 import com.xy.wmall.service.UserService;
 
 /**
@@ -47,6 +49,9 @@ public class UserController extends BaseController {
     
     @Autowired
     private RoleService roleService;
+    
+    @Autowired
+    private UserRoleService userRoleService;
 	
     /**
 	 * 进入列表页面
@@ -252,6 +257,51 @@ public class UserController extends BaseController {
 		userService.update(user);
 		logger.info("【{}】启用成功", user);
 		return buildSuccess("启用成功");
+	}
+	
+	/**
+	 * 用户角色
+	 * 
+	 * @param model
+	 * @param userId
+	 * @return
+	 */
+	@RequestMapping(value = "/role", method = { RequestMethod.GET })
+	public String role(Model model, Integer userId) {
+		Assert.notNull(userId, "userId为空");
+		User user = userService.getUserById(userId);
+		Assert.notNull(user, "数据不存在");
+		model.addAttribute("username", user.getUsername());
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", userId);
+		UserRole userRole = userRoleService.getUserRole(map);
+		model.addAttribute("userRole", userRole);
+		
+		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		List<Role> roles = roleService.listRole(map);
+		model.addAttribute("roles", roles);
+		return "user/role";
+	}
+	
+	/**
+	 * 分配用户角色
+	 * 
+	 * @param userRoleId
+	 * @param roleId
+	 * @return
+	 */
+	@RequestMapping(value = "/user_role", method = { RequestMethod.POST })
+	@ResponseBody
+	public Map<String, Object> userRole(Integer id, Integer roleId) {
+		Assert.notNull(id, "id为空");
+		Assert.notNull(roleId, "roleId为空");
+		UserRole userRole = new UserRole();
+		userRole.setId(id);
+		userRole.setRoleId(roleId);
+		userRoleService.update(userRole);
+		logger.info("【{}】角色分配成功", userRole);
+		return buildSuccess("角色分配成功");
 	}
 	
 }

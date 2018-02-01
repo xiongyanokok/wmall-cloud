@@ -41,12 +41,7 @@
 	<div class="track-list">
 		<apan class="notfind-icon" th:if="${#lists.size(logisticsInfos) == 0}">抱歉，暂无查询记录</apan>
 		<ul th:each="logisticsInfo,status : ${logisticsInfos}">
-			<li th:if="${status.index == 0 }" class="first">
-				<i class="node-icon"></i>
-				<span class="time" th:text="${logisticsInfo.time }"></span>
-				<span class="txt" th:text="${logisticsInfo.context }"></span>
-			</li>
-			<li th:if="${status.index > 1 }">
+			<li th:classappend="${status.index == 0} ? 'first' : ''">
 				<i class="node-icon"></i>
 				<span class="time" th:text="${logisticsInfo.time }"></span>
 				<span class="txt" th:text="${logisticsInfo.context }"></span>

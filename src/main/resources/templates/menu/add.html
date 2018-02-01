@@ -11,39 +11,40 @@
 <link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/skin/default/skin.css}" id="skin" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/css/style.css}" />
-<title>添加xx</title>
+<title>添加菜单</title>
 </head>
 <body>
 	<article class="page-container">
 		<form id="form" action="/admin/menu/save" method="post" class="form form-horizontal">
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>parentId：</label>
+			<input type="hidden" id="parentId" name="parentId" th:value="${parentId}"/>
+			<div class="row cl" th:if="${parentId > 0}">
+				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 父菜单：</label>
 				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="parentId" name="parentId" placeholder="parentId" />
+					<input type="text" class="input-text" id="supName" name="supName" th:value="${supName}" disabled="disabled" />
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>order：</label>
+				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 菜单排序：</label>
 				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="order" name="order" placeholder="order" />
+					<input type="text" class="input-text" id="sort" name="sort" placeholder="菜单排序" value="1" maxlength="3" onkeyup="pureNumber(this)" onafterpaste="pureNumber(this)" />
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>name：</label>
+				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 菜单名称：</label>
 				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="name" name="name" placeholder="name" />
+					<input type="text" class="input-text" id="name" name="name" placeholder="菜单名称" maxlength="20" />
 				</div>
 			</div>
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>icon：</label>
+			<div class="row cl" th:if="${parentId == 0}">
+				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 菜单图标：</label>
 				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="icon" name="icon" placeholder="icon" />
+					<input type="text" class="input-text" id="icon" name="icon" placeholder="菜单图标" maxlength="10" />
 				</div>
 			</div>
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>uri：</label>
+			<div class="row cl" th:if="${parentId > 0}">
+				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 菜单地址：</label>
 				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="uri" name="uri" placeholder="uri" />
+					<input type="text" class="input-text" id="uri" name="uri" placeholder="菜单地址" maxlength="100" />
 				</div>
 			</div>
 			
@@ -73,8 +74,17 @@
 	$(function(){
 		$("#form").validate({
 			rules:{
+				sort:{
+					required:true
+				},
 				name:{
 					required:true
+				},
+				icon:{
+					required:[[${parentId == 0}]] ? true : false
+				},
+				uri:{
+					required:[[${parentId > 0}]] ? true : false
 				}
 			},
 			onkeyup:false,

@@ -97,7 +97,8 @@
 	            	"sWidth" : "5%",
 	            	"mRender": function(data, type, full) {
 	            		var button = "<span class=\"btn btn-success radius size-MINI\" onclick=\"edit("+data.id+")\">修改</span>"+
-	            			" <span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span>";
+	            			" <span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span>"+
+	            			" <span class=\"btn btn-primary radius size-MINI\" onclick=\"menu("+data.id+")\">权限</span>";
 	            		return button;
 	            	}
 	            }
@@ -172,6 +173,11 @@
 	// 修改数据
 	function edit(id) {
 		layer_show("修改角色", "/admin/role/edit?id="+id, "", "400");
+	}
+	
+	// 权限
+	function menu(id) {
+		layer_show("角色权限", "/admin/role/menu?roleId="+id, "", "400");
 	}
 	
 	// 查询数据

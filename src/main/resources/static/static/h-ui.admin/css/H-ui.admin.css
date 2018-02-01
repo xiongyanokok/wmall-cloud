@@ -107,11 +107,9 @@ h4{line-height:30px}
 /*权限*/
 .permission-list{ border:solid 1px #eee;}
 .permission-list > dt{ background-color:#efefef;padding:5px 10px}
-.permission-list > dd{ padding:10px; padding-left:30px}
-.permission-list > dd > dl{ border-bottom:solid 1px #eee; padding:5px 0}
-.permission-list > dd > dl > dt{ display:inline-block;float:left;white-space:nowrap;width:100px}
-.permission-list > dd > dl > dd{ margin-left:100px;}
-.permission-list > dd > dl > dd > label{ padding-right:10px}
+.permission-list > dd{ padding-left:30px}
+.permission-list > dd > dl{ padding:5px 0}
+.permission-list > dd > dl > label{ padding-left:5px; padding-right:10px}
 
 /*图片预览*/
 .portfolio-area{ margin-right: -20px;}

@@ -14,13 +14,26 @@
 <title>菜单管理</title>
 </head>
 <body>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 菜单管理 <span class="c-gray en">&gt;</span> 菜单列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="pd-20">
+		<div class="text-l">
+			父菜单：
+			<span class="select-box inline" style="width: 15%;">
+				<select id="parentId" name="parentId" class="select" style="width: 100%;" onchange="query()">
+					<option th:each="menu : ${menus}" th:value="${menu.id }" th:text="${menu.name}" th:selected="${menu.id == parentId}"></option>
+				</select>
+			</span>
+			<span style="padding-right: 5%;"></span>
+			菜单名称：<input type="text" class="input-text" style="width: 15%;" id="name" name="name" />
+			<span style="padding-right: 5%;"></span>
+			菜单地址：<input type="text" class="input-text" style="width: 15%;" id="uri" name="uri" />
+		</div>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
     		<span class="l">
-    			<span onclick="add()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加菜单 </span>
+    			<span onclick="add()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加子菜单 </span>
     		</span>
     		<span class="r">
-    			<span onclick="query()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe665;</i> 查询菜单 </span>
+    			<span onclick="query()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe665;</i> 查询子菜单 </span>
     		</span>
   		</div>
   		<table id="table" class="table table-border table-bordered table-striped table-hover table-bg"/>
@@ -39,6 +52,16 @@
 <script type="text/javascript" th:src="@{/lib/datatables/1.10.0/jquery.dataTables.min.js}"></script> 
 <script type="text/javascript" th:src="@{/lib/laypage/1.2/laypage.js}"></script>
 <script th:inline="javascript">
+	var menusJson = JSON.parse([[${menusJson}]]);
+
+	$(function(){
+		$("body").keydown(function(event) {
+	        if (event.keyCode == "13") {
+	        	query();
+	        }
+	    });
+	});
+	
 	var dataTable;
 	$(function(){
 		dataTable = $("#table").dataTable( {
@@ -49,7 +72,7 @@
 			"bProcessing" : true, // 加载层
 	        "bServerSide" : true, // 服务器获取数据
 	        "iDisplayLength": page_size, // 每页显示条数
-	        "aaSorting" : [ 0, "desc" ], //默认第几个排序
+	        "aaSorting" : [ 3, "asc" ], //默认第几个排序
 			"sAjaxSource" : "/admin/menu/query",
 			"fnServerData" : retrieveData,
 			"fnDrawCallback" : function(){
@@ -64,15 +87,45 @@
 				    "bSortable" : false,
 				    "sWidth" : "1%"
 				}, {
+                	"mData" : "parentId",
+               		"sTitle" : "父菜单名称",
+	                "bSortable": true,
+				    "sWidth" : "5%",
+				    "mRender": function(data, type, full) {
+				    	var name;
+	                	$.each(menusJson, function(n, value) {  
+	                        if (data == value.id) {
+	                        	name = value.name;
+	                        	return false;
+	                        }
+	                    }); 
+	                	return name;
+	                }
+            	}, {
                 	"mData" : "name",
-               		"sTitle" : "name",
+               		"sTitle" : "菜单名称",
 	                "bSortable": true,
 				    "sWidth" : "5%"
             	}, {
+                	"mData" : "sort",
+               		"sTitle" : "菜单排序",
+	                "bSortable": true,
+				    "sWidth" : "3%"
+            	}, {
+                	"mData" : "uri",
+               		"sTitle" : "菜单地址",
+	                "bSortable": true,
+				    "sWidth" : "10%"
+            	}, {
+	                "mData" : "createTime",
+	                "sTitle" : "创建时间",
+	                "bSortable": true,
+	                "sWidth" : "5%"
+	            }, {
 	            	"mData" : null,
 	            	"sTitle" : "操作",
 	            	"bSortable" : false,
-	            	"sWidth" : "10%",
+	            	"sWidth" : "5%",
 	            	"mRender": function(data, type, full) {
 	            		var button = "<span class=\"btn btn-success radius size-MINI\" onclick=\"edit("+data.id+")\">修改</span>"+
 	            			" <span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span>";
@@ -122,8 +175,14 @@
             }); 
 			
 			// 查询参数
+			if ($("#parentId").val()) {
+				data.parentId = $("#parentId").val();
+			}
 			if ($("#name").val()) {
 				data.name = $("#name").val();
+			}
+			if ($("#uri").val()) {
+				data.uri = $("#uri").val();
 			}
 			
 			$.ajax({
@@ -144,12 +203,13 @@
 	
 	// 新增数据
 	function add() {
-		layer_show("添加菜单", "/admin/menu/add", "", "550");
+		var parentId = $("#parentId").val();
+		layer_show("添加子菜单", "/admin/menu/add?parentId="+parentId, "", "400");
 	}
 	
 	// 修改数据
 	function edit(id) {
-		layer_show("修改菜单", "/admin/menu/edit?id="+id, "", "550");
+		layer_show("修改子菜单", "/admin/menu/edit?id="+id, "", "400");
 	}
 	
 	// 查询数据

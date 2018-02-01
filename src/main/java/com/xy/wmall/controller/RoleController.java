@@ -1,6 +1,8 @@
 package com.xy.wmall.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -14,7 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
+import com.xy.wmall.model.Menu;
 import com.xy.wmall.model.Role;
+import com.xy.wmall.model.RoleMenu;
+import com.xy.wmall.service.MenuService;
+import com.xy.wmall.service.RoleMenuService;
 import com.xy.wmall.service.RoleService;
 
 /**
@@ -34,6 +40,13 @@ public class RoleController extends BaseController {
 
     @Autowired
 	private RoleService roleService;
+    
+    @Autowired
+    private MenuService menuService;
+    
+    @Autowired
+    private RoleMenuService roleMenuService;
+    
 	
 	/**
 	 * 进入列表页面
@@ -143,6 +156,31 @@ public class RoleController extends BaseController {
 		roleService.remove(role);
 		logger.info("【{}】删除成功", role);
 		return buildSuccess("删除成功");
+	}
+	
+	/**
+	 * 角色权限
+	 * 
+	 * @param model
+	 * @param roleId
+	 * @return
+	 */
+	@RequestMapping(value = "/menu", method = { RequestMethod.GET })
+	public String menu(Model model, Integer roleId) {
+		Assert.notNull(roleId, "roleId为空");
+		Role role = roleService.getRoleById(roleId);
+		Assert.notNull(role, "数据不存在");
+		model.addAttribute("role", role);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("roleId", roleId);
+		List<RoleMenu> roleMenus = roleMenuService.listRoleMenu(map);
+		model.addAttribute("roleMenus", roleMenus);
+		
+		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		List<Menu> menus = menuService.listMenu(map);
+		model.addAttribute("menus", menus);
+		return "role/menu";
 	}
 	
 }

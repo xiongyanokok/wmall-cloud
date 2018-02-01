@@ -117,7 +117,8 @@
 	            	"bSortable" : false,
 	            	"sWidth" : "5%",
 	            	"mRender": function(data, type, full) {
-	            		var button = "<span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span>";
+	            		var button += " <span class=\"btn btn-success radius size-MINI\" onclick=\"role("+data.id+")\">角色</span>";
+	            		button = "<span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span>";
 	            		if (full.disabled) {
 	            			button += " <span class=\"btn btn-primary radius size-MINI\" onclick=\"enabled("+data.id+")\">启用</span>";
 	            		} else {
@@ -202,6 +203,11 @@
 	// 修改数据
 	function edit(id) {
 		layer_show("修改用户", "/admin/user/edit?id="+id, "", "400");
+	}
+	
+	// 用户角色
+	function role(id) {
+		layer_show("角色权限", "/admin/user/role?userId="+id, "", "400");
 	}
 	
 	// 查询数据

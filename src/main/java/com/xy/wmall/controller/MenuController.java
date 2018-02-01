@@ -1,6 +1,8 @@
 package com.xy.wmall.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.utils.JacksonUtils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Menu;
 import com.xy.wmall.service.MenuService;
@@ -38,32 +41,31 @@ public class MenuController extends BaseController {
 	/**
 	 * 进入列表页面
 	 * 
-	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = { RequestMethod.GET })
 	public String list(Model model) {
+		model.addAttribute("parentId", 0);
 		return "menu/list";
 	}
 	
 	/**
 	 * 进入列表页面
 	 * 
+	 * @param parentId
 	 * @return
 	 */
-	@RequestMapping(value = "/left_list", method = { RequestMethod.GET })
-	public String leftList(Model model) {
-		return "menu/left_list";
-	}
-	
-	/**
-	 * 进入列表页面
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "/right_list", method = { RequestMethod.GET })
-	public String rightList(Model model) {
-		return "menu/right_list";
+	@RequestMapping(value = "/sub_list", method = { RequestMethod.GET })
+	public String subList(Model model, Integer parentId) {
+		Assert.notNull(parentId, "parentId为空");
+		model.addAttribute("parentId", parentId);
+		Map<String, Object> map = new HashMap<>();
+		map.put("parentId", 0);
+		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		List<Menu> menus = menuService.listMenu(map);
+		model.addAttribute("menus", menus);
+		model.addAttribute("menusJson", JacksonUtils.serialize(menus));
+		return "menu/sub_list";
 	}
 	
 	/**
@@ -76,6 +78,12 @@ public class MenuController extends BaseController {
 	public Map<String, Object> query() {
 		return pageInfoResult(map -> {
 			// 查询条件
+			// 父菜单ID
+			map.put("parentId", request.getParameter("parentId"));
+			// 菜单名称
+			map.put("name", request.getParameter("name"));
+			// 菜单地址
+			map.put("uri", request.getParameter("uri"));
 			return menuService.listMenu(map);
 		});
 	}
@@ -83,11 +91,19 @@ public class MenuController extends BaseController {
 	/**
 	 * 进入新增页面
 	 * 
+	 * @param parentId
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/add", method = { RequestMethod.GET })
-	public String add(Model model) {
+	public String add(Model model, Integer parentId) {
+		Assert.notNull(parentId, "parentId为空");
+		model.addAttribute("parentId", parentId);
+		if (parentId > 0) {
+			Menu menu = menuService.getMenuById(parentId);
+			Assert.notNull(menu, "数据不存在");
+			model.addAttribute("supName", menu.getName());
+		}
 		return "menu/add";
 	}
 	
@@ -124,6 +140,11 @@ public class MenuController extends BaseController {
 		Menu menu = menuService.getMenuById(id);
 		Assert.notNull(menu, "数据不存在");
 		model.addAttribute("menu", menu);
+		if (menu.getParentId() > 0) {
+			Menu supMenu = menuService.getMenuById(menu.getParentId());
+			Assert.notNull(supMenu, "数据不存在");
+			model.addAttribute("supName", supMenu.getName());
+		}
 		return "menu/edit";
 	}
 	

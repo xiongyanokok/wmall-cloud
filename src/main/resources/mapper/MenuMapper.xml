@@ -194,13 +194,13 @@
     			and sort = #{sort}
   			</if>
   			<if test="name != null">
-    			and name = #{name}
+    			and name like CONCAT('%', #{name}, '%')
   			</if>
   			<if test="icon != null">
     			and icon = #{icon}
   			</if>
   			<if test="uri != null">
-    			and uri = #{uri}
+    			and uri like CONCAT('%', #{uri}, '%')
   			</if>
   			<if test="createUserId != null">
     			and create_user_id = #{createUserId}
