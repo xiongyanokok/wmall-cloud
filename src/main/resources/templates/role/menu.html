@@ -15,7 +15,7 @@
 </head>
 <body>
 	<article class="page-container">
-		<form id="form" action="/admin/user/user_role" method="post" class="form form-horizontal">
+		<form id="form" action="/admin/role/role_menu" method="post" class="form form-horizontal">
 			<input type="hidden" id="roleId" name="roleId" th:value="${role.id}" />
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3">角色名称：</label>
@@ -28,11 +28,11 @@
 				<div class="formControls col-xs-8 col-sm-8">
 					<dl class="permission-list" th:each="menu : ${menus}" th:if="${menu.parentId == 0}">
 						<dt>
-							<label><input type="checkbox" th:value="${menu.id}" name="user-Character-0" id="user-Character-0"> [[${menu.name}]]</label>
+							<label><input type="checkbox" th:value="${menu.id}" name="menuId"> [[${menu.name}]]</label>
 						</dt>
 						<dd>
 							<dl th:each="subMenu : ${menus}" th:if="${subMenu.parentId == menu.id}">
-								<label><input type="checkbox" th:value="${subMenu.id}" name="user-Character-0-0-0" id="user-Character-0-0-0"> [[${subMenu.name}]]</label>
+								<label><input type="checkbox" th:value="${subMenu.id}" name="menuId"> [[${subMenu.name}]]</label>
 							</dl>
 						</dd>
 					</dl>
@@ -65,7 +65,7 @@
 	$(function(){
 		$("#form").validate({
 			rules:{
-				roleId:{
+				menuId:{
 					required:true
 				}
 			},

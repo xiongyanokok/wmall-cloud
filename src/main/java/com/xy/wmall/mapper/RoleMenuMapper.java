@@ -65,4 +65,11 @@ public interface RoleMenuMapper {
      */
     void batchUpdate(List<RoleMenu> list);
     
+    /**
+     * 删除角色权限
+     * 
+     * @param map
+     */
+    void delete(Map<String, Object> map);
+    
 }

@@ -287,7 +287,7 @@ public class UserController extends BaseController {
 	/**
 	 * 分配用户角色
 	 * 
-	 * @param userRoleId
+	 * @param id
 	 * @param roleId
 	 * @return
 	 */

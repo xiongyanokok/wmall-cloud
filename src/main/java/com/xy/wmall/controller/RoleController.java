@@ -1,5 +1,6 @@
 package com.xy.wmall.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -181,6 +182,34 @@ public class RoleController extends BaseController {
 		List<Menu> menus = menuService.listMenu(map);
 		model.addAttribute("menus", menus);
 		return "role/menu";
+	}
+	
+	/**
+	 * 角色权限
+	 * 
+	 * @param id
+	 * @param roleId
+	 * @return
+	 */
+	@RequestMapping(value = "/role_menu", method = { RequestMethod.POST })
+	@ResponseBody
+	public Map<String, Object> roleMenu(Integer roleId, Integer[] menuId) {
+		Assert.notNull(roleId, "roleId为空");
+		Assert.notNull(menuId, "menuId为空");
+		
+		// 删除角色权限
+		roleMenuService.delete(roleId);
+		
+		// 分配角色权限
+		List<RoleMenu> roleMenus = new ArrayList<>();
+		for (Integer id : menuId) {
+			RoleMenu roleMenu = new RoleMenu();
+			roleMenu.setRoleId(roleId);
+			roleMenu.setMenuId(id);
+			roleMenus.add(roleMenu);
+		}
+		roleMenuService.batchSave(roleMenus);
+		return buildSuccess("权限分配成功");
 	}
 	
 }

@@ -136,4 +136,8 @@
 		</foreach>
 	</update>
 	
+	<!-- 删除角色权限 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from t_role_menu where role_id = #{roleId}
+	</delete>
 </mapper>

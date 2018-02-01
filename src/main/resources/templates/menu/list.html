@@ -90,7 +90,10 @@
                 	"mData" : "icon",
                		"sTitle" : "菜单图标",
 	                "bSortable": true,
-				    "sWidth" : "5%"
+				    "sWidth" : "5%",
+	            	"mRender": function(data, type, full) {
+						return "<i class=\"Hui-iconfont\">&#"+data+";</i>";			    	
+	            	}
             	}, {
 	                "mData" : "createTime",
 	                "sTitle" : "创建时间",

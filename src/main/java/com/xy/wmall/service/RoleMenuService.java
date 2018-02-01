@@ -80,4 +80,11 @@ public interface RoleMenuService {
      */
     void batchUpdate(List<RoleMenu> list);
     
+    /**
+     * 删除角色权限
+     * 
+     * @param roleId
+     */
+    void delete(Integer roleId);
+    
 }
