@@ -60,7 +60,7 @@ public class UserController extends BaseController {
 	 */
 	@RequestMapping(value = "/list", method = { RequestMethod.GET })
 	public String list(Model model) {
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(1);
 		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		List<Role> roles = roleService.listRole(map);
 		model.addAttribute("roles", roles);
@@ -273,11 +273,12 @@ public class UserController extends BaseController {
 		Assert.notNull(user, "数据不存在");
 		model.addAttribute("username", user.getUsername());
 		
-		Map<String, Object> map = new HashMap<>();
-		map.put("userId", userId);
-		UserRole userRole = userRoleService.getUserRole(map);
+		// 根据用户查询角色
+		UserRole userRole = userRoleService.getRoleByUser(userId);
 		model.addAttribute("userRole", userRole);
 		
+		// 查询角色列表
+		Map<String, Object> map = new HashMap<>(1);
 		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		List<Role> roles = roleService.listRole(map);
 		model.addAttribute("roles", roles);

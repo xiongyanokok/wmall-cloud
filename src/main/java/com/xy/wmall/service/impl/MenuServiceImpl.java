@@ -189,18 +189,18 @@ public class MenuServiceImpl implements MenuService {
     }
     
     /**
-     * 根据map查询
+     * 根据用户查询权限菜单
      * 
-     * @param map
+     * @param userId
      * @return
      */
     @Override
-    public List<Menu> listUserRoleMenu(Map<String, Object> map) {
-    	Assert.notEmpty(map, "查询数据为空");
+    public List<Menu> listMenuByUser(Integer userId) {
+    	Assert.notNull(userId, "userId为空");
     	try {
-	    	return menuMapper.listUserRoleMenu(map);
+	    	return menuMapper.listMenuByUser(userId);
 		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询列表失败", e);
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + userId + "】根据用户查询权限菜单失败", e);
 		}
     }
     

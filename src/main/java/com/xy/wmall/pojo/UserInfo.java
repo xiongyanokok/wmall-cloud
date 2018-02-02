@@ -1,6 +1,9 @@
 package com.xy.wmall.pojo;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.xy.wmall.model.Menu;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,5 +42,10 @@ public class UserInfo implements Serializable {
 	 * 姓名
 	 */
 	private String name;
+	
+	/**
+	 * 权限菜单
+	 */
+	private List<Menu> menus;
 	
 }

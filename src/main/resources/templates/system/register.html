@@ -29,34 +29,33 @@
 <div class="header"><h1><p class="c-white">&nbsp;&nbsp;缇丽莎尔微商管理系统</p></h1></div>
 <div class="loginWraper">
   <div id="loginform" class="loginBox">
-    <form id="form" action="/login" method="post" class="form form-horizontal">
+	<h2 align="center" style="padding-top: 0px;">新代理注册</h2>
+    <form id="form" action="/register" method="post" class="form form-horizontal">
       <div class="row cl">
-        <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i>&nbsp;&nbsp;</label>
+        <label class="form-label col-xs-3" style="margin-top: 10px;">验证码</label>
         <div class="formControls">
-          <input id="username" name="username" type="text" placeholder="账户" class="input-text size-L" maxlength="20" />
-          <span id="username_text" style="color: red; font-size: 12px; display: none;" >请输入账户</span>
+          <input id="code" name="code" type="text" placeholder="验证码" class="input-text size-L" maxlength="33" />
+          <span id="code_text" style="color: red; font-size: 12px; display: none;" >请输入验证码</span>
         </div>
       </div>
       <div class="row cl">
-        <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i>&nbsp;&nbsp;</label>
+        <label class="form-label col-xs-3" style="margin-top: 10px;">用户名</label>
+        <div class="formControls">
+          <input id="username" name="username" type="text" placeholder="用户名" class="input-text size-L" maxlength="20" />
+          <span id="username_text" style="color: red; font-size: 12px; display: none;" >请输入用户名</span>
+        </div>
+      </div>
+      <div class="row cl">
+        <label class="form-label col-xs-3" style="margin-top: 10px;">密码</label>
         <div class="formControls">
           <input id="password" name="password" type="password" placeholder="密码" class="input-text size-L" maxlength="20" />
           <span id="password_text" style="color: red; font-size: 12px; display: none;" >请输入密码</span>
         </div>
       </div>
       <div class="row cl">
-        <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe612;</i>&nbsp;&nbsp;</label>
-        <div class="formControls">
-          <input id="checkCode" name="checkCode" type="text" placeholder="验证码" class="input-text size-L" maxlength="4" style="width:80px;" />
-          <img id="image" src="/image" width="100" height="39" onclick="refresh()" /> 
-          <a onclick="refresh()">看不清，换一张</a> 
-          <span id="checkCode_text" style="color: red; font-size: 12px; display: none; padding-left: 73px;" >请输入验证码</span>
-        </div>
-      </div>
-      <div class="row cl">
         <div class="formControls col-xs-offset-3">
-          <input id="login" type="button" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
-          <a style="padding-left: 10px;" href="/user">立即注册</a>
+          <input id="register" type="button" class="btn btn-success radius size-L" value="&nbsp;注&nbsp;&nbsp;&nbsp;&nbsp;册&nbsp;">
+          <a style="padding-left: 10px;" href="/">立即登录</a>
         </div>
       </div>
     </form>
@@ -72,21 +71,26 @@
 	$(function(){
 		$("body").keydown(function(event) {
 	        if (event.keyCode == "13") {//keyCode=13是回车键
-	         $("#login").click();
+	         $("#register").click();
 	        }
 	    });
 		
-		$("#login").click(function() {
+		$("#register").click(function() {
+			$("#code").removeClass("error");
 			$("#username").removeClass("error");
 			$("#password").removeClass("error");
-			$("#checkCode").removeClass("error");
+			$("#code_text").hide();
 			$("#username_text").hide();
 			$("#password_text").hide();
-			$("#checkCode_text").hide();
 			
+			var code = $("#code").val();
 			var username = $("#username").val();
 			var password = $("#password").val();
-			var checkCode = $("#checkCode").val();
+			if (!code) {
+				$("#code").addClass("error");
+				$("#code_text").show();
+				return false;
+			}
 			if (!username) {
 				$("#username").addClass("error");
 				$("#username_text").show();
@@ -97,31 +101,15 @@
 				$("#password_text").show();
 				return false;
 			}
-			if (!checkCode) {
-				$("#checkCode").addClass("error");
-				$("#checkCode_text").show();
-				return false;
-			}
 			
-			$("#login").attr("disabled","disabled");
+			$("#register").attr("disabled","disabled");
 			$("#form").ajaxSubmit(function(result) {
-				if (result.code == "Y") {
-					window.location.href="/main";
-				} else {
-					$("#login").removeAttr("disabled");
-					refresh();
-					layer.alert(result.message);
-				}
+				layer.alert(result.message);
+				$("#register").removeAttr("disabled");
 			});
+			$("#code").val("");
 			$("#username").val("");
 			$("#password").val("");
-			$("#checkCode").val("");
 		});
 	});
-	
-	// 刷新验证码
-	function refresh() {
-		var now = new Date()
-	    $("#image").attr("src", "/image?"+now.getTime());
-	}
 </script>

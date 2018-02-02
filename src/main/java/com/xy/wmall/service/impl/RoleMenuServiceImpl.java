@@ -196,11 +196,25 @@ public class RoleMenuServiceImpl implements RoleMenuService {
     public void delete(Integer roleId) {
     	Assert.notNull(roleId, "roleId为空");
     	try {
-    		Map<String, Object> map = new HashMap<>();
-    		map.put("roleId", roleId);
-	    	roleMenuMapper.delete(map);
+	    	roleMenuMapper.delete(roleId);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + roleId + "】删除角色权限失败", e);
+		}
+    }
+    
+    /**
+     * 根据角色查询权限
+     * 
+     * @param roleId
+     * @return
+     */
+    @Override
+    public List<Integer> listMenuByRole(Integer roleId) {
+    	Assert.notNull(roleId, "roleId为空");
+    	try {
+	    	return roleMenuMapper.listMenuByRole(roleId);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + roleId + "】根据角色查询权限失败", e);
 		}
     }
 }

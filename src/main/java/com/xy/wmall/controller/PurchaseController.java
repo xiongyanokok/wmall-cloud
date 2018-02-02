@@ -104,7 +104,7 @@ public class PurchaseController extends BaseController {
 				orderIds.add(order.getId());
 			}
 			// 查询订单详情
-			Map<String, Object> dMap = new HashMap<>();
+			Map<String, Object> dMap = new HashMap<>(1);
 			dMap.put("orderIds", orderIds);
 			List<OrderDetail> orderDetails = orderDetailService.listOrderDetail(dMap);
 			for (Order order : orders) {
@@ -181,9 +181,9 @@ public class PurchaseController extends BaseController {
 		Assert.notNull(order, "数据不存在");
 		model.addAttribute("order", order);
 		// 查询订单详情
-		Map<String, Object> map = new HashMap<>();
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		Map<String, Object> map = new HashMap<>(2);
 		map.put("orderId", id);
+		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		List<OrderDetail> orderDetails = orderDetailService.listOrderDetail(map);
 		model.addAttribute("orderDetails", orderDetails);
 		List<Product> products = productService.listProduct();

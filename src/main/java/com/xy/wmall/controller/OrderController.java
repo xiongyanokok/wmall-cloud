@@ -117,7 +117,7 @@ public class OrderController extends BaseController {
 				orderIds.add(order.getId());
 			}
 			// 查询订单详情
-			Map<String, Object> detailMap = new HashMap<>();
+			Map<String, Object> detailMap = new HashMap<>(1);
 			detailMap.put("orderIds", orderIds);
 			List<OrderDetail> orderDetails = orderDetailService.listOrderDetail(detailMap);
 			for (Order order : orders) {

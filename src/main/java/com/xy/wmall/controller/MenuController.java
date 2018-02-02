@@ -59,7 +59,7 @@ public class MenuController extends BaseController {
 	public String subList(Model model, Integer parentId) {
 		Assert.notNull(parentId, "parentId为空");
 		model.addAttribute("parentId", parentId);
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(2);
 		map.put("parentId", 0);
 		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		List<Menu> menus = menuService.listMenu(map);

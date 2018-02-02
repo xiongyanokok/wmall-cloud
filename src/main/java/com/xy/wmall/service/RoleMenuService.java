@@ -87,4 +87,12 @@ public interface RoleMenuService {
      */
     void delete(Integer roleId);
     
+    /**
+     * 根据角色查询权限
+     * 
+     * @param roleId
+     * @return
+     */
+    List<Integer> listMenuByRole(Integer roleId);
+    
 }

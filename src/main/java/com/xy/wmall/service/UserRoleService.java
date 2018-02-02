@@ -80,4 +80,12 @@ public interface UserRoleService {
      */
     void batchUpdate(List<UserRole> list);
     
+    /**
+     * 根据用户查询角色
+     * 
+     * @param userId
+     * @return
+     */
+    UserRole getRoleByUser(Integer userId);
+    
 }

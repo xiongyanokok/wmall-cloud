@@ -28,11 +28,11 @@
 				<div class="formControls col-xs-8 col-sm-8">
 					<dl class="permission-list" th:each="menu : ${menus}" th:if="${menu.parentId == 0}">
 						<dt>
-							<label><input type="checkbox" th:value="${menu.id}" name="menuId"> [[${menu.name}]]</label>
+							<label><input type="checkbox" th:value="${menu.id}" name="menuId" th:checked="${menu.checked}"> [[${menu.name}]]</label>
 						</dt>
 						<dd>
 							<dl th:each="subMenu : ${menus}" th:if="${subMenu.parentId == menu.id}">
-								<label><input type="checkbox" th:value="${subMenu.id}" name="menuId"> [[${subMenu.name}]]</label>
+								<label><input type="checkbox" th:value="${subMenu.id}" name="menuId" th:checked="${subMenu.checked}"> [[${subMenu.name}]]</label>
 							</dl>
 						</dd>
 					</dl>

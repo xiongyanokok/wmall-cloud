@@ -66,11 +66,11 @@ public interface MenuMapper {
     void batchUpdate(List<Menu> list);
     
     /**
-     * 根据map查询
+     * 根据用户查询权限菜单
      * 
-     * @param map
+     * @param userId
      * @return
      */
-    List<Menu> listUserRoleMenu(Map<String, Object> map);
+    List<Menu> listMenuByUser(Integer userId);
     
 }

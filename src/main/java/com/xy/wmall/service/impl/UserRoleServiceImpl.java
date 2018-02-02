@@ -187,4 +187,20 @@ public class UserRoleServiceImpl implements UserRoleService {
 		}
     }
     
+    /**
+     * 根据用户查询角色
+     * 
+     * @param userId
+     * @return
+     */
+    @Override
+    public UserRole getRoleByUser(Integer userId) {
+    	Assert.notNull(userId, "userId为空");
+    	try {
+	    	return userRoleMapper.getRoleByUser(userId);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + userId + "】根据用户查询角色失败", e);
+		}
+    }
+    
 }

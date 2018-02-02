@@ -39,7 +39,9 @@ public class HttpClientUtils {
 		private SingletonHolder() {
 		}
 		
-		// 初始化对象
+		/**
+		 * 初始化对象
+		 */
         private static final HttpClientUtils INSTANCE = new HttpClientUtils();
     }
 

@@ -200,7 +200,7 @@ public class WalletServiceImpl implements WalletService {
     public Map<Integer, Integer> listWalletBalance(List<Integer> proxyIds) {
     	Assert.notEmpty(proxyIds, "查询数据为空");
     	try {
-    		Map<String, Object> map = new HashMap<>();
+    		Map<String, Object> map = new HashMap<>(3);
     		map.put("proxyIds", proxyIds);
     		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
     		map.put("groupBy", "proxy_id");
@@ -208,7 +208,7 @@ public class WalletServiceImpl implements WalletService {
     		if (CollectionUtils.isEmpty(wallets) || null == wallets.get(0)) {
     			return Collections.emptyMap();
     		}
-    		Map<Integer, Integer> balanceMap = new HashMap<>();
+    		Map<Integer, Integer> balanceMap = new HashMap<>(wallets.size());
     		for (Wallet wallet : wallets) {
     			balanceMap.put(wallet.getProxyId(), wallet.getPrice());
     		}

@@ -74,4 +74,9 @@ public class Menu implements Serializable {
      */
 	private Boolean isDelete;
 	
+	
+	/**
+	 * 是否选中
+	 */
+	private Boolean checked;
 }

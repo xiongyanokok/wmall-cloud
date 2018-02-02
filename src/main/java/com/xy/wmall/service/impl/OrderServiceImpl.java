@@ -273,7 +273,7 @@ public class OrderServiceImpl implements OrderService {
 			orderDetailMapper.batchInsert(orderDetails);
 			
 			// 根据订单id查询钱包支出
-			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> map = new HashMap<>(4);
 			map.put("proxyId", order.getProxyId());
 			map.put("orderId", order.getId());
 			map.put("type", WalletTypeEnum.EXPENDITURE.getValue());

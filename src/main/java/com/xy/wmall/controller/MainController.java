@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -193,11 +194,13 @@ public class MainController extends BaseController {
 	@RequestMapping(value = "/main", method = {RequestMethod.GET})
 	public String main(Model model) {
 		UserInfo userInfo = (UserInfo) session.getAttribute(Constant.SESSION_KEY);
-		// 查询权限
-		Map<String, Object> map = new HashMap<>(2);
-		map.put("userId", userInfo.getUserId());
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
-		List<Menu> menus = menuService.listUserRoleMenu(map);
+		// 用户权限菜单
+		List<Menu> menus = userInfo.getMenus();
+		if (CollectionUtils.isEmpty(menus)) {
+			// 根据用户查询权限菜单
+			menus = menuService.listMenuByUser(userInfo.getUserId());
+			userInfo.setMenus(menus);
+		}
 		model.addAttribute("name", userInfo.getName());
 		model.addAttribute("menus", menus);
 		model.addAttribute("time", DateUtils.format(new Date(), DateUtils.NORM_DATE_PATTERN));

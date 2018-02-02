@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -173,13 +174,18 @@ public class RoleController extends BaseController {
 		Assert.notNull(role, "数据不存在");
 		model.addAttribute("role", role);
 		
-		Map<String, Object> map = new HashMap<>();
-		map.put("roleId", roleId);
-		List<RoleMenu> roleMenus = roleMenuService.listRoleMenu(map);
-		model.addAttribute("roleMenus", roleMenus);
+		// 根据角色查询权限 
+		List<Integer> menuIds = roleMenuService.listMenuByRole(roleId);
 		
+		// 查询权限列表
+		Map<String, Object> map = new HashMap<>(1);
 		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		List<Menu> menus = menuService.listMenu(map);
+		if (CollectionUtils.isNotEmpty(menus) && CollectionUtils.isNotEmpty(menuIds)) {
+			for (Menu menu : menus) {
+				menu.setChecked(menuIds.contains(menu.getId()));
+			}
+		}
 		model.addAttribute("menus", menus);
 		return "role/menu";
 	}

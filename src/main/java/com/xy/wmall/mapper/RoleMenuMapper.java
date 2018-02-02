@@ -68,8 +68,16 @@ public interface RoleMenuMapper {
     /**
      * 删除角色权限
      * 
-     * @param map
+     * @param roleId
      */
-    void delete(Map<String, Object> map);
+    void delete(Integer roleId);
+    
+    /**
+     * 根据角色查询权限
+     * 
+     * @param roleId
+     * @return
+     */
+    List<Integer> listMenuByRole(Integer roleId);
     
 }
