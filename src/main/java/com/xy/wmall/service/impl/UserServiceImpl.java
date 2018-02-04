@@ -10,13 +10,16 @@ import org.springframework.stereotype.Service;
 import com.xy.wmall.enums.ErrorCodeEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.Constant;
 import com.xy.wmall.exception.WmallException;
 import com.xy.wmall.mapper.UserMapper;
 import com.xy.wmall.mapper.UserProxyMapper;
 import com.xy.wmall.mapper.UserRoleMapper;
+import com.xy.wmall.mapper.VerifyCodeMapper;
 import com.xy.wmall.model.User;
 import com.xy.wmall.model.UserProxy;
 import com.xy.wmall.model.UserRole;
+import com.xy.wmall.model.VerifyCode;
 import com.xy.wmall.service.UserService;
 import com.xy.wmall.common.utils.ListPageUtils;
 
@@ -37,6 +40,9 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private UserRoleMapper userRoleMapper;
+    
+    @Autowired
+    private VerifyCodeMapper verifyCodeMapper;
 	
 	/**
      * 根据主键查询
@@ -85,17 +91,25 @@ public class UserServiceImpl implements UserService {
     public void save(User user) {
     	Assert.notNull(user, "保存数据为空");
     	try {
+    		// 保存用户
 			userMapper.insert(user);
 			
+			// 保存用户代理
 			UserProxy userProxy = new UserProxy();
 			userProxy.setUserId(user.getId());
 			userProxy.setProxyId(user.getProxyId());
 			userProxyMapper.insert(userProxy);
 			
+			// 保存用户角色
 			UserRole userRole = new UserRole();
 			userRole.setUserId(user.getId());
-			userRole.setRoleId(2);
+			userRole.setRoleId(Constant.PROXY_ROLE);
 			userRoleMapper.insert(userRole);
+			
+			// 更新验证码
+			VerifyCode verifyCode = user.getVerifyCode();
+			verifyCode.setUseStatus(TrueFalseStatusEnum.TRUE.getValue());
+			verifyCodeMapper.update(verifyCode);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_INSERT_ERROR, "【" + user.toString() + "】保存失败", e);
 		}

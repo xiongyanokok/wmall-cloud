@@ -82,6 +82,8 @@ public class PurchaseController extends BaseController {
 	public Map<String, Object> query() {
 		return pageInfoResult(map -> {
 			// 查询条件
+			// 代理ID
+			map.put("proxyId", getProxyId()); 
 			// 上级代理ID
 			map.put("parentProxyId", getParentProxyId()); 
 			// 产品id

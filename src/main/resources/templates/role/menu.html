@@ -28,11 +28,11 @@
 				<div class="formControls col-xs-8 col-sm-8">
 					<dl class="permission-list" th:each="menu : ${menus}" th:if="${menu.parentId == 0}">
 						<dt>
-							<label><input type="checkbox" th:value="${menu.id}" name="menuId" th:checked="${menu.checked}"> [[${menu.name}]]</label>
+							<label><input type="checkbox" th:value="${menu.id}" th:id="${menu.id}" name="menuId" th:checked="${menu.checked}"> [[${menu.name}]]</label>
 						</dt>
 						<dd>
 							<dl th:each="subMenu : ${menus}" th:if="${subMenu.parentId == menu.id}">
-								<label><input type="checkbox" th:value="${subMenu.id}" name="menuId" th:checked="${subMenu.checked}"> [[${subMenu.name}]]</label>
+								<label><input type="checkbox" th:value="${subMenu.id}" th:id="${menu.id}+${subMenu.id}" name="menuId" th:checked="${subMenu.checked}"> [[${subMenu.name}]]</label>
 							</dl>
 						</dd>
 					</dl>
@@ -63,6 +63,27 @@
 <script type="text/javascript" th:src="@{/lib/jquery.validation/1.14.0/messages_zh.js}"></script>
 <script th:inline="javascript">
 	$(function(){
+		$(function(){
+			$(".permission-list dt input:checkbox").click(function() {
+				$(this).closest("dl").find("dd input:checkbox").prop("checked", $(this).prop("checked"));
+			});
+			$(".permission-list dd dl input:checkbox").click(function(){
+				var num = $(this).parents(".permission-list").find("dd").find("input:checked").length
+				var id = $(this).prop("id") - $(this).prop("value");
+				if ($(this).prop("checked")) {
+					if (num == 1) {
+						$("#"+id).prop("checked",true);
+					} 
+				} else {
+					if (num == 0) {
+						$("#"+id).prop("checked",false);
+					}
+				}
+			});
+
+		});
+		
+		
 		$("#form").validate({
 			rules:{
 				menuId:{

@@ -44,7 +44,7 @@
 		</div>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
     		<span class="l">
-    			<span onclick="exportExcel()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe644;</i> 导出Excel </span>
+    			<span onclick="exportExcel()" class="btn btn-secondary radius"><i class="Hui-iconfont">&#xe644;</i> 导出Excel </span>
     		</span>
     		<span class="r">
     			<span onclick="query()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe665;</i> 查询发货 </span>
@@ -152,10 +152,10 @@
 	            	"mRender": function(data, type, full) {
 	            		var button = "";
             			if (full.deliverStatus == 1) {
-            				button += "<span class=\"btn btn-success radius size-MINI\" onclick=\"reset("+data.id+")\">撤销发货</span> ";
-            				button += "<span class=\"btn btn-warning radius size-MINI\" onclick=\"logistics("+data.id+")\">物流</span> ";
+            				button += "<span class=\"btn btn-danger radius size-MINI\" onclick=\"reset("+data.id+")\">撤销发货</span>";
+            				button += " <span class=\"btn btn-success radius size-MINI\" onclick=\"logistics("+data.id+")\">物流</span>";
 	            		}
-	            		button += "<span class=\"btn btn-primary radius size-MINI\" onclick=\"detail("+data.id+")\">详情</span>";
+	            		button += " <span class=\"btn btn-primary radius size-MINI\" onclick=\"detail("+data.id+")\">详情</span>";
 	            		return button;
 	            	}
 	            }

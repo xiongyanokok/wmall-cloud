@@ -80,4 +80,12 @@ public interface UserProxyService {
      */
     void batchUpdate(List<UserProxy> list);
     
+    /**
+     * 查询代理用户
+     * 
+     * @param proxyIds
+     * @return
+     */
+    Map<Integer, Integer> listUserByProxy(List<Integer> proxyIds);
+    
 }

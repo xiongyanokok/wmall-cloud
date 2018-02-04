@@ -136,4 +136,27 @@
 		</foreach>
 	</update>
 	
+	<!-- 查询代理用户 -->
+	<select id="listWalletBalance" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select proxy_id,
+			sum(CASE WHEN type=1 THEN price ELSE 0 END) - sum(CASE WHEN type=2 THEN price ELSE 0 END) price
+		from t_wallet 
+		<where>
+  			<if test="proxyId != null">
+    			and proxy_id = #{proxyId}
+  			</if>
+  			<if test="proxyIds != null">
+    			and proxy_id in
+				<foreach collection="proxyIds" item="proxyId" open="(" separator="," close=")">
+					#{proxyId}
+				</foreach>
+  			</if>
+  			<if test="isDelete != null">
+    			and is_delete = #{isDelete}
+  			</if>
+        </where>
+        <if test="groupBy != null">
+        	group by ${groupBy}
+        </if>
+	</select>
 </mapper>

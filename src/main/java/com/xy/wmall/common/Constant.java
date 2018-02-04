@@ -62,4 +62,9 @@ public final class Constant {
 	 */
 	public static final Integer CODE_EFFECTIVE_TIME = 10;
 	
+	/**
+	 * 默认代理角色
+	 */
+	public static final Integer PROXY_ROLE = 2;
+	
 }

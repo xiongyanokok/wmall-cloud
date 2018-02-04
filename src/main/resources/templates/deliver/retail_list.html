@@ -26,19 +26,19 @@
 					<option th:each="product : ${products}" th:value="${product.id }" th:text="${product.productName }"></option>
 				</select>
 			</span>
-			<span style="padding-right: 5%;"></span>
+			<span style="padding-right: 2%;"></span>
 			收件人姓名：
 			<input type="text" class="input-text" style="width: 15%;" id="receiveName" name="receiveName" />
-			<br>
+			<span style="padding-right: 2%;"></span>
 			发货状态：
-			<span class="select-box inline" style="width: 15%;">
+			<span class="select-box inline" style="width: 10%;">
 				<select id="deliverStatus" name="deliverStatus" class="select" style="width: 100%;" onchange="query()">
 					<option value="">全部状态</option>
 					<option value="0">未发货</option>
 					<option value="1">已发货</option>
 				</select>
 			</span>
-			<span style="padding-right: 5%;"></span>
+			<span style="padding-right: 2%;"></span>
 			　发货时间：
 			<input type="text" class="input-text Wdate" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'endDate\')||\'%y-%M-%d\'}' })" id="startDate" name="startDate" style="width:100px;"/><input type="text" class="input-text Wdate" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'startDate\')}',maxDate:'%y-%M-%d' })" id="endDate" name="endDate" style="width:100px;"/>
 		</div>
@@ -140,7 +140,7 @@
 	                "mData" : "createTime",
 	                "sTitle" : "发货时间",
 	                "bSortable": true,
-	                "sWidth" : "4%"
+	                "sWidth" : "5%"
 	            }, {
 	            	"mData" : null,
 	            	"sTitle" : "操作",
@@ -149,14 +149,14 @@
 	            	"mRender": function(data, type, full) {
 	            		var button = "";
             			if (full.deliverStatus == 0) {
-            				button += "<span class=\"btn btn-success radius size-MINI\" onclick=\"edit("+data.id+")\">修改</span> ";
-            				button += "<span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span> ";
-            				button += "<span class=\"btn btn-warning radius size-MINI\" onclick=\"report("+data.id+")\">上报</span> ";
-	            			button += "<span class=\"btn btn-secondary radius size-MINI\" onclick=\"deliver("+data.id+")\">发货</span> ";
+            				button += "<span class=\"btn btn-success radius size-MINI\" onclick=\"edit("+data.id+")\">修改</span>";
+            				button += " <span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span>";
+            				button += " <span class=\"btn btn-warning radius size-MINI\" onclick=\"report("+data.id+")\">上报</span>";
+	            			button += " <span class=\"btn btn-secondary radius size-MINI\" onclick=\"deliver("+data.id+")\">发货</span>";
 	            		} else {
-            				button += "<span class=\"btn btn-warning radius size-MINI\" onclick=\"logistics("+data.id+")\">物流</span> ";
+            				button += " <span class=\"btn btn-warning radius size-MINI\" onclick=\"logistics("+data.id+")\">物流</span>";
 	            		}
-	            		button += "<span class=\"btn btn-primary radius size-MINI\" onclick=\"detail("+data.id+")\">详情</span>";
+	            		button += " <span class=\"btn btn-primary radius size-MINI\" onclick=\"detail("+data.id+")\">详情</span>";
 	            		return button;
 	            	}
 	            }

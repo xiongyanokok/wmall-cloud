@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="stylesheet" type="text/css" th:href="@{/static/h-ui/css/H-ui.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/css/H-ui.admin.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/skin/default/skin.css}" id="skin" />
+<link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/css/style.css}" />
+<title>验证码</title>
+</head>
+<body>
+	<article class="page-container form form-horizontal">
+		<h3 align="center">临时验证码（有效期10分钟）</h2>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">微信昵称：</label>
+			<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px;">
+				[[${proxy.wechatName}]]
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">验证码：</label>
+			<div class="formControls col-xs-8 col-sm-8" style="padding-top: 3px; color: red;">
+				[[${code}]]
+			</div>
+		</div>
+	</article>
+</body>
+</html>

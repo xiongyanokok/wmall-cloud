@@ -68,10 +68,8 @@ public class WalletController extends BaseController {
 	public Map<String, Object> query() {
 		return pageInfoResult(map -> {
 			// 查询条件
-			String proxyId = request.getParameter("proxyId");
-			Assert.notNull(proxyId, "proxyId为空");
 			// 代理ID
-			map.put("proxyId", proxyId); 
+			map.put("proxyId", request.getParameter("proxyId")); 
 			// 类型
 			map.put("type", request.getParameter("type")); 
 			return walletService.listWallet(map);

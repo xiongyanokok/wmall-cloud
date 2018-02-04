@@ -65,4 +65,9 @@ public class User implements Serializable {
 	 */
 	private String role;
 	
+	/**
+	 * 验证码
+	 */
+	private VerifyCode verifyCode;
+	
 }

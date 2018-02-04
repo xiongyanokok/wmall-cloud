@@ -139,21 +139,23 @@ public class OrderServiceImpl implements OrderService {
 			}
 			orderDetailMapper.batchInsert(orderDetails);
 			
-			// 钱包余额
-			Integer balance = walletService.getWalletBalance(order.getProxyId());
-			if (null != balance && balance > 0) {
-				Wallet wallet = new Wallet();
-				wallet.setProxyId(order.getProxyId());
-				wallet.setOrderId(order.getId());
-				wallet.setPrice(order.getOrderPrice() >= balance ? balance : order.getOrderPrice());
-				wallet.setType(WalletTypeEnum.EXPENDITURE.getValue());
-				wallet.setRemark("补货支出");
-				wallet.setCreateUserId(order.getCreateUserId());
-				wallet.setCreateTime(new Date());
-				wallet.setUpdateUserId(order.getCreateUserId());
-				wallet.setUpdateTime(new Date());
-				wallet.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
-				walletService.save(wallet);
+			if (null != order.getProxyId()) {
+				// 钱包余额
+				Integer balance = walletService.getWalletBalance(order.getProxyId());
+				if (null != balance && balance > 0) {
+					Wallet wallet = new Wallet();
+					wallet.setProxyId(order.getProxyId());
+					wallet.setOrderId(order.getId());
+					wallet.setPrice(order.getOrderPrice() >= balance ? balance : order.getOrderPrice());
+					wallet.setType(WalletTypeEnum.EXPENDITURE.getValue());
+					wallet.setRemark("补货支出");
+					wallet.setCreateUserId(order.getCreateUserId());
+					wallet.setCreateTime(new Date());
+					wallet.setUpdateUserId(order.getCreateUserId());
+					wallet.setUpdateTime(new Date());
+					wallet.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
+					walletService.save(wallet);
+				}
 			}
 			
 			// 代理订单，不发货

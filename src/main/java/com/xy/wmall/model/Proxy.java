@@ -145,5 +145,10 @@ public class Proxy implements Serializable {
      * 余额
      */
     private Integer balance;
+    
+    /**
+     * 开通账号
+     */
+    private Boolean openUser;
 
 }

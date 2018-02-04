@@ -92,7 +92,6 @@ public class DeliverController extends BaseController {
 		List<Product> products = productService.listProduct();
 		model.addAttribute("products", products);
 		model.addAttribute("productsJson", JacksonUtils.serialize(products));
-		model.addAttribute("parentProxyId", getParentProxyId());
 		return "deliver/list";
 	}
 	
@@ -107,6 +106,7 @@ public class DeliverController extends BaseController {
 		model.addAttribute("products", products);
 		model.addAttribute("productsJson", JacksonUtils.serialize(products));
 		model.addAttribute("deliverType", DeliverTypeEnum.MY_DELIVER.getValue());
+		model.addAttribute("proxyId", getProxyId());
 		return "deliver/my_list";
 	}
 	
@@ -159,7 +159,7 @@ public class DeliverController extends BaseController {
 					map.put("proxyId", getProxyId()); 
 					map.put("parentProxyId", getParentProxyId());
 				} else if (DeliverTypeEnum.RETAIL_DELIVER.getValue().equals(deliverType)) {
-					map.put("proxyId", 0); 
+					map.put("proxyId", 0);
 				}
 			}
 			// 产品id
@@ -214,6 +214,9 @@ public class DeliverController extends BaseController {
 		Proxy proxy = proxyService.getProxyById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxy", proxy);
+		if (proxyId != getProxyId()) {
+			model.addAttribute("proxyId", proxyId);
+		}
 		List<Product> products = productService.listProduct();
 		model.addAttribute("products", products);
 		return "deliver/add";
@@ -229,7 +232,7 @@ public class DeliverController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> save(Deliver deliver) {
 		Assert.notNull(deliver, "保存数据为空");
-		deliver.setParentProxyId(getProxyId());
+		deliver.setParentProxyId(getParentProxyId());
 		deliver.setCreateUserId(getUserId());
 		deliver.setCreateTime(new Date());
 		deliver.setUpdateUserId(getUserId());

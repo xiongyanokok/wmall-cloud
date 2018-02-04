@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,7 @@ import com.xy.wmall.model.Proxy;
 import com.xy.wmall.model.VerifyCode;
 import com.xy.wmall.service.ProductService;
 import com.xy.wmall.service.ProxyService;
+import com.xy.wmall.service.UserProxyService;
 import com.xy.wmall.service.VerifyCodeService;
 import com.xy.wmall.service.WalletService;
 
@@ -58,6 +58,9 @@ public class ProxyController extends BaseController {
     @Autowired
     private VerifyCodeService verifyCodeService;
     
+    @Autowired
+    private UserProxyService userProxyService;
+    
 	
 	/**
 	 * 进入列表页面
@@ -67,6 +70,16 @@ public class ProxyController extends BaseController {
 	@RequestMapping(value = "/list", method = { RequestMethod.GET })
 	public String list(Model model) {
 		return "proxy/list";
+	}
+	
+	/**
+	 * 进入列表页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/bill", method = { RequestMethod.GET })
+	public String bill(Model model) {
+		return "proxy/bill_list";
 	}
 	
 	/**
@@ -88,6 +101,27 @@ public class ProxyController extends BaseController {
 			// 手机号
 			map.put("phone", request.getParameter("phone"));
 			// 查询代理
+			return proxyService.listProxy(map);
+		});
+	}
+	
+	/**
+	 * 列表分页查询
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/bill_query", method = { RequestMethod.POST })
+	@ResponseBody
+	public Map<String, Object> billQuery() {
+		return pageInfoResult(map -> {
+			// 查询条件
+			// 上级代理id
+			map.put("parentId", getProxyId()); 
+			// 微信昵称
+			map.put("wechatName", request.getParameter("wechatName"));
+			// 姓名
+			map.put("name", request.getParameter("name")); 
+			// 查询代理
 			List<Proxy> proxyList = proxyService.listProxy(map);
 			if (CollectionUtils.isEmpty(proxyList)) {
 				return proxyList;
@@ -99,11 +133,11 @@ public class ProxyController extends BaseController {
 			}
 			// 批量查询代理钱包余额
 			Map<Integer, Integer> balanceMap = walletService.listWalletBalance(proxyIds);
-			if (MapUtils.isEmpty(balanceMap)) {
-				return proxyList;
-			}
+			// 批量查询代理用户
+			Map<Integer, Integer> userProxyMap = userProxyService.listUserByProxy(proxyIds);
 			for (Proxy proxy : proxyList) {
 				proxy.setBalance(balanceMap.get(proxy.getId()));
+				proxy.setOpenUser(userProxyMap.containsKey(proxy.getId()));
 			}
 			return proxyList;
 		});
@@ -253,23 +287,25 @@ public class ProxyController extends BaseController {
 	 * @param proxyId
 	 * @return
 	 */
-	@RequestMapping(value = "/code", method = { RequestMethod.POST })
-	@ResponseBody
-	public Map<String, Object> code(Integer proxyId) {
+	@RequestMapping(value = "/code", method = { RequestMethod.GET })
+	public String code(Model model, Integer proxyId) {
 		Assert.notNull(proxyId, "proxyId为空");
 		Proxy proxy = proxyService.getProxyById(proxyId);
 		Assert.notNull(proxy, "数据不存在");
+		model.addAttribute("proxy", proxy);
 		// 生成临时验证码
 		VerifyCode verifyCode = new VerifyCode();
 		verifyCode.setProxyId(proxyId);
-		verifyCode.setCode(Md5Utils.md5(proxyId + getProxyId() + UUID.randomUUID().toString()));
+		String code = Md5Utils.md5(proxyId + getProxyId() + UUID.randomUUID().toString());
+		verifyCode.setCode(code);
 		Date date = new Date();
 		verifyCode.setCreateUserId(getProxyId());
 		verifyCode.setCreateTime(date);
 		verifyCode.setEffectiveTime(org.apache.commons.lang3.time.DateUtils.addMinutes(date, Constant.CODE_EFFECTIVE_TIME));
 		verifyCode.setUseStatus(TrueFalseStatusEnum.FALSE.getValue());
 		verifyCodeService.save(verifyCode);
-		return buildSuccess("保存成功");
+		model.addAttribute("code", code);
+		return "proxy/code";
 	}
 	
 }

@@ -192,7 +192,7 @@
 		
 		// 查询数据
 		function retrieveData(url, aoData, callback) {
-			var data = {"proxyId": [[${proxy.id}]]};
+			var data = {};
 
 			// 分页参数
 			var index = "";
@@ -217,6 +217,9 @@
             }); 
 			
 			// 查询参数
+			if ($("#proxyId").val()) {
+				data.proxyId = $("#proxyId").val();
+			}
 			if ($("#productId").val()) {
 				data.productId = $("#productId").val();
 			}

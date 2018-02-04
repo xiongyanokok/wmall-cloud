@@ -174,12 +174,13 @@ public class MainController extends BaseController {
 		
 		User user = new User();
 		user.setUsername(username);
-		user.setPassword(Md5Utils.md5(user.getPassword()));
+		user.setPassword(Md5Utils.md5(password));
 		user.setDisabled(TrueFalseStatusEnum.FALSE.getValue());
 		user.setCreateTime(new Date());
 		user.setUpdateTime(new Date());
 		user.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		user.setProxyId(verifyCode.getProxyId());
+		user.setVerifyCode(verifyCode);
 		userService.save(user);
 		logger.info("【{}】注册成功", user);
 		return buildSuccess("注册成功");
