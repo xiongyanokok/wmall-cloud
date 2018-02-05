@@ -16,6 +16,7 @@
 <body>
 	<div class="pd-10">
 		<div class="cl pd-5 bg-1 bk-gray">
+			<input type="hidden" id="proxyId" name="proxyId" th:value="${proxyId }" />
 			产品类型：
 			<span class="select-box inline" style="width: 15%;">
 				<select id="productType" name="productType" class="select" style="width: 100%;" onchange="query()">
@@ -127,7 +128,7 @@
 		
 		// 查询数据
 		function retrieveData(url, aoData, callback) {
-			var data = {"proxyId": [[${proxyId}]]};
+			var data = {};
 
 			// 分页参数
 			var index = "";
@@ -152,6 +153,9 @@
             }); 
 			
 			// 查询参数
+			if ($("#proxyId").val()) {
+				data.proxyId = $("#proxyId").val();
+			}
 			if ($("#productType").val()) {
 				data.productType = $("#productType").val();
 			}
@@ -182,7 +186,7 @@
 		layer.confirm("确定要生成对货单吗？", function(index) {
 			$.ajax({
 				url : "/admin/inventory/proxy_save",
-				data : {"proxyId": [[${proxyId}]]},
+				data : {"proxyId": $("#proxyId").val()},
 				type : 'POST',
 				dataType : 'json',
 				success : function(result) {
