@@ -1,16 +1,17 @@
 package com.xy.wmall.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xy.wmall.enums.ErrorCodeEnum;
-import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.Constant;
+import com.xy.wmall.common.utils.CommonUtils;
+import com.xy.wmall.common.utils.ListPageUtils;
+import com.xy.wmall.enums.ErrorCodeEnum;
+import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.exception.WmallException;
 import com.xy.wmall.mapper.UserMapper;
 import com.xy.wmall.mapper.UserProxyMapper;
@@ -21,7 +22,6 @@ import com.xy.wmall.model.UserProxy;
 import com.xy.wmall.model.UserRole;
 import com.xy.wmall.model.VerifyCode;
 import com.xy.wmall.service.UserService;
-import com.xy.wmall.common.utils.ListPageUtils;
 
 /**
  * Service 实现
@@ -72,9 +72,8 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>(2);
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
     		map.put("id", id);
-    		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return userMapper.getUser(map);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
@@ -219,6 +218,24 @@ public class UserServiceImpl implements UserService {
 			}
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_BATCH_ERROR, "批量修改失败", e);
+		}
+    }
+    
+    /**
+     * 根据用户
+     * 
+     * @param username
+     * @return
+     */
+    @Override
+    public User getUserByUsername(String username) {
+    	Assert.hasLength(username, "username为空");
+    	try {
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
+    		map.put("username", username);
+	    	return userMapper.getUser(map);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + username + "】根据用户失败", e);
 		}
     }
     

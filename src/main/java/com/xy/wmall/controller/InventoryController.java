@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.utils.BeanUtils;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
 import com.xy.wmall.enums.ProductTypeEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
@@ -121,8 +122,7 @@ public class InventoryController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> proxySave(Integer proxyId) {
 		Assert.notNull(proxyId, "proxyId为空");
-		Map<String, Object> map = new HashMap<>();
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("proxyId", proxyId);
 		// 订单统计
 		List<Statistics> orderStatistics = orderService.orderStatistics(map);
@@ -137,8 +137,8 @@ public class InventoryController extends BaseController {
 		
 		Collections.sort(list);
 		
-		Map<Integer, Integer> productMap = new HashMap<>();
 		List<Product> products = productService.listProduct();
+		Map<Integer, Integer> productMap = new HashMap<>(products.size());
 		for (Product product : products) {
 			productMap.put(product.getId(), product.getProductType());
 		}
@@ -185,8 +185,7 @@ public class InventoryController extends BaseController {
 	@RequestMapping(value = "/super_save", method = { RequestMethod.POST })
 	@ResponseBody
 	public Map<String, Object> superSave() {
-		Map<String, Object> map = new HashMap<>();
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		// 进货统计
 		map.put("parentProxyId", getParentProxyId());
 		List<Statistics> purchaseStatistics = orderService.purchaseStatistics(map);
@@ -202,8 +201,8 @@ public class InventoryController extends BaseController {
 		
 		Collections.sort(list);
 		
-		Map<Integer, Integer> productMap = new HashMap<>();
 		List<Product> products = productService.listProduct();
+		Map<Integer, Integer> productMap = new HashMap<>(products.size());
 		for (Product product : products) {
 			productMap.put(product.getId(), product.getProductType());
 		}
@@ -352,8 +351,7 @@ public class InventoryController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> proxyBill(Integer proxyId) {
 		Assert.notNull(proxyId, "proxyId为空");
-		Map<String, Object> map = new HashMap<>();
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("proxyId", proxyId);
 		// 订单统计
 		List<Statistics> orderStatistics = orderService.orderStatistics(map);
@@ -366,8 +364,8 @@ public class InventoryController extends BaseController {
 		if (CollectionUtils.isNotEmpty(list)) {
 			String productType = request.getParameter("productType");
 			if (StringUtils.isNotEmpty(productType)) {
-				Map<Integer, Integer> productMap = new HashMap<>();
 				List<Product> products = productService.listProduct();
+				Map<Integer, Integer> productMap = new HashMap<>(products.size());
 				for (Product product : products) {
 					productMap.put(product.getId(), product.getProductType());
 				}
@@ -391,8 +389,7 @@ public class InventoryController extends BaseController {
 	@RequestMapping(value = "/super_bill", method = { RequestMethod.POST })
 	@ResponseBody
 	public Map<String, Object> superBill() {
-		Map<String, Object> map = new HashMap<>();
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		// 进货统计
 		map.put("parentProxyId", getParentProxyId());
 		List<Statistics> purchaseStatistics = orderService.purchaseStatistics(map);
@@ -406,8 +403,8 @@ public class InventoryController extends BaseController {
 		if (CollectionUtils.isNotEmpty(list)) {
 			String productType = request.getParameter("productType");
 			if (StringUtils.isNotEmpty(productType)) {
-				Map<Integer, Integer> productMap = new HashMap<>();
 				List<Product> products = productService.listProduct();
+				Map<Integer, Integer> productMap = new HashMap<>(products.size());
 				for (Product product : products) {
 					productMap.put(product.getId(), product.getProductType());
 				}

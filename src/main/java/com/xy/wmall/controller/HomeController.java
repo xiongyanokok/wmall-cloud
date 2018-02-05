@@ -1,6 +1,5 @@
 package com.xy.wmall.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xy.wmall.enums.TrueFalseStatusEnum;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.model.Product;
 import com.xy.wmall.service.BackupService;
 import com.xy.wmall.service.DeliverService;
@@ -59,8 +58,7 @@ public class HomeController extends BaseController {
 		
 		Integer proxyId = getProxyId();
 		if (null != proxyId) {
-			Map<String, Object> map = new HashMap<>(3);
-			map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+			Map<String, Object> map = CommonUtils.defaultQueryMap();
 			map.put("operator", "<>");
 			map.put("proxyId", proxyId);
 			// 代理存款
@@ -74,10 +72,8 @@ public class HomeController extends BaseController {
 			if (null != proxyWallet) {
 				model.addAttribute("myWallet", proxyWallet);
 			}
-			// 待发货
-			map = new HashMap<>(1);
-			map.put("parentProxyId", proxyId);
-			int waitDeliver = deliverService.countWaitDeliver(map);
+			// 待发货数量
+			int waitDeliver = deliverService.countWaitDeliver(proxyId);
 			model.addAttribute("waitDeliver", waitDeliver);
 		}
 		return "home/index";

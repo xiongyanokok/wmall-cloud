@@ -95,10 +95,7 @@ public class MainController extends BaseController {
 		session.removeAttribute(Constant.IMAGE_CODE);
 		
 		// 查询用户
-		Map<String, Object> map = new HashMap<>(2);
-		map.put("username", username);
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
-		User user = userService.getUser(map);
+		User user = userService.getUserByUsername(username);
 		if (null == user || !user.getPassword().equals(Md5Utils.md5(password))) {
 			logger.error("用户名或密码错误：用户名【{}】，密码【{}】", username, password);
 			return buildFail("用户名或密码错误");
@@ -109,9 +106,9 @@ public class MainController extends BaseController {
 		}
 		
 		// 查询用户代理
-		Map<String, Object> proxyMap = new HashMap<>(1);
-		proxyMap.put("userId", user.getId());
-		Proxy proxy = proxyService.getUserProxy(proxyMap);
+		Map<String, Object> map = new HashMap<>(1);
+		map.put("userId", user.getId());
+		Proxy proxy = proxyService.getUserProxy(map);
 		if (null != proxy && proxy.getIsDelete()) {
 			logger.error("用户不在是代理：用户名【{}】，密码【{}】，代理【{}】", username, password, proxy);
 			return buildFail("用户已被禁用");
@@ -170,6 +167,13 @@ public class MainController extends BaseController {
 		if (verifyCode.getEffectiveTime().before(new Date())) {
 			logger.error("临时验证码【{}】已过期", code);
 			return buildFail("验证码已过期");
+		}
+		
+		// 查询用户
+		User existUser = userService.getUserByUsername(username);
+		if (null != existUser) {
+			logger.error("用户名【{}】已存在", username);
+			return buildFail("用户名已存在");
 		}
 		
 		User user = new User();

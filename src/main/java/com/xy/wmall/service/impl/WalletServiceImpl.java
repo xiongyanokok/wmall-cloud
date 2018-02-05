@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.ListPageUtils;
 import com.xy.wmall.enums.ErrorCodeEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
@@ -58,9 +59,8 @@ public class WalletServiceImpl implements WalletService {
     public Wallet getWalletById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>(2);
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
     		map.put("id", id);
-    		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return walletMapper.getWallet(map);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
@@ -200,12 +200,11 @@ public class WalletServiceImpl implements WalletService {
     public Map<Integer, Integer> listWalletBalance(List<Integer> proxyIds) {
     	Assert.notEmpty(proxyIds, "查询数据为空");
     	try {
-    		Map<String, Object> map = new HashMap<>(3);
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
     		map.put("proxyIds", proxyIds);
-    		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
     		map.put("groupBy", "proxy_id");
     		List<Wallet> wallets = walletMapper.listWalletBalance(map);
-    		if (CollectionUtils.isEmpty(wallets) || null == wallets.get(0)) {
+    		if (CollectionUtils.isEmpty(wallets)) {
     			return Collections.emptyMap();
     		}
     		Map<Integer, Integer> balanceMap = new HashMap<>(wallets.size());
@@ -228,9 +227,8 @@ public class WalletServiceImpl implements WalletService {
     public Integer getWalletBalance(Integer proxyId) {
     	Assert.notNull(proxyId, "查询数据为空");
     	try {
-    		Map<String, Object> map = new HashMap<>(2);
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
     		map.put("proxyId", proxyId);
-    		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
     		List<Wallet> wallets = walletMapper.listWalletBalance(map);
     		if (CollectionUtils.isEmpty(wallets) || null == wallets.get(0)) {
     			return 0;

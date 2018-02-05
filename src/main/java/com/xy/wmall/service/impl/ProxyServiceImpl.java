@@ -3,7 +3,6 @@ package com.xy.wmall.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.common.utils.ListPageUtils;
 import com.xy.wmall.enums.ErrorCodeEnum;
@@ -20,17 +20,17 @@ import com.xy.wmall.enums.OrderTypeEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.exception.WmallException;
 import com.xy.wmall.mapper.DeliverDetailMapper;
+import com.xy.wmall.mapper.DeliverFlowMapper;
 import com.xy.wmall.mapper.DeliverMapper;
 import com.xy.wmall.mapper.OrderDetailMapper;
 import com.xy.wmall.mapper.OrderMapper;
-import com.xy.wmall.mapper.DeliverFlowMapper;
 import com.xy.wmall.mapper.ProxyMapper;
 import com.xy.wmall.model.Deliver;
 import com.xy.wmall.model.DeliverDetail;
+import com.xy.wmall.model.DeliverFlow;
 import com.xy.wmall.model.Order;
 import com.xy.wmall.model.OrderDetail;
 import com.xy.wmall.model.Proxy;
-import com.xy.wmall.model.DeliverFlow;
 import com.xy.wmall.service.ProxyService;
 
 /**
@@ -88,9 +88,8 @@ public class ProxyServiceImpl implements ProxyService {
     public Proxy getProxyById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>(2);
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
     		map.put("id", id);
-    		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return proxyMapper.getProxy(map);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);

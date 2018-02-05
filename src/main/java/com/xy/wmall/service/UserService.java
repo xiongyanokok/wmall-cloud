@@ -81,6 +81,14 @@ public interface UserService {
     void batchUpdate(List<User> list);
     
     /**
+     * 根据用户
+     * 
+     * @param username
+     * @return
+     */
+    User getUserByUsername(String username);
+    
+    /**
      * 根据map查询
      * 
      * @param map

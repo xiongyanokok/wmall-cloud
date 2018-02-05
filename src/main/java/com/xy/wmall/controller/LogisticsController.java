@@ -1,7 +1,6 @@
 package com.xy.wmall.controller;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.WmallCache;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.HttpClientUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
@@ -152,11 +152,13 @@ public class LogisticsController extends BaseController {
 	@RequestMapping(value = "/add_edit", method = { RequestMethod.GET })
 	public String addOrEdit(Model model, Integer deliverId) {
 		Assert.notNull(deliverId, "deliverId为空");
+		// 物流公司列表
 		List<LogisticsCompany> logisticsCompanies = logisticsCompanyService.listLogisticsCompany();
 		model.addAttribute("logisticsCompanies", logisticsCompanies);
-		Map<String, Object> map = new HashMap<>(2);
+		
+		// 发货物流信息
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("deliverId", deliverId);
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		Logistics logistics = logisticsService.getLogistics(map);
 		if (null != logistics) {
 			model.addAttribute("logistics", logistics);
@@ -222,9 +224,8 @@ public class LogisticsController extends BaseController {
 	public String detail(Model model, Integer deliverId) {
 		Assert.notNull(deliverId, "deliverId为空");
 		// 发货物流信息
-		Map<String, Object> map = new HashMap<>(2);
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("deliverId", deliverId);
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		Logistics logistics = logisticsService.getLogistics(map);
 		Assert.notNull(logistics, "数据不存在");
 		logistics.setName(WmallCache.getLogisticsCompanyName(logistics.getCompanyId()));

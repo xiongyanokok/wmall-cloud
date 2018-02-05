@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.ListPageUtils;
 import com.xy.wmall.enums.ErrorCodeEnum;
-import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.exception.WmallException;
 import com.xy.wmall.mapper.UserProxyMapper;
 import com.xy.wmall.model.UserProxy;
@@ -58,9 +58,8 @@ public class UserProxyServiceImpl implements UserProxyService {
     public UserProxy getUserProxyById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>(2);
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
     		map.put("id", id);
-    		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return userProxyMapper.getUserProxy(map);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
@@ -205,7 +204,7 @@ public class UserProxyServiceImpl implements UserProxyService {
 	    	if (CollectionUtils.isEmpty(userProxies)) {
 	    		return Collections.emptyMap();
 	    	}
-	    	Map<Integer, Integer> userProxyMap = new HashMap<>();
+	    	Map<Integer, Integer> userProxyMap = new HashMap<>(userProxies.size());
 	    	for (UserProxy userProxy : userProxies) {
 	    		userProxyMap.put(userProxy.getProxyId(), userProxy.getUserId());
 	    	}

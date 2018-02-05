@@ -99,9 +99,9 @@ public interface DeliverService {
     /**
      * 待发货数量
      * 
-     * @param map
+     * @param proxyId
      * @return
      */
-    Integer countWaitDeliver(Map<String, Object> map);
+    Integer countWaitDeliver(Integer proxyId);
     
 }

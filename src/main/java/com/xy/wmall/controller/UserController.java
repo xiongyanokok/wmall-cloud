@@ -1,7 +1,6 @@
 package com.xy.wmall.controller;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.Md5Utils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Proxy;
@@ -60,9 +60,7 @@ public class UserController extends BaseController {
 	 */
 	@RequestMapping(value = "/list", method = { RequestMethod.GET })
 	public String list(Model model) {
-		Map<String, Object> map = new HashMap<>(1);
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
-		List<Role> roles = roleService.listRole(map);
+		List<Role> roles = roleService.listRole(CommonUtils.defaultQueryMap());
 		model.addAttribute("roles", roles);
 		return "user/list";
 	}
@@ -278,9 +276,7 @@ public class UserController extends BaseController {
 		model.addAttribute("userRole", userRole);
 		
 		// 查询角色列表
-		Map<String, Object> map = new HashMap<>(1);
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
-		List<Role> roles = roleService.listRole(map);
+		List<Role> roles = roleService.listRole(CommonUtils.defaultQueryMap());
 		model.addAttribute("roles", roles);
 		return "user/role";
 	}

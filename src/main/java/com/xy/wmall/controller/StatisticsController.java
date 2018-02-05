@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.utils.BeanUtils;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
@@ -69,8 +70,7 @@ public class StatisticsController extends BaseController {
 	@RequestMapping(value = "/query", method = { RequestMethod.POST })
 	@ResponseBody
 	public Map<String, Object> query() {
-		Map<String, Object> map = new HashMap<>();
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("natureMonth", request.getParameter("natureMonth"));
 		map.put("parentProxyId", getProxyId());
 		// 订单统计
@@ -81,27 +81,27 @@ public class StatisticsController extends BaseController {
 		// 合并
 		List<Statistics> list = BeanUtils.merge("productId", orderStatistics, purchaseStatistics);
 		// 发货到家统计
-		Map<Integer, Integer> deliverHomeStatisticsMap = new HashMap<>();
 		map.put("deliverStatus", TrueFalseStatusEnum.TRUE.getValue());
 		List<Statistics> deliverHomeStatistics = deliverService.deliverStatistics(map);
+		Map<Integer, Integer> deliverHomeStatisticsMap = new HashMap<>();
 		if (CollectionUtils.isNotEmpty(deliverHomeStatistics)) {
 			for (Statistics statistics : deliverHomeStatistics) {
 				deliverHomeStatisticsMap.put(statistics.getProductId(), statistics.getDeliverNumber());
 			}
 		}
 		// 老大发货统计
-		Map<Integer, Integer> deliverStatisticsMap = new HashMap<>();
 		map.remove("parentProxyId");
 		List<Statistics> deliverStatistics = deliverService.deliverStatistics(map);
+		Map<Integer, Integer> deliverStatisticsMap = new HashMap<>();
 		if (CollectionUtils.isNotEmpty(deliverStatistics)) {
 			for (Statistics statistics : deliverStatistics) {
 				deliverStatisticsMap.put(statistics.getProductId(), statistics.getDeliverNumber());
 			}
 		}
 		// 我的发货统计
-		Map<Integer, Integer> myDeliverStatisticsMap = new HashMap<>();
 		map.remove("deliverTypes");
 		List<Statistics> myDeliverStatistics = deliverService.deliverStatistics(map);
+		Map<Integer, Integer> myDeliverStatisticsMap = new HashMap<>();
 		if (CollectionUtils.isNotEmpty(myDeliverStatistics)) {
 			for (Statistics statistics : myDeliverStatistics) {
 				myDeliverStatisticsMap.put(statistics.getProductId(), statistics.getDeliverNumber());
@@ -117,8 +117,8 @@ public class StatisticsController extends BaseController {
 		if (CollectionUtils.isNotEmpty(list)) {
 			String productType = request.getParameter("productType");
 			if (StringUtils.isNotEmpty(productType)) {
-				Map<Integer, Integer> productMap = new HashMap<>();
 				List<Product> products = productService.listProduct();
+				Map<Integer, Integer> productMap = new HashMap<>(products.size());
 				for (Product product : products) {
 					productMap.put(product.getId(), product.getProductType());
 				}

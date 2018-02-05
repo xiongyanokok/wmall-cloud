@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
 import com.xy.wmall.enums.OrderTypeEnum;
@@ -183,9 +184,8 @@ public class PurchaseController extends BaseController {
 		Assert.notNull(order, "数据不存在");
 		model.addAttribute("order", order);
 		// 查询订单详情
-		Map<String, Object> map = new HashMap<>(2);
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("orderId", id);
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		List<OrderDetail> orderDetails = orderDetailService.listOrderDetail(map);
 		model.addAttribute("orderDetails", orderDetails);
 		List<Product> products = productService.listProduct();

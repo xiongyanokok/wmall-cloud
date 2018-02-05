@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.WmallCache;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.enums.OrderStatusEnum;
 import com.xy.wmall.enums.OrderTypeEnum;
@@ -149,7 +150,7 @@ public class OrderController extends BaseController {
 			// 数量
 			Integer amount = order.getAmount()[0];
 			// 产品价格
-			Map<String, Object> productPriceMap = new HashMap<>();
+			Map<String, Object> productPriceMap = new HashMap<>(2);
 			if (null != order.getOrderType() && OrderTypeEnum.RETAIL_ORDER.getValue().equals(order.getOrderType())) {
 				// 零售订单
 				BigDecimal unitPrice = WmallCache.getRetailPrice(productId);
@@ -161,13 +162,12 @@ public class OrderController extends BaseController {
 				Integer orderPrice = 0;
 				if (null != order.getIsAccumulate() && order.getIsAccumulate()) {
 					// 累计（查询自然月的产品总额）
-					Map<String, Object> map = new HashMap<>();
+					Map<String, Object> map = CommonUtils.defaultQueryMap();
 					map.put("productId", productId);
 					map.put("proxyId", order.getProxyId());
 					map.put("orderType", OrderTypeEnum.PROXY_ORDER.getValue());
 					map.put("isAccumulate", order.getIsAccumulate());
 					map.put("natureMonth", order.getNatureMonth());
-					map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 					List<Statistics> list = orderService.orderStatistics(map);
 					if (CollectionUtils.isNotEmpty(list)) {
 						Statistics statistics = list.get(0);
@@ -237,6 +237,7 @@ public class OrderController extends BaseController {
 			order.setOrderType(OrderTypeEnum.PROXY_ORDER.getValue()); 
 		} else {
 			// 零售订单
+			order.setProxyId(getProxyId());
 			order.setIsAccumulate(TrueFalseStatusEnum.FALSE.getValue());
 			order.setOrderType(OrderTypeEnum.RETAIL_ORDER.getValue()); 
 		}
@@ -272,8 +273,7 @@ public class OrderController extends BaseController {
 		Assert.notNull(order, "数据不存在");
 		model.addAttribute("order", order);
 		// 查询订单详情
-		Map<String, Object> map = new HashMap<>();
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("orderId", id);
 		List<OrderDetail> orderDetails = orderDetailService.listOrderDetail(map);
 		model.addAttribute("orderDetails", orderDetails);
@@ -341,8 +341,7 @@ public class OrderController extends BaseController {
 		Assert.notNull(order, "数据不存在");
 		model.addAttribute("order", order);
 		// 查询订单详情
-		Map<String, Object> map = new HashMap<>();
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("orderId", id);
 		List<OrderDetail> orderDetails = orderDetailService.listOrderDetail(map);
 		model.addAttribute("orderDetails", orderDetails);

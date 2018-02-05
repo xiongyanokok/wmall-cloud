@@ -36,6 +36,11 @@ public final class Constant {
 	 * 响应数据
 	 */
 	public static final String DEFAULT_DATA = "data";
+	
+	/**
+	 * 删除标记
+	 */
+	public static final String ISDELETE = "isDelete";
 
 	/**
 	 * session key

@@ -1,20 +1,20 @@
 package com.xy.wmall.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.utils.CommonUtils;
+import com.xy.wmall.common.utils.ListPageUtils;
 import com.xy.wmall.enums.ErrorCodeEnum;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
-import com.xy.wmall.common.Assert;
 import com.xy.wmall.exception.WmallException;
 import com.xy.wmall.mapper.MenuMapper;
 import com.xy.wmall.model.Menu;
 import com.xy.wmall.service.MenuService;
-import com.xy.wmall.common.utils.ListPageUtils;
 
 /**
  * Service 实现
@@ -56,9 +56,8 @@ public class MenuServiceImpl implements MenuService {
     public Menu getMenuById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>(2);
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
     		map.put("id", id);
-    		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return menuMapper.getMenu(map);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);

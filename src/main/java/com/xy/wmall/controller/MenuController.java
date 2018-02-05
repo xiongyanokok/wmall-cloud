@@ -1,7 +1,6 @@
 package com.xy.wmall.controller;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Menu;
@@ -59,9 +59,8 @@ public class MenuController extends BaseController {
 	public String subList(Model model, Integer parentId) {
 		Assert.notNull(parentId, "parentId为空");
 		model.addAttribute("parentId", parentId);
-		Map<String, Object> map = new HashMap<>(2);
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("parentId", 0);
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		List<Menu> menus = menuService.listMenu(map);
 		model.addAttribute("menus", menus);
 		model.addAttribute("menusJson", JacksonUtils.serialize(menus));

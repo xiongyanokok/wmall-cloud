@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.WmallCache;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.common.utils.JacksonUtils;
 import com.xy.wmall.enums.DeliverTypeEnum;
@@ -155,11 +156,11 @@ public class DeliverController extends BaseController {
 			// 发货类型
 			String deliverType = request.getParameter("deliverType");
 			if (StringUtils.isNotEmpty(deliverType)) {
+				map.put("proxyId", getProxyId()); 
 				if (DeliverTypeEnum.MY_DELIVER.getValue().equals(deliverType)) {
-					map.put("proxyId", getProxyId()); 
 					map.put("parentProxyId", getParentProxyId());
-				} else if (DeliverTypeEnum.RETAIL_DELIVER.getValue().equals(deliverType)) {
-					map.put("proxyId", 0);
+				} else if (DeliverTypeEnum.PROXY_DELIVER.getValue().equals(deliverType)) {
+					map.put("deliverType", deliverType); 
 				}
 			}
 			// 产品id
@@ -186,7 +187,7 @@ public class DeliverController extends BaseController {
 				deliverIds.add(deliver.getId());
 			}
 			// 查询发货单详情
-			Map<String, Object> detailMap = new HashMap<>();
+			Map<String, Object> detailMap = new HashMap<>(1);
 			detailMap.put("deliverIds", deliverIds);
 			List<DeliverDetail> deliverDetails = deliverDetailService.listDeliverDetail(detailMap);
 			for (Deliver deliver : delivers) {
@@ -257,8 +258,8 @@ public class DeliverController extends BaseController {
 		Assert.notNull(deliver, id + "不存在");
 		model.addAttribute("deliver", deliver);
 		// 查询发货详情
-		Map<String, Object> map = new HashMap<>();
-		map.put("deliverId", id);
+		Map<String, Object> map = new HashMap<>(1);
+		map.put("deliverId", deliver.getId());
 		List<DeliverDetail> deliverDetails = deliverDetailService.listDeliverDetail(map);
 		model.addAttribute("deliverDetails", deliverDetails);
 		List<Product> products = productService.listProduct();
@@ -364,20 +365,22 @@ public class DeliverController extends BaseController {
 	@RequestMapping(value = "/detail", method = { RequestMethod.GET })
 	public String detail(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
+		// 查询发货信息
 		Deliver deliver = deliverService.getDeliverById(id);
 		Assert.notNull(deliver, "数据不存在");
 		model.addAttribute("deliver", deliver);
 		
-		// 查询发货详情
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("deliverId", id);
+		// 查询发货详情
 		List<DeliverDetail> deliverDetails = deliverDetailService.listDeliverDetail(map);
 		model.addAttribute("deliverDetails", deliverDetails);
+		
+		// 产品列表
 		List<Product> products = productService.listProduct();
 		model.addAttribute("products", products);
 		
 		// 发货物流信息
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 		Logistics logistics = logisticsService.getLogistics(map);
 		if (null != logistics) {
 			logistics.setName(WmallCache.getLogisticsCompanyName(logistics.getCompanyId()));
@@ -391,8 +394,7 @@ public class DeliverController extends BaseController {
 	 */
 	@RequestMapping(value = "/export", method = { RequestMethod.GET })
 	public void export() {
-		Map<String, Object> map = new HashMap<>();
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		// 代理id
 		String proxyId = request.getParameter("proxyId");
 		map.put("proxyId", proxyId); 
@@ -421,7 +423,7 @@ public class DeliverController extends BaseController {
 			deliverIds.add(deliver.getId());
 		}
 		// 查询发货单详情
-		Map<String, Object> detailMap = new HashMap<>();
+		Map<String, Object> detailMap = new HashMap<>(1);
 		detailMap.put("deliverIds", deliverIds);
 		List<DeliverDetail> deliverDetails = deliverDetailService.listDeliverDetail(detailMap);
 		// 查询快递信息
@@ -548,8 +550,8 @@ public class DeliverController extends BaseController {
 		createTitle(workbook, sheet);
 		
 		// 产品信息
-		Map<Integer, String> productMap = new HashMap<>();
 		List<Product> products = productService.listProduct();
+		Map<Integer, String> productMap = new HashMap<>(products.size());
 		for (Product product : products) {
 			productMap.put(product.getId(), product.getProductName());
 		}

@@ -2,7 +2,6 @@ package com.xy.wmall.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Menu;
 import com.xy.wmall.model.Role;
@@ -178,8 +178,8 @@ public class RoleController extends BaseController {
 		List<Integer> menuIds = roleMenuService.listMenuByRole(roleId);
 		
 		// 查询权限列表
-		Map<String, Object> map = new HashMap<>(1);
-		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
+		map.put("orderBy", "sort, create_time");
 		List<Menu> menus = menuService.listMenu(map);
 		if (CollectionUtils.isNotEmpty(menus) && CollectionUtils.isNotEmpty(menuIds)) {
 			for (Menu menu : menus) {

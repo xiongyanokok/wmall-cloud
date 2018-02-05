@@ -39,6 +39,17 @@ public class VerifyCodeUtils{
 	 * Random
 	 */
 	private static Random random = new Random();
+	
+	/**
+	 * 干扰线条个数
+	 */
+	private static int length = 20;
+	
+	/**
+	 * 颜色值
+	 */
+	private static int color = 255;
+	
 
 	/**
 	 * 使用系统默认字符源生成验证码
@@ -158,7 +169,7 @@ public class VerifyCodeUtils{
 		Random random = new Random();
 		// 设置线条的颜色
 		g2.setColor(getRandColor(160, 200));
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < length; i++) {
 			int x = random.nextInt(w - 1);
 			int y = random.nextInt(h - 1);
 			int xl = random.nextInt(6) + 1;
@@ -196,11 +207,11 @@ public class VerifyCodeUtils{
 	}
 	
 	private static Color getRandColor(int fc, int bc) {
-		if (fc > 255) {
-			fc = 255;
+		if (fc > color) {
+			fc = color;
 		}
-		if (bc > 255) {
-			bc = 255;
+		if (bc > color) {
+			bc = color;
 		}
 		int r = fc + random.nextInt(bc - fc);
 		int g = fc + random.nextInt(bc - fc);
@@ -220,7 +231,7 @@ public class VerifyCodeUtils{
 	
 	private static int[] getRandomRgb() {
 		int[] rgb = new int[3];
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < rgb.length; i++) {
 			rgb[i] = random.nextInt(255);
 		}
 		return rgb;

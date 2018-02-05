@@ -220,7 +220,12 @@
     			and t1.id = #{id}
   			</if>
   			<if test="proxyId != null">
-    			and t3.proxy_id = #{proxyId}
+  				<if test="deliverType == null">
+	    			and t3.proxy_id = #{proxyId}
+  				</if>
+  				<if test="deliverType != null">
+	    			<![CDATA[ and t3.proxy_id <> #{proxyId} ]]>
+  				</if>
   			</if>
   			<if test="parentProxyId != null">
     			and t3.parent_proxy_id = #{parentProxyId}
@@ -371,7 +376,7 @@
   	</select>
   	
   	<!-- 待发货数量 -->
-  	<select id="countWaitDeliver" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	<select id="countWaitDeliver" resultType="java.lang.Integer" parameterType="java.lang.Integer">
   		select 
   			count(t1.id) 
   		from t_deliver t1, t_deliver_flow t2
@@ -379,9 +384,7 @@
   			t1.id = t2.deliver_id
   			and t1.is_delete = 0 
   			and t1.deliver_status = 0
-  			<if test="parentProxyId != null">
-        		and t2.parent_proxy_id = #{parentProxyId}
-        	</if>
+        	and t2.parent_proxy_id = #{proxyId}
   		</where>
   	</select>
   	

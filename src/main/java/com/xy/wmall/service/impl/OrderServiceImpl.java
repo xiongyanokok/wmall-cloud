@@ -3,7 +3,6 @@ package com.xy.wmall.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.ListPageUtils;
 import com.xy.wmall.enums.ArithmeticTypeEnum;
 import com.xy.wmall.enums.ErrorCodeEnum;
@@ -90,9 +90,8 @@ public class OrderServiceImpl implements OrderService {
     public Order getOrderById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>(2);
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
     		map.put("id", id);
-    		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return orderMapper.getOrder(map);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
@@ -275,11 +274,10 @@ public class OrderServiceImpl implements OrderService {
 			orderDetailMapper.batchInsert(orderDetails);
 			
 			// 根据订单id查询钱包支出
-			Map<String, Object> map = new HashMap<>(4);
+			Map<String, Object> map = CommonUtils.defaultQueryMap();
 			map.put("proxyId", order.getProxyId());
 			map.put("orderId", order.getId());
 			map.put("type", WalletTypeEnum.EXPENDITURE.getValue());
-			map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 			Wallet wallet = walletService.getWallet(map);
 			if (null != wallet) {
 				Integer price = order.getOrderPrice() - wallet.getPrice();

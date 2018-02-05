@@ -2,7 +2,6 @@ package com.xy.wmall.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.ListPageUtils;
 import com.xy.wmall.enums.ErrorCodeEnum;
 import com.xy.wmall.enums.FlowStatusEnum;
@@ -70,9 +70,8 @@ public class DeliverServiceImpl implements DeliverService {
     public Deliver getDeliverById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>(2);
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
     		map.put("id", id);
-    		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return deliverMapper.getDeliver(map);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
@@ -280,15 +279,15 @@ public class DeliverServiceImpl implements DeliverService {
     /**
      * 待发货数量
      * 
-     * @param map
+     * @param parentProxyId
      * @return
      */
     @Override
-    public Integer countWaitDeliver(Map<String, Object> map) {
+    public Integer countWaitDeliver(Integer proxyId) {
     	try {
-	    	return deliverMapper.countWaitDeliver(map);
+	    	return deliverMapper.countWaitDeliver(proxyId);
 		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询待发货失败", e);
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + proxyId + "】查询待发货失败", e);
 		}
     }
     
