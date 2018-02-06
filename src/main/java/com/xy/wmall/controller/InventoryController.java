@@ -349,6 +349,7 @@ public class InventoryController extends BaseController {
 		Assert.notNull(proxyId, "proxyId为空");
 		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("proxyId", proxyId);
+		map.put("parentProxyId", getProxyId());
 		// 订单统计
 		List<Statistics> orderStatistics = orderService.orderStatistics(map);
 		// 发货统计
@@ -390,7 +391,6 @@ public class InventoryController extends BaseController {
 		map.put("parentProxyId", getParentProxyId());
 		List<Statistics> purchaseStatistics = orderService.purchaseStatistics(map);
 		// 老大发货统计
-		map.remove("parentProxyId");
 		map.put("deliverStatus", TrueFalseStatusEnum.TRUE.getValue());
 		List<Statistics> deliverStatistics = deliverService.deliverStatistics(map);
 		// 合并
