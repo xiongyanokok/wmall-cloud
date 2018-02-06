@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +20,8 @@ import com.xy.wmall.model.Product;
 import com.xy.wmall.service.PriceService;
 import com.xy.wmall.service.ProductService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -30,12 +30,8 @@ import com.xy.wmall.service.ProductService;
  */
 @Controller
 @RequestMapping(value = "/admin/price", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class PriceController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(PriceController.class);
 
     @Autowired
 	private PriceService priceService;
@@ -105,7 +101,7 @@ public class PriceController extends BaseController {
 		price.setUpdateTime(new Date());
 		price.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		priceService.save(price);
-		logger.info("【{}】保存成功", price);
+		log.info("【{}】保存成功", price);
 		// 更新价格缓存
 		WmallCache.putPrice(price);
 		return buildSuccess("保存成功");
@@ -145,7 +141,7 @@ public class PriceController extends BaseController {
 		price.setUpdateUserId(getUserId());
 		price.setUpdateTime(new Date());
 		priceService.update(price);
-		logger.info("【{}】修改成功", price);
+		log.info("【{}】修改成功", price);
 		// 更新价格缓存
 		if (!price.getAmount().equals(priceInfo.getAmount())) {
 			WmallCache.removePrice(priceInfo);
@@ -167,7 +163,7 @@ public class PriceController extends BaseController {
 		Price price = priceService.getPriceById(id);
 		Assert.notNull(price, "数据不存在");
 		priceService.remove(price);
-		logger.info("【{}】删除成功", price);
+		log.info("【{}】删除成功", price);
 		// 删除价格缓存
 		WmallCache.removePrice(price);
 		return buildSuccess("删除成功");

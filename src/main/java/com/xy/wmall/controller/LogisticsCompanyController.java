@@ -3,8 +3,6 @@ package com.xy.wmall.controller;
 import java.util.Date;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +16,8 @@ import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.LogisticsCompany;
 import com.xy.wmall.service.LogisticsCompanyService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -26,12 +26,8 @@ import com.xy.wmall.service.LogisticsCompanyService;
  */
 @Controller
 @RequestMapping(value = "/admin/logisticscompany", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class LogisticsCompanyController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(LogisticsCompanyController.class);
 
     @Autowired
 	private LogisticsCompanyService logisticsCompanyService;
@@ -89,7 +85,7 @@ public class LogisticsCompanyController extends BaseController {
 		logisticsCompany.setUpdateTime(new Date());
 		logisticsCompany.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		logisticsCompanyService.save(logisticsCompany);
-		logger.info("【{}】保存成功", logisticsCompany);
+		log.info("【{}】保存成功", logisticsCompany);
 		// 更新物流公司缓存
 		WmallCache.putLogisticsCompany(logisticsCompany);
 		return buildSuccess("保存成功");
@@ -126,7 +122,7 @@ public class LogisticsCompanyController extends BaseController {
 		logisticsCompany.setUpdateUserId(getUserId());
 		logisticsCompany.setUpdateTime(new Date());
 		logisticsCompanyService.update(logisticsCompany);
-		logger.info("【{}】修改成功", logisticsCompany);
+		log.info("【{}】修改成功", logisticsCompany);
 		// 更新物流公司缓存
 		WmallCache.putLogisticsCompany(logisticsCompany);
 		return buildSuccess("修改成功");
@@ -145,7 +141,7 @@ public class LogisticsCompanyController extends BaseController {
 		LogisticsCompany logisticsCompany = logisticsCompanyService.getLogisticsCompanyById(id);
 		Assert.notNull(logisticsCompany, "数据不存在");
 		logisticsCompanyService.remove(logisticsCompany);
-		logger.info("【{}】删除成功", logisticsCompany);
+		log.info("【{}】删除成功", logisticsCompany);
 		// 删除物流公司缓存
 		WmallCache.removeLogisticsCompany(id);
 		return buildSuccess("删除成功");

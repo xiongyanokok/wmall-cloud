@@ -10,8 +10,6 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +34,8 @@ import com.xy.wmall.service.ProductService;
 import com.xy.wmall.service.ProxyService;
 import com.xy.wmall.service.WalletService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -44,12 +44,8 @@ import com.xy.wmall.service.WalletService;
  */
 @Controller
 @RequestMapping(value = "/admin/inventory", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class InventoryController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(InventoryController.class);
 
     @Autowired
 	private InventoryService inventoryService;
@@ -172,7 +168,7 @@ public class InventoryController extends BaseController {
 		inventory.setUpdateTime(new Date());
 		inventory.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		inventoryService.save(inventory);
-		logger.info("【{}】代理对货成功", inventory);
+		log.info("【{}】代理对货成功", inventory);
 		return buildSuccess("保存成功");
 	}
 	
@@ -236,7 +232,7 @@ public class InventoryController extends BaseController {
 		inventory.setUpdateTime(new Date());
 		inventory.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		inventoryService.save(inventory);
-		logger.info("【{}】老大对货成功", inventory);
+		log.info("【{}】老大对货成功", inventory);
 		return buildSuccess("保存成功");
 	}
 	
@@ -271,7 +267,7 @@ public class InventoryController extends BaseController {
 		inventory.setUpdateUserId(getUserId());
 		inventory.setUpdateTime(new Date());
 		inventoryService.update(inventory);
-		logger.info("【{}】修改成功", inventory);
+		log.info("【{}】修改成功", inventory);
 		return buildSuccess("修改成功");
 	}
 	
@@ -288,7 +284,7 @@ public class InventoryController extends BaseController {
 		Inventory inventory = inventoryService.getInventoryById(id);
 		Assert.notNull(inventory, "数据不存在");
 		inventoryService.remove(inventory);
-		logger.info("【{}】删除成功", inventory);
+		log.info("【{}】删除成功", inventory);
 		return buildSuccess("删除成功");
 	}
 	

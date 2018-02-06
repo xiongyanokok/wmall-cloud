@@ -3,8 +3,6 @@ package com.xy.wmall.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +17,8 @@ import com.xy.wmall.service.DeliverService;
 import com.xy.wmall.service.ProductService;
 import com.xy.wmall.service.WalletService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -27,12 +27,8 @@ import com.xy.wmall.service.WalletService;
  */
 @Controller
 @RequestMapping(value = "/admin/home", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class HomeController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
 	private ProductService productService;
@@ -88,10 +84,10 @@ public class HomeController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> backup() {
 		if (backupService.backup()) {
-			logger.info("数据库备份成功");
+			log.info("数据库备份成功");
 			return buildSuccess("备份成功");
 		} else {
-			logger.info("数据库备份失败");
+			log.info("数据库备份失败");
 			return buildFail("备份失败");
 		}
 	}

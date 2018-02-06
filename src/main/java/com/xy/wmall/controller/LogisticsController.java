@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -30,6 +28,8 @@ import com.xy.wmall.service.DeliverService;
 import com.xy.wmall.service.LogisticsCompanyService;
 import com.xy.wmall.service.LogisticsService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -38,12 +38,8 @@ import com.xy.wmall.service.LogisticsService;
  */
 @Controller
 @RequestMapping(value = "/admin/logistics", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class LogisticsController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(LogisticsController.class);
 
     @Autowired
 	private LogisticsService logisticsService;
@@ -105,7 +101,7 @@ public class LogisticsController extends BaseController {
 		logistics.setUpdateTime(new Date());
 		logistics.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		logisticsService.save(logistics);
-		logger.info("【{}】保存成功", logistics);
+		log.info("【{}】保存成功", logistics);
 		// 立即发货
 		deliver(logistics.getDeliverId());
 		return buildSuccess("保存成功");
@@ -123,7 +119,7 @@ public class LogisticsController extends BaseController {
 		deliver.setUpdateUserId(getUserId());
 		deliver.setUpdateTime(new Date());
 		deliverService.status(deliver);
-		logger.info("【{}】发货成功", deliver);
+		log.info("【{}】发货成功", deliver);
 	}
 	
 	/**
@@ -184,7 +180,7 @@ public class LogisticsController extends BaseController {
 		logistics.setUpdateUserId(getUserId());
 		logistics.setUpdateTime(new Date());
 		logisticsService.update(logistics);
-		logger.info("【{}】修改成功", logistics);
+		log.info("【{}】修改成功", logistics);
 		// 立即发货
 		deliver(logisticsInfo.getDeliverId());
 		return buildSuccess("修改成功");
@@ -203,7 +199,7 @@ public class LogisticsController extends BaseController {
 		Logistics logistics = logisticsService.getLogisticsById(id);
 		Assert.notNull(logistics, "数据不存在");
 		logisticsService.remove(logistics);
-		logger.info("【{}】删除成功", logistics);
+		log.info("【{}】删除成功", logistics);
 		return buildSuccess("删除成功");
 	}
 	

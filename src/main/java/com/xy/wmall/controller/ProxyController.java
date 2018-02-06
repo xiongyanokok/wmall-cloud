@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +29,8 @@ import com.xy.wmall.service.UserProxyService;
 import com.xy.wmall.service.VerifyCodeService;
 import com.xy.wmall.service.WalletService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -39,12 +39,8 @@ import com.xy.wmall.service.WalletService;
  */
 @Controller
 @RequestMapping(value = "/admin/proxy", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class ProxyController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(ProxyController.class);
 
     @Autowired
 	private ProxyService proxyService;
@@ -173,7 +169,7 @@ public class ProxyController extends BaseController {
 		proxy.setUpdateTime(new Date());
 		proxy.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		proxyService.save(proxy);
-		logger.info("【{}】保存成功", proxy);
+		log.info("【{}】保存成功", proxy);
 		return buildSuccess("保存成功");
 	}
 	
@@ -208,7 +204,7 @@ public class ProxyController extends BaseController {
 		proxy.setUpdateUserId(getUserId());
 		proxy.setUpdateTime(new Date());
 		proxyService.update(proxy);
-		logger.info("【{}】修改成功", proxy);
+		log.info("【{}】修改成功", proxy);
 		return buildSuccess("修改成功");
 	}
 	
@@ -225,7 +221,7 @@ public class ProxyController extends BaseController {
 		Proxy proxy = proxyService.getProxyById(id);
 		Assert.notNull(proxy, "数据不存在");
 		proxyService.remove(proxy);
-		logger.info("【{}】删除成功", proxy);
+		log.info("【{}】删除成功", proxy);
 		return buildSuccess("删除成功");
 	}
 	

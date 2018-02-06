@@ -3,8 +3,6 @@ package com.xy.wmall.controller;
 import java.util.Date;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +15,8 @@ import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.ProxyLevel;
 import com.xy.wmall.service.ProxyLevelService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -25,12 +25,8 @@ import com.xy.wmall.service.ProxyLevelService;
  */
 @Controller
 @RequestMapping(value = "/admin/proxylevel", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class ProxyLevelController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(ProxyLevelController.class);
 
     @Autowired
 	private ProxyLevelService proxyLevelService;
@@ -86,7 +82,7 @@ public class ProxyLevelController extends BaseController {
 		proxyLevel.setUpdateTime(new Date());
 		proxyLevel.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		proxyLevelService.save(proxyLevel);
-		logger.info("【{}】保存成功", proxyLevel);
+		log.info("【{}】保存成功", proxyLevel);
 		return buildSuccess("保存成功");
 	}
 	
@@ -121,7 +117,7 @@ public class ProxyLevelController extends BaseController {
 		proxyLevel.setUpdateUserId(getUserId());
 		proxyLevel.setUpdateTime(new Date());
 		proxyLevelService.update(proxyLevel);
-		logger.info("【{}】修改成功", proxyLevel);
+		log.info("【{}】修改成功", proxyLevel);
 		return buildSuccess("修改成功");
 	}
 	
@@ -138,7 +134,7 @@ public class ProxyLevelController extends BaseController {
 		ProxyLevel proxyLevel = proxyLevelService.getProxyLevelById(id);
 		Assert.notNull(proxyLevel, "数据不存在");
 		proxyLevelService.remove(proxyLevel);
-		logger.info("【{}】删除成功", proxyLevel);
+		log.info("【{}】删除成功", proxyLevel);
 		return buildSuccess("删除成功");
 	}
 	

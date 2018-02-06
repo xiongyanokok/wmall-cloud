@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +24,8 @@ import com.xy.wmall.service.RoleService;
 import com.xy.wmall.service.UserRoleService;
 import com.xy.wmall.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -34,12 +34,8 @@ import com.xy.wmall.service.UserService;
  */
 @Controller
 @RequestMapping(value = "/admin/user", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class UserController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
 	private UserService userService;
@@ -110,7 +106,7 @@ public class UserController extends BaseController {
 		user.setUpdateTime(new Date());
 		user.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		userService.save(user);
-		logger.info("【{}】保存成功", user);
+		log.info("【{}】保存成功", user);
 		return buildSuccess("保存成功");
 	}
 	
@@ -144,7 +140,7 @@ public class UserController extends BaseController {
 		Assert.notNull(userInfo, "数据不存在");
 		user.setUpdateTime(new Date());
 		userService.update(user);
-		logger.info("【{}】修改成功", user);
+		log.info("【{}】修改成功", user);
 		return buildSuccess("修改成功");
 	}
 	
@@ -161,7 +157,7 @@ public class UserController extends BaseController {
 		User user = userService.getUserById(id);
 		Assert.notNull(user, "数据不存在");
 		userService.remove(user);
-		logger.info("【{}】删除成功", user);
+		log.info("【{}】删除成功", user);
 		return buildSuccess("删除成功");
 	}
 	
@@ -207,17 +203,17 @@ public class UserController extends BaseController {
 		User user = userService.getUserById(getUserId());
 		Assert.notNull(user, "用户不存在");
 		if (!user.getPassword().equals(Md5Utils.md5(oldPassword))) {
-			logger.error("当前密码错误：密码【{}】", oldPassword);
+			log.error("当前密码错误：密码【{}】", oldPassword);
 			return buildFail("当前密码错误");
 		}
 		if (oldPassword.equals(newPassword)) {
-			logger.error("新密码不能和旧密码一致：新密码【{}】， 旧密码【{}】", newPassword, oldPassword);
+			log.error("新密码不能和旧密码一致：新密码【{}】， 旧密码【{}】", newPassword, oldPassword);
 			return buildFail("密码不能一致");
 		}
 		// 修改密码
 		user.setPassword(Md5Utils.md5(newPassword));
 		userService.update(user);
-		logger.info("【{}】修改密码成功", user);
+		log.info("【{}】修改密码成功", user);
 		return buildSuccess("密码修改成功");
 	}
 	
@@ -235,7 +231,7 @@ public class UserController extends BaseController {
 		Assert.notNull(user, "数据不存在");
 		user.setDisabled(TrueFalseStatusEnum.TRUE.getValue());
 		userService.update(user);
-		logger.info("【{}】禁用成功", user);
+		log.info("【{}】禁用成功", user);
 		return buildSuccess("禁用成功");
 	}
 	
@@ -253,7 +249,7 @@ public class UserController extends BaseController {
 		Assert.notNull(user, "数据不存在");
 		user.setDisabled(TrueFalseStatusEnum.FALSE.getValue());
 		userService.update(user);
-		logger.info("【{}】启用成功", user);
+		log.info("【{}】启用成功", user);
 		return buildSuccess("启用成功");
 	}
 	
@@ -297,7 +293,7 @@ public class UserController extends BaseController {
 		userRole.setId(id);
 		userRole.setRoleId(roleId);
 		userRoleService.update(userRole);
-		logger.info("【{}】角色分配成功", userRole);
+		log.info("【{}】角色分配成功", userRole);
 		return buildSuccess("角色分配成功");
 	}
 	

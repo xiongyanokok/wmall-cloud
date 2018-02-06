@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +34,8 @@ import com.xy.wmall.service.ProductService;
 import com.xy.wmall.service.ProxyService;
 import com.xy.wmall.service.WalletService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -44,12 +44,8 @@ import com.xy.wmall.service.WalletService;
  */
 @Controller
 @RequestMapping(value = "/admin/order", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class OrderController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
 	private OrderService orderService;
@@ -255,7 +251,7 @@ public class OrderController extends BaseController {
 		order.setUpdateTime(new Date());
 		order.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		orderService.save(order);
-		logger.info("【{}】保存成功", order);
+		log.info("【{}】保存成功", order);
 		return buildSuccess("保存成功");
 	}
 	
@@ -306,7 +302,7 @@ public class OrderController extends BaseController {
 		order.setUpdateUserId(getUserId());
 		order.setUpdateTime(new Date());
 		orderService.update(order);
-		logger.info("【{}】修改成功", order);
+		log.info("【{}】修改成功", order);
 		return buildSuccess("修改成功");
 	}
 	
@@ -323,7 +319,7 @@ public class OrderController extends BaseController {
 		Order order = orderService.getOrderById(id);
 		Assert.notNull(order, "数据不存在");
 		orderService.remove(order);
-		logger.info("【{}】删除成功", order);
+		log.info("【{}】删除成功", order);
 		return buildSuccess("删除成功");
 	}
 	
@@ -392,7 +388,7 @@ public class OrderController extends BaseController {
 		order.setUpdateTime(new Date());
 		order.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		orderService.saveCorrect(order);
-		logger.info("【{}】更正订单成功", order);
+		log.info("【{}】更正订单成功", order);
 		return buildSuccess("保存成功");
 	}
 	

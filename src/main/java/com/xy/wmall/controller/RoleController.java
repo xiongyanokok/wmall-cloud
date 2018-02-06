@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +23,8 @@ import com.xy.wmall.service.MenuService;
 import com.xy.wmall.service.RoleMenuService;
 import com.xy.wmall.service.RoleService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -33,12 +33,8 @@ import com.xy.wmall.service.RoleService;
  */
 @Controller
 @RequestMapping(value = "/admin/role", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class RoleController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(RoleController.class);
 
     @Autowired
 	private RoleService roleService;
@@ -104,7 +100,7 @@ public class RoleController extends BaseController {
 		role.setUpdateTime(new Date());
 		role.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		roleService.save(role);
-		logger.info("【{}】保存成功", role);
+		log.info("【{}】保存成功", role);
 		return buildSuccess("保存成功");
 	}
 	
@@ -139,7 +135,7 @@ public class RoleController extends BaseController {
 		role.setUpdateUserId(getUserId());
 		role.setUpdateTime(new Date());
 		roleService.update(role);
-		logger.info("【{}】修改成功", role);
+		log.info("【{}】修改成功", role);
 		return buildSuccess("修改成功");
 	}
 	
@@ -156,7 +152,7 @@ public class RoleController extends BaseController {
 		Role role = roleService.getRoleById(id);
 		Assert.notNull(role, "数据不存在");
 		roleService.remove(role);
-		logger.info("【{}】删除成功", role);
+		log.info("【{}】删除成功", role);
 		return buildSuccess("删除成功");
 	}
 	

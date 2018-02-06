@@ -19,8 +19,6 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,6 +47,8 @@ import com.xy.wmall.service.LogisticsService;
 import com.xy.wmall.service.ProductService;
 import com.xy.wmall.service.ProxyService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -57,12 +57,8 @@ import com.xy.wmall.service.ProxyService;
  */
 @Controller
 @RequestMapping(value = "/admin/deliver", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class DeliverController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(DeliverController.class);
 
     @Autowired
 	private DeliverService deliverService;
@@ -240,7 +236,7 @@ public class DeliverController extends BaseController {
 		deliver.setUpdateTime(new Date());
 		deliver.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		deliverService.save(deliver);
-		logger.info("【{}】保存成功", deliver);
+		log.info("【{}】保存成功", deliver);
 		return buildSuccess("保存成功");
 	}
 	
@@ -282,7 +278,7 @@ public class DeliverController extends BaseController {
 		deliver.setUpdateUserId(getUserId());
 		deliver.setUpdateTime(new Date());
 		deliverService.update(deliver);
-		logger.info("【{}】修改成功", deliver);
+		log.info("【{}】修改成功", deliver);
 		return buildSuccess("修改成功");
 	}
 	
@@ -299,7 +295,7 @@ public class DeliverController extends BaseController {
 		Deliver deliver = deliverService.getDeliverById(id);
 		Assert.notNull(deliver, "数据不存在");
 		deliverService.remove(deliver);
-		logger.info("【{}】删除成功", deliver);
+		log.info("【{}】删除成功", deliver);
 		return buildSuccess("删除成功");
 	}
 	
@@ -328,7 +324,7 @@ public class DeliverController extends BaseController {
 		flow.setFlowStatus(FlowStatusEnum.HANDLE.getValue());
 		flow.setCreateTime(new Date());
 		deliverFlowService.save(flow);
-		logger.info("【{}】上报成功", flow);
+		log.info("【{}】上报成功", flow);
 		return buildSuccess("上报成功");
 	}
 	
@@ -351,7 +347,7 @@ public class DeliverController extends BaseController {
 		deliver.setUpdateUserId(getUserId());
 		deliver.setUpdateTime(new Date());
 		deliverService.status(deliver);
-		logger.info("【{}】撤销发货成功", deliver);
+		log.info("【{}】撤销发货成功", deliver);
 		return buildSuccess("撤销发货成功");
 	}
 	
@@ -612,7 +608,7 @@ public class DeliverController extends BaseController {
 			// 输出
 			workbook.write(out);
 		} catch (Exception e) {
-			logger.error("导出excel失败：", e);
+			log.error("导出excel失败：", e);
 		}
 	}
 }

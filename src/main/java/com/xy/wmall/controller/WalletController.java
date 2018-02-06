@@ -3,8 +3,6 @@ package com.xy.wmall.controller;
 import java.util.Date;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +18,8 @@ import com.xy.wmall.model.Wallet;
 import com.xy.wmall.service.ProxyService;
 import com.xy.wmall.service.WalletService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -28,12 +28,8 @@ import com.xy.wmall.service.WalletService;
  */
 @Controller
 @RequestMapping(value = "/admin/wallet", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class WalletController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(WalletController.class);
 
     @Autowired
 	private WalletService walletService;
@@ -126,7 +122,7 @@ public class WalletController extends BaseController {
 		wallet.setUpdateTime(new Date());
 		wallet.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		walletService.save(wallet);
-		logger.info("【{}】保存成功", wallet);
+		log.info("【{}】保存成功", wallet);
 		return buildSuccess("保存成功");
 	}
 	
@@ -164,7 +160,7 @@ public class WalletController extends BaseController {
 		wallet.setUpdateUserId(getUserId());
 		wallet.setUpdateTime(new Date());
 		walletService.update(wallet);
-		logger.info("【{}】修改成功", wallet);
+		log.info("【{}】修改成功", wallet);
 		return buildSuccess("修改成功");
 	}
 	
@@ -181,7 +177,7 @@ public class WalletController extends BaseController {
 		Wallet wallet = walletService.getWalletById(id);
 		Assert.notNull(wallet, "数据不存在");
 		walletService.remove(wallet);
-		logger.info("【{}】删除成功", wallet);
+		log.info("【{}】删除成功", wallet);
 		return buildSuccess("删除成功");
 	}
 	

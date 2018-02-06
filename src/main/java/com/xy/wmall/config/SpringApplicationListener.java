@@ -1,7 +1,5 @@
 package com.xy.wmall.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -10,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.xy.wmall.common.utils.HttpClientUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 服务器启动初始化数据
  * 
@@ -17,12 +17,8 @@ import com.xy.wmall.common.utils.HttpClientUtils;
  * @date 2017年10月27日 下午5:36:05
  */
 @Component
+@Slf4j
 public class SpringApplicationListener implements ApplicationListener<ContextRefreshedEvent>, DisposableBean {
-	
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(SpringApplicationListener.class);
 	
 	@Autowired
 	private AsyncTask asyncTask;
@@ -38,7 +34,7 @@ public class SpringApplicationListener implements ApplicationListener<ContextRef
 		asyncTask.logisticsCompanyCache();
 		// 角色权限缓存
 		asyncTask.roleMenuCache();
-		logger.info("数据初始化完成");
+		log.info("数据初始化完成");
 	}
 
 	/**

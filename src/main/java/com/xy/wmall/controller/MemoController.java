@@ -3,8 +3,6 @@ package com.xy.wmall.controller;
 import java.util.Date;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +15,8 @@ import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Memo;
 import com.xy.wmall.service.MemoService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -25,12 +25,8 @@ import com.xy.wmall.service.MemoService;
  */
 @Controller
 @RequestMapping(value = "/admin/memo", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class MemoController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(MemoController.class);
 
     @Autowired
 	private MemoService memoService;
@@ -94,7 +90,7 @@ public class MemoController extends BaseController {
 		memo.setUpdateTime(new Date());
 		memo.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		memoService.save(memo);
-		logger.info("【{}】保存成功", memo);
+		log.info("【{}】保存成功", memo);
 		return buildSuccess("保存成功");
 	}
 	
@@ -129,7 +125,7 @@ public class MemoController extends BaseController {
 		memo.setUpdateUserId(getUserId());
 		memo.setUpdateTime(new Date());
 		memoService.update(memo);
-		logger.info("【{}】修改成功", memo);
+		log.info("【{}】修改成功", memo);
 		return buildSuccess("修改成功");
 	}
 	
@@ -146,7 +142,7 @@ public class MemoController extends BaseController {
 		Memo memo = memoService.getMemoById(id);
 		Assert.notNull(memo, "数据不存在");
 		memoService.remove(memo);
-		logger.info("【{}】删除成功", memo);
+		log.info("【{}】删除成功", memo);
 		return buildSuccess("删除成功");
 	}
 	

@@ -7,8 +7,6 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +29,8 @@ import com.xy.wmall.service.ProxyService;
 import com.xy.wmall.service.UserService;
 import com.xy.wmall.service.VerifyCodeService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -39,12 +39,8 @@ import com.xy.wmall.service.VerifyCodeService;
  */
 @Controller
 @RequestMapping(value = "/", produces = {"application/json; charset=UTF-8"})
+@Slf4j
 public class MainController extends BaseController {
-	
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 	
 	@Autowired
 	private UserService userService;
@@ -81,14 +77,14 @@ public class MainController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> login(String username, String password, String checkCode) {
 		if (StringUtils.isAnyEmpty(username, password, checkCode)) {
-			logger.error("登录失败：用户名或密码或验证码为空");
+			log.error("登录失败：用户名或密码或验证码为空");
 			throw new WmallException("登录失败");
 		}
 		
 		// 验证验证码
 		String imageCode = (String) session.getAttribute(Constant.IMAGE_CODE);
 		if (StringUtils.isEmpty(imageCode) || !imageCode.equalsIgnoreCase(checkCode)) {
-			logger.error("验证码错误：session验证码【{}】，登录验证码【{}】", imageCode, checkCode);
+			log.error("验证码错误：session验证码【{}】，登录验证码【{}】", imageCode, checkCode);
 			return buildFail("验证码错误");
 		}
 		// 清除验证码session
@@ -97,11 +93,11 @@ public class MainController extends BaseController {
 		// 查询用户
 		User user = userService.getUserByUsername(username);
 		if (null == user || !user.getPassword().equals(Md5Utils.md5(password))) {
-			logger.error("用户名或密码错误：用户名【{}】，密码【{}】", username, password);
+			log.error("用户名或密码错误：用户名【{}】，密码【{}】", username, password);
 			return buildFail("用户名或密码错误");
 		}
 		if (user.getDisabled()) {
-			logger.error("用户已被禁用：用户名【{}】，密码【{}】", username, password);
+			log.error("用户已被禁用：用户名【{}】，密码【{}】", username, password);
 			return buildFail("用户已被禁用");
 		}
 		
@@ -110,7 +106,7 @@ public class MainController extends BaseController {
 		map.put("userId", user.getId());
 		Proxy proxy = proxyService.getUserProxy(map);
 		if (null != proxy && proxy.getIsDelete()) {
-			logger.error("用户不在是代理：用户名【{}】，密码【{}】，代理【{}】", username, password, proxy);
+			log.error("用户不在是代理：用户名【{}】，密码【{}】，代理【{}】", username, password, proxy);
 			return buildFail("用户已被禁用");
 		}
 		
@@ -149,7 +145,7 @@ public class MainController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> register(String username, String password, String code) {
 		if (StringUtils.isAnyEmpty(username, password, code)) {
-			logger.error("注册失败：用户名或密码或验证码为空");
+			log.error("注册失败：用户名或密码或验证码为空");
 			throw new WmallException("注册失败");
 		}
 		
@@ -157,22 +153,22 @@ public class MainController extends BaseController {
 		map.put("code", code);
 		VerifyCode verifyCode = verifyCodeService.getVerifyCode(map);
 		if (null == verifyCode) {
-			logger.error("临时验证码【{}】不存在", code);
+			log.error("临时验证码【{}】不存在", code);
 			return buildFail("验证码不存在");
 		}
 		if (verifyCode.getUseStatus()) {
-			logger.error("临时验证码【{}】已使用", code);
+			log.error("临时验证码【{}】已使用", code);
 			return buildFail("验证码已使用");
 		}
 		if (verifyCode.getEffectiveTime().before(new Date())) {
-			logger.error("临时验证码【{}】已过期", code);
+			log.error("临时验证码【{}】已过期", code);
 			return buildFail("验证码已过期");
 		}
 		
 		// 查询用户
 		User existUser = userService.getUserByUsername(username);
 		if (null != existUser) {
-			logger.error("用户名【{}】已存在", username);
+			log.error("用户名【{}】已存在", username);
 			return buildFail("用户名已存在");
 		}
 		
@@ -186,7 +182,7 @@ public class MainController extends BaseController {
 		user.setProxyId(verifyCode.getProxyId());
 		user.setVerifyCode(verifyCode);
 		userService.save(user);
-		logger.info("【{}】注册成功", user);
+		log.info("【{}】注册成功", user);
 		return buildSuccess("注册成功");
 	}
 	

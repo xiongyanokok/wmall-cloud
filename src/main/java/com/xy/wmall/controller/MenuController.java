@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +18,8 @@ import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Menu;
 import com.xy.wmall.service.MenuService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Controller
  * 
@@ -28,12 +28,8 @@ import com.xy.wmall.service.MenuService;
  */
 @Controller
 @RequestMapping(value = "/admin/menu", produces = { "application/json; charset=UTF-8" })
+@Slf4j
 public class MenuController extends BaseController {
-
-	/**
-	 * logger
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(MenuController.class);
 
     @Autowired
 	private MenuService menuService;
@@ -122,7 +118,7 @@ public class MenuController extends BaseController {
 		menu.setUpdateTime(new Date());
 		menu.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		menuService.save(menu);
-		logger.info("【{}】保存成功", menu);
+		log.info("【{}】保存成功", menu);
 		return buildSuccess("保存成功");
 	}
 	
@@ -162,7 +158,7 @@ public class MenuController extends BaseController {
 		menu.setUpdateUserId(getUserId());
 		menu.setUpdateTime(new Date());
 		menuService.update(menu);
-		logger.info("【{}】修改成功", menu);
+		log.info("【{}】修改成功", menu);
 		return buildSuccess("修改成功");
 	}
 	
@@ -179,7 +175,7 @@ public class MenuController extends BaseController {
 		Menu menu = menuService.getMenuById(id);
 		Assert.notNull(menu, "数据不存在");
 		menuService.remove(menu);
-		logger.info("【{}】删除成功", menu);
+		log.info("【{}】删除成功", menu);
 		return buildSuccess("删除成功");
 	}
 	
