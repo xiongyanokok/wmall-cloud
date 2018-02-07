@@ -258,4 +258,23 @@
 		</foreach>
 	</update>
 	
+	<!-- 查询代理级别-->
+  	<select id="listLevelByProxy" resultMap="BaseResultMap" parameterType="java.util.Map">
+  		select 
+  			proxy_id, max(level) level 
+  		from t_proxy_level
+        <where>
+  			<if test="proxyIds != null">
+    			and proxy_id in
+				<foreach collection="proxyIds" item="proxyId" open="(" separator="," close=")">
+					#{proxyId}
+				</foreach>
+  			</if>
+  			<if test="isDelete != null">
+    			and is_delete = #{isDelete}
+  			</if>
+        </where>
+        group by proxy_id
+  	</select>
+	
 </mapper>

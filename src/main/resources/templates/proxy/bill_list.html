@@ -62,7 +62,7 @@
 			"bProcessing" : true, // 加载层
 	        "bServerSide" : true, // 服务器获取数据
 	        "iDisplayLength": page_size, // 每页显示条数
-	        "aaSorting" : [5, "desc"], //默认第几个排序
+	        "aaSorting" : [6, "desc"], //默认第几个排序
 			"sAjaxSource" : "/admin/proxy/bill_query",
 			"fnServerData" : retrieveData,
 			"fnDrawCallback" : function(){
@@ -86,6 +86,28 @@
                		"sTitle" : "姓名",
 	                "bSortable": true,
 				    "sWidth" : "4%"
+            	}, {
+                	"mData" : "level",
+               		"sTitle" : "级别",
+	                "bSortable": false,
+				    "sWidth" : "4%",
+				    "mRender": function(data, type, full) {
+				    	if (data) {
+				    		if (data == 1) {
+				    			return "<span class=\"label label-primary radius\">小咖</span>";
+				    		} else if (data == 2) {
+				    			return "<span class=\"label label-secondary radius\">中咖</span>";
+				    		} else if (data == 3) {
+				    			return "<span class=\"label label-success radius\">大咖</span>";
+				    		} else if (data == 4) {
+				    			return "<span class=\"label label-warning radius\">顶级大咖</span>";
+				    		} else if (data == 5) {
+				    			return "<span class=\"label label-danger radius\">带砖大咖</span>";
+				    		}
+				    	} else {
+				    		return "<span class=\"label label-default radius\">小白</span>";
+				    	}
+	                }
             	}, {
                 	"mData" : "balance",
                		"sTitle" : "钱包余额",
@@ -122,14 +144,15 @@
 	            	"mData" : null,
 	            	"sTitle" : "操作",
 	            	"bSortable" : false,
-	            	"sWidth" : "6%",
+	            	"sWidth" : "7%",
 	            	"mRender": function(data, type, full) {
 	            		var button = "<span class=\"btn btn-warning radius size-MINI\" onclick=\"bill("+data.id+")\">账单</span>" +
-	            			" <span class=\"btn btn-primary radius size-MINI\" onclick=\"detail("+data.id+")\">详情</span>"+
-	            			" <span class=\"btn btn-success radius size-MINI\" data-title=\"钱包列表\" data-href=\"/admin/wallet/list?proxyId="+data.id+"\" onclick=\"Hui_admin_tab(this)\">钱包</span>";
+	            			" <span class=\"btn btn-success radius size-MINI\" data-title=\"钱包列表\" data-href=\"/admin/wallet/list?proxyId="+data.id+"\" onclick=\"Hui_admin_tab(this)\">钱包</span>" +
+	            			" <span class=\"btn btn-secondary radius size-MINI\" data-title=\"级别列表\" data-href=\"/admin/proxylevel/list?proxyId="+data.id+"\" onclick=\"Hui_admin_tab(this)\">级别</span>";
 	            		if (!full.openUser) {
-	            			button += " <span class=\"btn btn-secondary radius size-MINI\" onclick=\"openUser("+data.id+")\">开通账号</span>";
+	            			button += " <span class=\"btn btn-success radius size-MINI\" onclick=\"openUser("+data.id+")\">开通账号</span>";
 	            		}
+	            		button += " <span class=\"btn btn-primary radius size-MINI\" onclick=\"detail("+data.id+")\">详情</span>";
 	            		return button;
 	            	}
 	            }

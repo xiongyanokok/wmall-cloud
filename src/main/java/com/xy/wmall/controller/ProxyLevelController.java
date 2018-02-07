@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
+import com.xy.wmall.model.Proxy;
 import com.xy.wmall.model.ProxyLevel;
 import com.xy.wmall.service.ProxyLevelService;
+import com.xy.wmall.service.ProxyService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,13 +33,22 @@ public class ProxyLevelController extends BaseController {
     @Autowired
 	private ProxyLevelService proxyLevelService;
 	
+    @Autowired
+   	private ProxyService proxyService;
+    
 	/**
 	 * 进入列表页面
 	 * 
+	 * @param model
+	 * @param proxyId
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = { RequestMethod.GET })
-	public String list(Model model) {
+	public String list(Model model, Integer proxyId) {
+		Assert.notNull(proxyId, "proxyId为空");
+		Proxy proxy = proxyService.getProxyById(proxyId);
+		Assert.notNull(proxy, "代理不存在");
+		model.addAttribute("proxy", proxy);
 		return "proxylevel/list";
 	}
 	
@@ -51,6 +62,8 @@ public class ProxyLevelController extends BaseController {
 	public Map<String, Object> query() {
 		return pageInfoResult(map -> {
 			// 查询条件
+			// 代理ID
+			map.put("proxyId", request.getParameter("proxyId")); 
 			return proxyLevelService.listProxyLevel(map);
 		});
 	}
@@ -59,10 +72,15 @@ public class ProxyLevelController extends BaseController {
 	 * 进入新增页面
 	 * 
 	 * @param model
+	 * @param proxyId
 	 * @return
 	 */
 	@RequestMapping(value = "/add", method = { RequestMethod.GET })
-	public String add(Model model) {
+	public String add(Model model, Integer proxyId) {
+		Assert.notNull(proxyId, "proxyId为空");
+		Proxy proxy = proxyService.getProxyById(proxyId);
+		Assert.notNull(proxy, "代理不存在");
+		model.addAttribute("proxy", proxy);
 		return "proxylevel/add";
 	}
 	

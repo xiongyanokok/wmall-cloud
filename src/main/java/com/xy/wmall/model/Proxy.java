@@ -147,6 +147,11 @@ public class Proxy implements Serializable {
     private Integer balance;
     
     /**
+     * 代理等级
+     */
+    private Integer level;
+    
+    /**
      * 开通账号
      */
     private Boolean openUser;

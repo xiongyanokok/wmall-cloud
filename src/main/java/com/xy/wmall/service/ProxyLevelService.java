@@ -80,4 +80,11 @@ public interface ProxyLevelService {
      */
     void batchUpdate(List<ProxyLevel> list);
     
+    /**
+     * 查询代理级别
+     * 
+     * @param proxyIds
+     * @return
+     */
+    Map<Integer, Integer> listLevelByProxy(List<Integer> proxyIds);
 }

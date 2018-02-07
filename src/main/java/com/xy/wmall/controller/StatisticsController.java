@@ -80,7 +80,9 @@ public class StatisticsController extends BaseController {
 		List<Statistics> purchaseStatistics = orderService.purchaseStatistics(map);
 		// 合并
 		List<Statistics> list = BeanUtils.merge("productId", orderStatistics, purchaseStatistics);
+		
 		// 发货到家统计
+		map.put("proxyId", getProxyId());
 		map.put("deliverStatus", TrueFalseStatusEnum.TRUE.getValue());
 		List<Statistics> deliverHomeStatistics = deliverService.deliverStatistics(map);
 		Map<Integer, Integer> deliverHomeStatisticsMap = new HashMap<>();
@@ -90,7 +92,7 @@ public class StatisticsController extends BaseController {
 			}
 		}
 		// 老大发货统计
-		map.remove("parentProxyId");
+		map.remove("proxyId");
 		List<Statistics> deliverStatistics = deliverService.deliverStatistics(map);
 		Map<Integer, Integer> deliverStatisticsMap = new HashMap<>();
 		if (CollectionUtils.isNotEmpty(deliverStatistics)) {
@@ -99,7 +101,7 @@ public class StatisticsController extends BaseController {
 			}
 		}
 		// 我的发货统计
-		map.remove("deliverTypes");
+		map.put("parentProxyId", getProxyId());
 		List<Statistics> myDeliverStatistics = deliverService.deliverStatistics(map);
 		Map<Integer, Integer> myDeliverStatisticsMap = new HashMap<>();
 		if (CollectionUtils.isNotEmpty(myDeliverStatistics)) {

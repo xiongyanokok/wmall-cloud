@@ -24,6 +24,7 @@ import com.xy.wmall.model.Product;
 import com.xy.wmall.model.Proxy;
 import com.xy.wmall.model.VerifyCode;
 import com.xy.wmall.service.ProductService;
+import com.xy.wmall.service.ProxyLevelService;
 import com.xy.wmall.service.ProxyService;
 import com.xy.wmall.service.UserProxyService;
 import com.xy.wmall.service.VerifyCodeService;
@@ -56,6 +57,9 @@ public class ProxyController extends BaseController {
     
     @Autowired
     private UserProxyService userProxyService;
+    
+    @Autowired
+    private ProxyLevelService proxyLevelService;
     
 	
 	/**
@@ -131,9 +135,12 @@ public class ProxyController extends BaseController {
 			Map<Integer, Integer> balanceMap = walletService.listWalletBalance(proxyIds);
 			// 批量查询代理用户
 			Map<Integer, Integer> userProxyMap = userProxyService.listUserByProxy(proxyIds);
+			// 批量查询代理级别
+			Map<Integer, Integer> proxyLevelMap = proxyLevelService.listLevelByProxy(proxyIds);
 			for (Proxy proxy : proxyList) {
 				proxy.setBalance(balanceMap.get(proxy.getId()));
 				proxy.setOpenUser(userProxyMap.containsKey(proxy.getId()));
+				proxy.setLevel(proxyLevelMap.get(proxy.getId()));
 			}
 			return proxyList;
 		});

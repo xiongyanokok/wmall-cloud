@@ -65,4 +65,12 @@ public interface ProxyLevelMapper {
      */
     void batchUpdate(List<ProxyLevel> list);
     
+    /**
+     * 查询代理级别
+     * 
+     * @param map
+     * @return
+     */
+    List<ProxyLevel> listLevelByProxy(Map<String, Object> map);
+    
 }

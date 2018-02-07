@@ -11,33 +11,34 @@
 <link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/skin/default/skin.css}" id="skin" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/css/style.css}" />
-<title>添加xx</title>
+<title>添加级别</title>
 </head>
 <body>
 	<article class="page-container">
 		<form id="form" action="/admin/proxylevel/save" method="post" class="form form-horizontal">
+			<input type="hidden" class="input-text" id="proxyId" name="proxyId" th:value="${proxy.id }" />
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>proxyId：</label>
+				<label class="form-label col-xs-4 col-sm-3">代理：</label>
 				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="proxyId" name="proxyId" />
+					<input type="text" class="input-text" id="wechatName" name="wechatName" th:value="${proxy.wechatName }" disabled="disabled" />
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>price：</label>
+				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 时间：</label>
+				<div class="formControls col-xs-8 col-sm-8">
+					<input type="text" class="input-text" id="month" name="month" />
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 累计货款：</label>
 				<div class="formControls col-xs-8 col-sm-8">
 					<input type="text" class="input-text" id="price" name="price" />
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>level：</label>
+				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 级别：</label>
 				<div class="formControls col-xs-8 col-sm-8">
 					<input type="text" class="input-text" id="level" name="level" />
-				</div>
-			</div>
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>month：</label>
-				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="month" name="month" />
 				</div>
 			</div>
 			

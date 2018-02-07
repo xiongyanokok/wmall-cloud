@@ -11,26 +11,23 @@
 <link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/skin/default/skin.css}" id="skin" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/css/style.css}" />
-<title>xx管理</title>
+<title>级别管理</title>
 </head>
 <body>
 	<div style="position: fixed; width: 100%;">
-		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> xx管理 <span class="c-gray en">&gt;</span> xx列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 级别管理 <span class="c-gray en">&gt;</span> 级别列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	</div>
 	<div class="pd-20" style="padding-top: 60px;">
 		<div class="text-l">
-			条件A：<input type="text" class="input-text" style="width: 15%;" id="" name="" />
-			<span style="padding-right: 5%;"></span>
-			条件B：<input type="text" class="input-text" style="width: 15%;" id="" name="" />
-			<span style="padding-right: 5%;"></span>
-			条件C：<input type="text" class="input-text" style="width: 15%;" id="" name="" />
+			<input type="hidden" id="proxyId" name="proxyId" th:value="${proxy.id }" />
+			微信昵称：<input type="text" class="input-text" style="width: 15%;" id="wechatName" name="wechatName" th:value="${proxy.wechatName }" disabled="disabled" />
 		</div>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
     		<span class="l">
-    			<span onclick="add()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加xx </span>
+    			<span onclick="add()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加级别 </span>
     		</span>
     		<span class="r">
-    			<span onclick="query()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe665;</i> 查询xx </span>
+    			<span onclick="query()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe665;</i> 查询级别 </span>
     		</span>
   		</div>
   		<table id="table" class="table table-border table-bordered table-striped table-hover table-bg"/>
@@ -59,7 +56,7 @@
 			"bProcessing" : true, // 加载层
 	        "bServerSide" : true, // 服务器获取数据
 	        "iDisplayLength": page_size, // 每页显示条数
-	        "aaSorting" : [1, "desc"], //默认第几个排序
+	        "aaSorting" : [3, "desc"], //默认第几个排序
 			"sAjaxSource" : "/admin/proxylevel/query",
 			"fnServerData" : retrieveData,
 			"fnDrawCallback" : function(){
@@ -74,35 +71,43 @@
 				    "bSortable" : false,
 				    "sWidth" : "1%"
 				}, {
-                	"mData" : "proxyId",
-               		"sTitle" : "proxyId",
+                	"mData" : "month",
+               		"sTitle" : "时间",
 	                "bSortable": true,
 				    "sWidth" : "5%"
             	}, {
                 	"mData" : "price",
-               		"sTitle" : "price",
+               		"sTitle" : "累计货款",
 	                "bSortable": true,
 				    "sWidth" : "5%"
             	}, {
                 	"mData" : "level",
-               		"sTitle" : "level",
+               		"sTitle" : "级别",
 	                "bSortable": true,
-				    "sWidth" : "5%"
-            	}, {
-                	"mData" : "month",
-               		"sTitle" : "month",
-	                "bSortable": true,
-				    "sWidth" : "5%"
+				    "sWidth" : "5%",
+				    "mRender": function(data, type, full) {
+				    	if (data == 1) {
+			    			return "<span class=\"label label-primary radius\">小咖</span>";
+			    		} else if (data == 2) {
+			    			return "<span class=\"label label-secondary radius\">中咖</span>";
+			    		} else if (data == 3) {
+			    			return "<span class=\"label label-success radius\">大咖</span>";
+			    		} else if (data == 4) {
+			    			return "<span class=\"label label-warning radius\">顶级大咖</span>";
+			    		} else if (data == 5) {
+			    			return "<span class=\"label label-danger radius\">带砖大咖</span>";
+			    		}
+	                }
             	}, {
 	                "mData" : "createTime",
 	                "sTitle" : "创建时间",
 	                "bSortable": true,
-	                "sWidth" : "8%"
+	                "sWidth" : "5%"
 	            }, {
 	            	"mData" : null,
 	            	"sTitle" : "操作",
 	            	"bSortable" : false,
-	            	"sWidth" : "10%",
+	            	"sWidth" : "5%",
 	            	"mRender": function(data, type, full) {
 	            		var button = "<span class=\"btn btn-success radius size-MINI\" onclick=\"edit("+data.id+")\">修改</span>"+
 	            			" <span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span>";
@@ -151,8 +156,8 @@
             }); 
 			
 			// 查询参数
-			if ($("#name").val()) {
-				data.name = $("#name").val();
+			if ($("#proxyId").val()) {
+				data.proxyId = $("#proxyId").val();
 			}
 			
 			$.ajax({
@@ -173,12 +178,12 @@
 	
 	// 新增数据
 	function add() {
-		layer_show("添加xx", "/admin/proxylevel/add", "", "500");
+		layer_show("添加级别", "/admin/proxylevel/add?proxyId="+[[${proxy.id}]], "", "500");
 	}
 	
 	// 修改数据
 	function edit(id) {
-		layer_show("修改xx", "/admin/proxylevel/edit?id="+id, "", "500");
+		layer_show("修改级别", "/admin/proxylevel/edit?id="+id, "", "500");
 	}
 	
 	// 查询数据
