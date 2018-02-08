@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.utils.CommonUtils;
+import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Product;
 import com.xy.wmall.service.BackupService;
 import com.xy.wmall.service.DeliverService;
@@ -51,27 +52,31 @@ public class HomeController extends BaseController {
 	public String list(Model model) {
 		List<Product> products = productService.listProduct();
 		model.addAttribute("products", products);
-		
-		Integer proxyId = getProxyId();
-		if (null != proxyId) {
-			Map<String, Object> map = CommonUtils.defaultQueryMap();
-			map.put("operator", "<>");
-			map.put("proxyId", proxyId);
-			// 代理存款
-			Integer proxyWallet = walletService.getStatisticsWallet(map);
-			if (null != proxyWallet) {
-				model.addAttribute("proxyWallet", proxyWallet);
-			}
-			// 自己存款
-			map.put("operator", "=");
-			proxyWallet = walletService.getStatisticsWallet(map);
-			if (null != proxyWallet) {
-				model.addAttribute("myWallet", proxyWallet);
-			}
-			// 待发货数量
-			int waitDeliver = deliverService.countWaitDeliver(proxyId);
-			model.addAttribute("waitDeliver", waitDeliver);
+		// 是否管理员
+		if (isAdmin()) {
+			model.addAttribute("isAdmin", TrueFalseStatusEnum.TRUE.getValue());
+			return "home/index";
 		}
+		
+		// 用户代理ID
+		Integer proxyId = getProxyId();
+		Map<String, Object> map = CommonUtils.defaultQueryMap();
+		map.put("operator", "<>");
+		map.put("proxyId", proxyId);
+		// 代理存款
+		Integer proxyWallet = walletService.getStatisticsWallet(map);
+		if (null != proxyWallet) {
+			model.addAttribute("proxyWallet", proxyWallet);
+		}
+		// 自己存款
+		map.put("operator", "=");
+		Integer myWallet = walletService.getStatisticsWallet(map);
+		if (null != myWallet) {
+			model.addAttribute("myWallet", myWallet);
+		}
+		// 待发货数量
+		int waitDeliver = deliverService.countWaitDeliver(proxyId);
+		model.addAttribute("waitDeliver", waitDeliver);
 		return "home/index";
 	}
 	

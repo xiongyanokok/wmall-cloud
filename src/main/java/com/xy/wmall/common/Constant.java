@@ -68,8 +68,18 @@ public final class Constant {
 	public static final Integer CODE_EFFECTIVE_TIME = 10;
 	
 	/**
+	 * 默认管理员角色
+	 */
+	public static final Integer ADMIN_ROLE = 1;
+	
+	/**
 	 * 默认代理角色
 	 */
 	public static final Integer PROXY_ROLE = 2;
+	
+	/**
+	 * 免费试用30天
+	 */
+	public static final Integer FREE_30_DAY = 30;
 	
 }

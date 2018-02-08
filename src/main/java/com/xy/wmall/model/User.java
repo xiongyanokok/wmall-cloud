@@ -61,13 +61,28 @@ public class User implements Serializable {
 	private Integer proxyId;
 	
 	/**
-	 * 角色
+	 * 角色ID
 	 */
-	private String role;
+	private String roleId;
+	
+	/**
+	 * 角色名称
+	 */
+	private String roleName;
 	
 	/**
 	 * 验证码
 	 */
 	private VerifyCode verifyCode;
+	
+	/**
+     * 代理等级
+     */
+    private Integer level;
+    
+	/**
+     * 服务有效期
+     */
+	private Date serviceDate;
 	
 }

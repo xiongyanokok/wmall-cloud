@@ -1,9 +1,11 @@
 package com.xy.wmall.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +21,10 @@ import com.xy.wmall.model.Proxy;
 import com.xy.wmall.model.Role;
 import com.xy.wmall.model.User;
 import com.xy.wmall.model.UserRole;
+import com.xy.wmall.service.ProxyLevelService;
 import com.xy.wmall.service.ProxyService;
 import com.xy.wmall.service.RoleService;
+import com.xy.wmall.service.ServiceFreeService;
 import com.xy.wmall.service.UserRoleService;
 import com.xy.wmall.service.UserService;
 
@@ -48,6 +52,12 @@ public class UserController extends BaseController {
     
     @Autowired
     private UserRoleService userRoleService;
+    
+    @Autowired
+    private ProxyLevelService proxyLevelService;
+    
+    @Autowired
+    private ServiceFreeService serviceFreeService;
 	
     /**
 	 * 进入列表页面
@@ -77,7 +87,24 @@ public class UserController extends BaseController {
 			map.put("disabled", request.getParameter("disabled")); 
 			// 角色id
 			map.put("roleId", request.getParameter("roleId")); 
-			return userService.listUserRole(map);
+			List<User> users = userService.listUserRole(map);
+			if (CollectionUtils.isEmpty(users)) {
+				return users;
+			}
+			// 用户id
+			List<Integer> userIds = new ArrayList<>();
+			for (User user : users) {
+				userIds.add(user.getId());
+			}
+			// 查询用户代理级别
+			Map<Integer, Integer> proxyLevelMap = proxyLevelService.listLevelByUser(userIds);
+			// 查询用户服务有效期
+			Map<Integer, Date> userServiceMap = serviceFreeService.listServiceDate(userIds);
+			for (User user : users) {
+				user.setLevel(proxyLevelMap.get(user.getId()));
+				user.setServiceDate(userServiceMap.get(user.getId()));
+			}
+			return users;
 		});
 	}
 	

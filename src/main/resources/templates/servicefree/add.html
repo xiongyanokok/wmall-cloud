@@ -11,36 +11,25 @@
 <link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/skin/default/skin.css}" id="skin" />
 <link rel="stylesheet" type="text/css" th:href="@{/static/h-ui.admin/css/style.css}" />
-<title>添加xx</title>
+<title>添加服务费</title>
 </head>
 <body>
 	<article class="page-container">
 		<form id="form" action="/admin/servicefree/save" method="post" class="form form-horizontal">
+			<input type="hidden" class="input-text" id="userId" name="userId" th:value="${user.id}" />
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>userId：</label>
+				<label class="form-label col-xs-4 col-sm-3">用户名：</label>
 				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="userId" name="userId" placeholder="userId" />
+					<input type="text" class="input-text" id="username" name="username" placeholder="userId" th:value="${user.username}" disabled="disabled" />
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>free：</label>
+				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span> 服务费：</label>
 				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="free" name="free" placeholder="free" />
+					<input type="text" class="input-text" id="free" name="free" placeholder="服务费" maxlength="8" onkeyup="pureNumber(this)" onafterpaste="pureNumber(this)" />
 				</div>
 			</div>
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>startDate：</label>
-				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="startDate" name="startDate" placeholder="startDate" />
-				</div>
-			</div>
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>endDate：</label>
-				<div class="formControls col-xs-8 col-sm-8">
-					<input type="text" class="input-text" id="endDate" name="endDate" placeholder="endDate" />
-				</div>
-			</div>
-			
+
 			<div class="row cl">
 				<div class="col-xs-8 col-sm-8 col-xs-offset-4 col-sm-offset-3">
 					<button class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存 </button>
@@ -67,7 +56,7 @@
 	$(function(){
 		$("#form").validate({
 			rules:{
-				name:{
+				free:{
 					required:true
 				}
 			},

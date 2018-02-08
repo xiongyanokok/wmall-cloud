@@ -1,6 +1,7 @@
 package com.xy.wmall.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import com.xy.wmall.model.Menu;
@@ -44,8 +45,18 @@ public class UserInfo implements Serializable {
 	private String name;
 	
 	/**
+	 * 是否管理员
+	 */
+	private Boolean isAdmin;
+	
+	/**
 	 * 权限菜单
 	 */
 	private List<Menu> menus;
+	
+	/**
+     * 服务有效期
+     */
+	private Date serviceDate;
 	
 }

@@ -20,7 +20,7 @@
 			<a class="logo navbar-logo mr-10 hidden-xs" href="/main"><span class="f-20">缇丽莎尔微商管理系统</span></a> 
 			<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
 				<ul class="cl">
-					<li style="padding-right: 5px;">[[${time}]] [[${week}]]</li>
+					<li style="padding-right: 10px;" th:if="${null != serviceDate}">服务有效期：[[${#dates.format(serviceDate, "yyyy-MM-dd")}]]</li>
 					<li class="dropDown right dropDown_hover">
 						<a href="javascript:;" class="dropDown_A" th:if="${not #strings.isEmpty(name)}">[[${name}]]</a>
 						<a href="javascript:;" class="dropDown_A" th:if="${#strings.isEmpty(name)}">管理员</a>

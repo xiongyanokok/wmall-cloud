@@ -73,4 +73,12 @@ public interface ProxyLevelMapper {
      */
     List<ProxyLevel> listLevelByProxy(Map<String, Object> map);
     
+    /**
+     * 查询代理级别
+     * 
+     * @param map
+     * @return
+     */
+    List<ProxyLevel> listLevelByUser(Map<String, Object> map);
+    
 }

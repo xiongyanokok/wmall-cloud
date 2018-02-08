@@ -1,9 +1,12 @@
 package com.xy.wmall.service.impl;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,7 @@ import com.xy.wmall.exception.WmallException;
 import com.xy.wmall.mapper.ServiceFreeMapper;
 import com.xy.wmall.model.ServiceFree;
 import com.xy.wmall.service.ServiceFreeService;
+import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.ListPageUtils;
 
 /**
@@ -56,9 +60,8 @@ public class ServiceFreeServiceImpl implements ServiceFreeService {
     public ServiceFree getServiceFreeById(Integer id) {
     	Assert.notNull(id, "id为空");
     	try {
-    		Map<String, Object> map = new HashMap<>(2);
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
     		map.put("id", id);
-    		map.put("isDelete", TrueFalseStatusEnum.FALSE.getValue());
 	    	return serviceFreeMapper.getServiceFree(map);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
@@ -109,6 +112,7 @@ public class ServiceFreeServiceImpl implements ServiceFreeService {
 		try {
     		ServiceFree deleteServiceFree = new ServiceFree();
     		deleteServiceFree.setId(serviceFree.getId());
+    		deleteServiceFree.setIsDelete(TrueFalseStatusEnum.TRUE.getValue());
     		serviceFreeMapper.update(deleteServiceFree);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + serviceFree.toString() + "】删除失败", e);
@@ -184,6 +188,32 @@ public class ServiceFreeServiceImpl implements ServiceFreeService {
 			}
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_BATCH_ERROR, "批量修改失败", e);
+		}
+    }
+    
+    /**
+     * 用户服务有效期
+     * 
+     * @param userIds
+     * @return
+     */
+    @Override
+    public Map<Integer, Date> listServiceDate(List<Integer> userIds){
+    	Assert.notEmpty(userIds, "userIds为空");
+    	try {
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
+    		map.put("userIds", userIds);
+    		List<ServiceFree> serviceFrees = serviceFreeMapper.listServiceDate(map);
+    		if (CollectionUtils.isEmpty(serviceFrees)) {
+    			return Collections.emptyMap();
+    		}
+    		Map<Integer, Date> userServiceMap = new HashMap<>(serviceFrees.size());
+    		for (ServiceFree serviceFree : serviceFrees) {
+    			userServiceMap.put(serviceFree.getUserId(), serviceFree.getEndDate());
+    		}
+    		return userServiceMap;
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + userIds + "】查询用户服务有效期失败", e);
 		}
     }
     

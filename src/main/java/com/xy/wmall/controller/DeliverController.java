@@ -492,7 +492,7 @@ public class DeliverController extends BaseController {
 		// 字体大小
 		font.setFontHeightInPoints((short) 12);
 		// 加粗
-		font.setBold(true);
+		font.setBold(TrueFalseStatusEnum.TRUE.getValue());
 
 		HSSFCell cell;
 		cell = row.createCell(0);

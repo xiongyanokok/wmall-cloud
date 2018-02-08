@@ -171,6 +171,16 @@ public abstract class BaseController {
 	}
 	
 	/**
+	 * 是否管理员
+	 * 
+	 * @return
+	 */
+	public boolean isAdmin() {
+		Boolean isAdmin = getUserInfo().getIsAdmin();
+		return null != isAdmin && isAdmin;
+	}
+	
+	/**
 	 * 代理ID
 	 * 
 	 * @return

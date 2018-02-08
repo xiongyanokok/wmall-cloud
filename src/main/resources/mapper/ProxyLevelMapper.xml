@@ -276,5 +276,25 @@
         </where>
         group by proxy_id
   	</select>
+  	
+  	<!-- 查询代理级别-->
+  	<select id="listLevelByUser" resultMap="BaseResultMap" parameterType="java.util.Map">
+  		select 
+  			t2.user_id proxy_id, max(t1.level) level
+  		from t_proxy_level t1, t_user_proxy t2
+        <where>
+        	t1.proxy_id = t2.proxy_id
+  			<if test="userIds != null">
+    			and t2.user_id in
+				<foreach collection="userIds" item="userId" open="(" separator="," close=")">
+					#{userId}
+				</foreach>
+  			</if>
+  			<if test="isDelete != null">
+    			and t1.is_delete = #{isDelete}
+  			</if>
+        </where>
+        group by t2.user_id
+  	</select>
 	
 </mapper>

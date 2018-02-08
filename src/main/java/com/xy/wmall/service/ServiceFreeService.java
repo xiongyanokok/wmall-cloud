@@ -1,5 +1,6 @@
 package com.xy.wmall.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -79,5 +80,13 @@ public interface ServiceFreeService {
      * @param list
      */
     void batchUpdate(List<ServiceFree> list);
+    
+    /**
+     * 用户服务有效期
+     * 
+     * @param userIds
+     * @return
+     */
+    Map<Integer, Date> listServiceDate(List<Integer> userIds);
     
 }

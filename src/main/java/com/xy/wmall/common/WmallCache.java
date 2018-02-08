@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import org.apache.commons.collections4.MapUtils;
 
 import com.xy.wmall.enums.PriceTypeEnum;
+import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.LogisticsCompany;
 import com.xy.wmall.model.Price;
 
@@ -98,10 +99,10 @@ public final class WmallCache {
 		if (priceMap.lastKey() < amount) {
 			return null;
 		}
-		SortedMap<Integer, BigDecimal> subMap = priceMap.headMap(amount, true);
+		SortedMap<Integer, BigDecimal> subMap = priceMap.headMap(amount, TrueFalseStatusEnum.TRUE.getValue());
 		Integer key = null;
 		if (MapUtils.isEmpty(subMap)) {
-			subMap = priceMap.tailMap(amount, true);
+			subMap = priceMap.tailMap(amount, TrueFalseStatusEnum.TRUE.getValue());
 			key = subMap.firstKey();
 		} else {
 			key = subMap.lastKey();

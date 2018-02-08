@@ -87,4 +87,13 @@ public interface ProxyLevelService {
      * @return
      */
     Map<Integer, Integer> listLevelByProxy(List<Integer> proxyIds);
+    
+    /**
+     * 查询代理级别
+     * 
+     * @param userIds
+     * @return
+     */
+    Map<Integer, Integer> listLevelByUser(List<Integer> userIds);
+    
 }

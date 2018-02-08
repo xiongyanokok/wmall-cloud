@@ -3,6 +3,7 @@ package com.xy.wmall.controller;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.ServiceFree;
+import com.xy.wmall.model.User;
 import com.xy.wmall.service.ServiceFreeService;
+import com.xy.wmall.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,15 +33,23 @@ public class ServiceFreeController extends BaseController {
 
     @Autowired
 	private ServiceFreeService serviceFreeService;
+    
+    @Autowired
+    private UserService userService;
 	
 	/**
 	 * 进入列表页面
 	 * 
 	 * @param model
+	 * @param userId
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = { RequestMethod.GET })
-	public String list(Model model) {
+	public String list(Model model, Integer userId) {
+		Assert.notNull(userId, "userId为空");
+		User user = userService.getUserById(userId);
+		Assert.notNull(user, "数据不存在");
+		model.addAttribute("user", user);
 		return "servicefree/list";
 	}
 	
@@ -51,6 +63,8 @@ public class ServiceFreeController extends BaseController {
 	public Map<String, Object> query() {
 		return pageInfoResult(map -> {
 			// 查询条件
+			// userId
+			map.put("userId", request.getParameter("userId"));
 			return serviceFreeService.listServiceFree(map);
 		});
 	}
@@ -59,10 +73,15 @@ public class ServiceFreeController extends BaseController {
 	 * 进入新增页面
 	 * 
 	 * @param model
+	 * @param userId
 	 * @return
 	 */
 	@RequestMapping(value = "/add", method = { RequestMethod.GET })
-	public String add(Model model) {
+	public String add(Model model, Integer userId) {
+		Assert.notNull(userId, "userId为空");
+		User user = userService.getUserById(userId);
+		Assert.notNull(user, "数据不存在");
+		model.addAttribute("user", user);
 		return "servicefree/add";
 	}
 	
@@ -76,8 +95,13 @@ public class ServiceFreeController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> save(ServiceFree serviceFree) {
 		Assert.notNull(serviceFree, "保存数据为空");
-		serviceFree.setUserId(getUserId());
+		serviceFree.setStartDate(new Date());
+		serviceFree.setEndDate(DateUtils.addDays(DateUtils.addYears(new Date(), 1), -1));
+		serviceFree.setCreateUserId(getUserId());
 		serviceFree.setCreateTime(new Date());
+		serviceFree.setUpdateUserId(getUserId());
+		serviceFree.setUpdateTime(new Date());
+		serviceFree.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
 		serviceFreeService.save(serviceFree);
 		log.info("【{}】保存成功", serviceFree);
 		return buildSuccess("保存成功");
@@ -96,6 +120,9 @@ public class ServiceFreeController extends BaseController {
 		ServiceFree serviceFree = serviceFreeService.getServiceFreeById(id);
 		Assert.notNull(serviceFree, "数据不存在");
 		model.addAttribute("serviceFree", serviceFree);
+		User user = userService.getUserById(serviceFree.getUserId());
+		Assert.notNull(user, "数据不存在");
+		model.addAttribute("user", user);
 		return "servicefree/edit";
 	}
 	
@@ -111,6 +138,8 @@ public class ServiceFreeController extends BaseController {
 		Assert.notNull(serviceFree, "修改数据为空");
 		ServiceFree serviceFreeInfo = serviceFreeService.getServiceFreeById(serviceFree.getId());
 		Assert.notNull(serviceFreeInfo, "数据不存在");
+		serviceFree.setUpdateUserId(getUserId());
+		serviceFree.setUpdateTime(new Date());
 		serviceFreeService.update(serviceFree);
 		log.info("【{}】修改成功", serviceFree);
 		return buildSuccess("修改成功");

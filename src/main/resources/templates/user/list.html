@@ -70,7 +70,7 @@
 			"bProcessing" : true, // 加载层
 	        "bServerSide" : true, // 服务器获取数据
 	        "iDisplayLength": page_size, // 每页显示条数
-	        "aaSorting" : [4, "desc"], //默认第几个排序
+	        "aaSorting" : [6, "desc"], //默认第几个排序
 			"sAjaxSource" : "/admin/user/query",
 			"fnServerData" : retrieveData,
 			"fnDrawCallback" : function(){
@@ -93,7 +93,7 @@
                 	"mData" : "disabled",
                		"sTitle" : "是否禁用",
 	                "bSortable": true,
-				    "sWidth" : "5%",
+				    "sWidth" : "4%",
 				    "mRender": function(data, type, full) {
 	                	if (data == 1) {
 	                		return "<span class=\"label label-danger radius\">禁用</span>";
@@ -102,11 +102,47 @@
 	                	}
 	                }
             	}, {
-                	"mData" : "role",
+                	"mData" : "roleName",
                		"sTitle" : "角色名称",
 	                "bSortable": true,
 				    "sWidth" : "5%"
             	}, {
+                	"mData" : "level",
+               		"sTitle" : "级别",
+	                "bSortable": false,
+				    "sWidth" : "5%",
+				    "mRender": function(data, type, full) {
+				    	if (full.roleId == 1) {
+				    		return "";
+				    	}
+				    	if (data) {
+				    		if (data == 1) {
+				    			return "<span class=\"label label-primary radius\">小咖</span>";
+				    		} else if (data == 2) {
+				    			return "<span class=\"label label-secondary radius\">中咖</span>";
+				    		} else if (data == 3) {
+				    			return "<span class=\"label label-success radius\">大咖</span>";
+				    		} else if (data == 4) {
+				    			return "<span class=\"label label-warning radius\">顶级大咖</span>";
+				    		} else if (data == 5) {
+				    			return "<span class=\"label label-danger radius\">带砖大咖</span>";
+				    		}
+				    	} else {
+						    return "<span class=\"label radius\">小白</span>";
+				    	}
+	                }
+            	}, {
+	                "mData" : "serviceDate",
+	                "sTitle" : "服务有效期",
+	                "bSortable": true,
+	                "sWidth" : "5%",
+	                "mRender": function(data, type, full) {
+	                	if (data) {
+		                	return data.substring(0, 10);
+	                	}
+	                	return data;
+	                }
+	            }, {
 	                "mData" : "createTime",
 	                "sTitle" : "创建时间",
 	                "bSortable": true,
@@ -117,12 +153,15 @@
 	            	"bSortable" : false,
 	            	"sWidth" : "5%",
 	            	"mRender": function(data, type, full) {
-	            		var button = " <span class=\"btn btn-success radius size-MINI\" onclick=\"role("+data.id+")\">角色</span>"+
-	            			" <span class=\"btn btn-danger radius size-MINI\" onclick=\"del("+data.id+")\">删除</span>";
+						var button = "";            			
 	            		if (full.disabled) {
 	            			button += " <span class=\"btn btn-primary radius size-MINI\" onclick=\"enabled("+data.id+")\">启用</span>";
 	            		} else {
 	            			button += " <span class=\"btn btn-warning radius size-MINI\" onclick=\"disabled("+data.id+")\">禁用</span>";
+	            		}
+	            		button += " <span class=\"btn btn-success radius size-MINI\" onclick=\"role("+data.id+")\">角色</span>";
+	            		if (full.roleId != 1) {
+	            			button += " <span class=\"btn btn-secondary radius size-MINI\" data-title=\"服务费列表\" data-href=\"/admin/servicefree/list?userId="+data.id+"\" onclick=\"Hui_admin_tab(this)\">服务费</span>";
 	            		}
 	            		return button;
 	            	}

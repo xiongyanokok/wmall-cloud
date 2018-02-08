@@ -8,12 +8,16 @@
 	    <result column="free" property="free" />
 	    <result column="start_date" property="startDate" />
 	    <result column="end_date" property="endDate" />
+	    <result column="create_user_id" property="createUserId" />
 	    <result column="create_time" property="createTime" />
+	    <result column="update_user_id" property="updateUserId" />
+	    <result column="update_time" property="updateTime" />
+	    <result column="is_delete" property="isDelete" />
   	</resultMap>
   	
   	<!-- 表所有字段 -->
   	<sql id="Base_Column_List">
-  		id, user_id, free, start_date, end_date, create_time
+  		id, user_id, free, start_date, end_date, create_user_id, create_time, update_user_id, update_time, is_delete
   	</sql>
   	
   	<!-- 根据主键查询 -->
@@ -46,8 +50,20 @@
 		      	<if test="endDate != null">
 		        	end_date,
 		      	</if>
+		      	<if test="createUserId != null">
+		        	create_user_id,
+		      	</if>
 		      	<if test="createTime != null">
 		        	create_time,
+		      	</if>
+		      	<if test="updateUserId != null">
+		        	update_user_id,
+		      	</if>
+		      	<if test="updateTime != null">
+		        	update_time,
+		      	</if>
+		      	<if test="isDelete != null">
+		        	is_delete,
 		      	</if>
     		</trim>
     	values
@@ -67,8 +83,20 @@
       			<if test="endDate != null">
         			#{endDate},
       			</if>
+      			<if test="createUserId != null">
+        			#{createUserId},
+      			</if>
       			<if test="createTime != null">
         			#{createTime},
+      			</if>
+      			<if test="updateUserId != null">
+        			#{updateUserId},
+      			</if>
+      			<if test="updateTime != null">
+        			#{updateTime},
+      			</if>
+      			<if test="isDelete != null">
+        			#{isDelete},
       			</if>
     		</trim>
   	</insert>
@@ -88,6 +116,12 @@
   			</if>
 			<if test="endDate != null">
     			end_date = #{endDate},
+  			</if>
+			<if test="updateUserId != null">
+    			update_user_id = #{updateUserId},
+  			</if>
+			<if test="isDelete != null">
+    			is_delete = #{isDelete},
   			</if>
     	</set>
     	<where>
@@ -116,8 +150,20 @@
   			<if test="endDate != null">
     			and end_date = #{endDate}
   			</if>
+  			<if test="createUserId != null">
+    			and create_user_id = #{createUserId}
+  			</if>
   			<if test="createTime != null">
     			and create_time = #{createTime}
+  			</if>
+  			<if test="updateUserId != null">
+    			and update_user_id = #{updateUserId}
+  			</if>
+  			<if test="updateTime != null">
+    			and update_time = #{updateTime}
+  			</if>
+  			<if test="isDelete != null">
+    			and is_delete = #{isDelete}
   			</if>
         </where>
   	</select>
@@ -140,8 +186,20 @@
   			<if test="endDate != null">
     			and end_date = #{endDate}
   			</if>
+  			<if test="createUserId != null">
+    			and create_user_id = #{createUserId}
+  			</if>
   			<if test="createTime != null">
     			and create_time = #{createTime}
+  			</if>
+  			<if test="updateUserId != null">
+    			and update_user_id = #{updateUserId}
+  			</if>
+  			<if test="updateTime != null">
+    			and update_time = #{updateTime}
+  			</if>
+  			<if test="isDelete != null">
+    			and is_delete = #{isDelete}
   			</if>
         </where>
         <if test="groupBy != null">
@@ -163,7 +221,11 @@
 				#{item.free},
 				#{item.startDate},
 				#{item.endDate},
+				#{item.createUserId},
 				#{item.createTime},
+				#{item.updateUserId},
+				#{item.updateTime},
+				#{item.isDelete},
 			</trim>
 		</foreach>
 	</insert>
@@ -185,9 +247,34 @@
         		<if test="item.endDate != null">
         			end_date = #{item.endDate},
         		</if>
+        		<if test="item.updateUserId != null">
+        			update_user_id = #{item.updateUserId},
+        		</if>
+        		<if test="item.isDelete != null">
+        			is_delete = #{item.isDelete},
+        		</if>
 			</set>
             where id = #{item.id}
 		</foreach>
 	</update>
+	
+	<!-- 用户服务有效期 -->
+  	<select id="listServiceDate" resultMap="BaseResultMap" parameterType="java.util.Map">
+  		select
+  			user_id, max(end_date) end_date
+        from t_service_free
+        <where>
+  			<if test="userIds != null">
+    			and user_id in
+				<foreach collection="userIds" item="userId" open="(" separator="," close=")">
+					#{userId}
+				</foreach>
+  			</if>
+  			<if test="isDelete != null">
+    			and is_delete = #{isDelete}
+  			</if>
+        </where>
+        group by user_id
+  	</select>
 	
 </mapper>

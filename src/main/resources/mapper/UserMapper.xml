@@ -207,7 +207,7 @@
 	<!-- 根据map查询 -->
   	<select id="listUserRole" resultMap="BaseResultMap" parameterType="java.util.Map">
   		select
-        	t1.*, t2.name role
+        	t1.*, t2.id roleId, t2.name roleName
         from t_user t1, t_role t2, t_user_role t3
         <where>
         	t1.id = t3.user_id

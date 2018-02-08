@@ -65,4 +65,12 @@ public interface ServiceFreeMapper {
      */
     void batchUpdate(List<ServiceFree> list);
     
+    /**
+     * 用户服务有效期
+     * 
+     * @param map
+     * @return
+     */
+    List<ServiceFree> listServiceDate(Map<String, Object> map);
+    
 }

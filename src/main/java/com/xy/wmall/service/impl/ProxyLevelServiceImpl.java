@@ -216,4 +216,30 @@ public class ProxyLevelServiceImpl implements ProxyLevelService {
 		}
     }
     
+    /**
+     * 查询代理级别
+     * 
+     * @param userIds
+     * @return
+     */
+    @Override
+    public Map<Integer, Integer> listLevelByUser(List<Integer> userIds) {
+    	Assert.notEmpty(userIds, "userIds为空");
+    	try {
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
+    		map.put("userIds", userIds);
+	    	List<ProxyLevel> proxyLevels = proxyLevelMapper.listLevelByUser(map);
+	    	if (CollectionUtils.isEmpty(proxyLevels)) {
+	    		return Collections.emptyMap();
+	    	}
+	    	Map<Integer, Integer> proxyLevelMap = new HashMap<>(proxyLevels.size());
+	    	for (ProxyLevel proxyLevel : proxyLevels) {
+	    		proxyLevelMap.put(proxyLevel.getProxyId(), proxyLevel.getLevel());
+	    	}
+	    	return proxyLevelMap;
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + userIds + "】查询代理级别失败", e);
+		}
+    }
+    
 }
