@@ -13,22 +13,6 @@ import com.xy.wmall.model.OrderDetail;
  */
 public interface OrderDetailService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    OrderDetail selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    OrderDetail getOrderDetailById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface OrderDetailService {
      * @param orderDetail
      */
     void remove(OrderDetail orderDetail);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    OrderDetail getOrderDetailById(Integer id);
     
     /**
      * 根据map查询

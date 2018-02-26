@@ -295,7 +295,7 @@ public class UserController extends BaseController {
 		model.addAttribute("username", user.getUsername());
 		
 		// 根据用户查询角色
-		UserRole userRole = userRoleService.getRoleByUser(userId);
+		UserRole userRole = userRoleService.getRoleByUserId(userId);
 		model.addAttribute("userRole", userRole);
 		
 		// 查询角色列表

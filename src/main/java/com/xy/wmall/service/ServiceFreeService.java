@@ -14,22 +14,6 @@ import com.xy.wmall.model.ServiceFree;
  */
 public interface ServiceFreeService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    ServiceFree selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    ServiceFree getServiceFreeById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -50,6 +34,14 @@ public interface ServiceFreeService {
      * @param serviceFree
      */
     void remove(ServiceFree serviceFree);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    ServiceFree getServiceFreeById(Integer id);
     
     /**
      * 根据map查询

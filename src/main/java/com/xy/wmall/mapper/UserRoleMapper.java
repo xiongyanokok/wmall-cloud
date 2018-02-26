@@ -13,14 +13,6 @@ import com.xy.wmall.model.UserRole;
  */
 public interface UserRoleMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    UserRole selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *
@@ -71,6 +63,6 @@ public interface UserRoleMapper {
      * @param userId
      * @return
      */
-    UserRole getRoleByUser(Integer userId);
+    UserRole getRoleByUserId(Integer userId);
     
 }

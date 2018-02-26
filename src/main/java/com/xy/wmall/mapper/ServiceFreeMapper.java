@@ -13,14 +13,6 @@ import com.xy.wmall.model.ServiceFree;
  */
 public interface ServiceFreeMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    ServiceFree selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *

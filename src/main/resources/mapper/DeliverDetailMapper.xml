@@ -14,14 +14,6 @@
   		id, deliver_id, product_id, amount
   	</sql>
   	
-  	<!-- 根据主键查询 -->
-  	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    	select 
-    	<include refid="Base_Column_List" />
-    	from t_deliver_detail
-		where id = #{id}
-  	</select>
-  	
   	<!-- 新增数据库记录 -->
   	<insert id="insert" parameterType="com.xy.wmall.model.DeliverDetail">
     	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
@@ -157,7 +149,7 @@
 	</update>
 	
 	<!-- 删除发货详情 -->
-	<delete id="delete" parameterType="java.lang.Integer">
+	<delete id="deleteByDeliverId" parameterType="java.lang.Integer">
   		delete from t_deliver_detail where deliver_id = #{deliverId} 
   	</delete>
 	

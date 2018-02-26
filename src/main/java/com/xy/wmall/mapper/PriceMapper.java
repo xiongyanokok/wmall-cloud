@@ -13,14 +13,6 @@ import com.xy.wmall.model.Price;
  */
 public interface PriceMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Price selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *

@@ -21,14 +21,6 @@
   		id, parent_id, sort, name, icon, uri, create_user_id, create_time, update_user_id, update_time, is_delete
   	</sql>
   	
-  	<!-- 根据主键查询 -->
-  	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    	select 
-    	<include refid="Base_Column_List" />
-    	from t_menu
-		where id = #{id}
-  	</select>
-  	
   	<!-- 新增数据库记录 -->
   	<insert id="insert" parameterType="com.xy.wmall.model.Menu">
     	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
@@ -279,7 +271,7 @@
 	</update>
 	
 	<!-- 根据用户查询权限菜单 -->
-  	<select id="listMenuByUser" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	<select id="listMenuByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
   		select
         	t3.id, t3.parent_id, t3.name, t3.icon, t3.uri
         from 

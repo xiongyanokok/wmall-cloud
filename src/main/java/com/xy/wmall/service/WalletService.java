@@ -13,22 +13,6 @@ import com.xy.wmall.model.Wallet;
  */
 public interface WalletService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Wallet selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    Wallet getWalletById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface WalletService {
      * @param wallet
      */
     void remove(Wallet wallet);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    Wallet getWalletById(Integer id);
     
     /**
      * 根据map查询

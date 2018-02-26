@@ -13,14 +13,6 @@
   		id, role_id, menu_id
   	</sql>
   	
-  	<!-- 根据主键查询 -->
-  	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    	select 
-    	<include refid="Base_Column_List" />
-    	from t_role_menu
-		where id = #{id}
-  	</select>
-  	
   	<!-- 新增数据库记录 -->
   	<insert id="insert" parameterType="com.xy.wmall.model.RoleMenu">
     	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
@@ -137,12 +129,12 @@
 	</update>
 	
 	<!-- 删除角色权限 -->
-	<delete id="delete" parameterType="java.lang.Integer">
+	<delete id="deleteByRoleId" parameterType="java.lang.Integer">
 		delete from t_role_menu where role_id = #{roleId}
 	</delete>
 	
 	<!-- 根据角色查询权限 -->
-	<select id="listMenuByRole" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+	<select id="listMenuByRoleId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
 		select menu_id from t_role_menu where role_id = #{roleId}
 	</select>
 </mapper>

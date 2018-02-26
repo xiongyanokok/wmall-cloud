@@ -171,7 +171,7 @@ public class RoleController extends BaseController {
 		model.addAttribute("role", role);
 		
 		// 根据角色查询权限 
-		List<Integer> menuIds = roleMenuService.listMenuByRole(roleId);
+		List<Integer> menuIds = roleMenuService.listMenuByRoleId(roleId);
 		
 		// 查询权限列表
 		Map<String, Object> map = CommonUtils.defaultQueryMap();

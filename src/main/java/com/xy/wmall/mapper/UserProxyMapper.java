@@ -13,14 +13,6 @@ import com.xy.wmall.model.UserProxy;
  */
 public interface UserProxyMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    UserProxy selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *

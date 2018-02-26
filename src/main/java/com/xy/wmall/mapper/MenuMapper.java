@@ -13,14 +13,6 @@ import com.xy.wmall.model.Menu;
  */
 public interface MenuMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Menu selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *
@@ -71,6 +63,6 @@ public interface MenuMapper {
      * @param userId
      * @return
      */
-    List<Menu> listMenuByUser(Integer userId);
+    List<Menu> listMenuByUserId(Integer userId);
     
 }

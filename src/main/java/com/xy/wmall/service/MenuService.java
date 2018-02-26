@@ -13,22 +13,6 @@ import com.xy.wmall.model.Menu;
  */
 public interface MenuService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Menu selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    Menu getMenuById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface MenuService {
      * @param menu
      */
     void remove(Menu menu);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    Menu getMenuById(Integer id);
     
     /**
      * 根据map查询
@@ -86,6 +78,6 @@ public interface MenuService {
      * @param userId
      * @return
      */
-    List<Menu> listMenuByUser(Integer userId);
+    List<Menu> listMenuByUserId(Integer userId);
     
 }

@@ -25,14 +25,6 @@
   		id, proxy_id, parent_proxy_id, order_type, order_price, preferential_price, is_accumulate, nature_month, order_status, remark, create_user_id, create_time, update_user_id, update_time, is_delete
   	</sql>
   	
-  	<!-- 根据主键查询 -->
-  	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    	select 
-    	<include refid="Base_Column_List" />
-    	from t_order
-		where id = #{id}
-  	</select>
-  	
   	<!-- 新增数据库记录 -->
   	<insert id="insert" parameterType="com.xy.wmall.model.Order">
     	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">

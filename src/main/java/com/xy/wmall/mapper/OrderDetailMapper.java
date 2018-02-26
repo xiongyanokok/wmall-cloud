@@ -3,8 +3,6 @@ package com.xy.wmall.mapper;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.xy.wmall.model.OrderDetail;
 
 /**
@@ -14,14 +12,6 @@ import com.xy.wmall.model.OrderDetail;
  * @date 2017年10月28日 上午08:54:14
  */
 public interface OrderDetailMapper {
-
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    OrderDetail selectByPrimaryKey(Integer id);
 
     /**
      * 新增数据库记录
@@ -37,13 +27,6 @@ public interface OrderDetailMapper {
      */
     void update(OrderDetail orderDetail);
     
-    /**
-     * 删除数据库记录
-     *
-     * @param orderId
-     */
-    void delete(@Param("orderId") Integer orderId);
-
     /**
      * 根据map查询
      * 
@@ -73,5 +56,12 @@ public interface OrderDetailMapper {
      * @param list
      */
     void batchUpdate(List<OrderDetail> list);
+    
+    /**
+     * 删除数据库记录
+     *
+     * @param orderId
+     */
+    void deleteByOrderId(Integer orderId);
     
 }

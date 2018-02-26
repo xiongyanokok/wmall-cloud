@@ -28,42 +28,6 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 	private OrderDetailMapper orderDetailMapper;
 	
 	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public OrderDetail selectByPrimaryKey(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-	    	return orderDetailMapper.selectByPrimaryKey(id);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public OrderDetail getOrderDetailById(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-    		Map<String, Object> map = CommonUtils.defaultQueryMap();
-    		map.put("id", id);
-	    	return orderDetailMapper.getOrderDetail(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-	/**
      * 保存数据
      *
      * @param orderDetail
@@ -111,6 +75,25 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + orderDetail.toString() + "】删除失败", e);
     	}
+    }
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     * @throws WmallException
+     */
+    @Override
+    public OrderDetail getOrderDetailById(Integer id) {
+    	Assert.notNull(id, "id为空");
+    	try {
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
+    		map.put("id", id);
+	    	return orderDetailMapper.getOrderDetail(map);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
+		}
     }
     
     /**

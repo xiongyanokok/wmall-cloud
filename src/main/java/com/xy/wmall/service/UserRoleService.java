@@ -13,22 +13,6 @@ import com.xy.wmall.model.UserRole;
  */
 public interface UserRoleService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    UserRole selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    UserRole getUserRoleById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface UserRoleService {
      * @param userRole
      */
     void remove(UserRole userRole);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    UserRole getUserRoleById(Integer id);
     
     /**
      * 根据map查询
@@ -86,6 +78,6 @@ public interface UserRoleService {
      * @param userId
      * @return
      */
-    UserRole getRoleByUser(Integer userId);
+    UserRole getRoleByUserId(Integer userId);
     
 }

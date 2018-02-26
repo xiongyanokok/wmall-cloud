@@ -14,14 +14,6 @@ import com.xy.wmall.pojo.Statistics;
  */
 public interface DeliverMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Deliver selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *

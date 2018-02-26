@@ -13,22 +13,6 @@ import com.xy.wmall.model.RoleMenu;
  */
 public interface RoleMenuService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    RoleMenu selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    RoleMenu getRoleMenuById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface RoleMenuService {
      * @param roleMenu
      */
     void remove(RoleMenu roleMenu);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    RoleMenu getRoleMenuById(Integer id);
     
     /**
      * 根据map查询
@@ -93,6 +85,6 @@ public interface RoleMenuService {
      * @param roleId
      * @return
      */
-    List<Integer> listMenuByRole(Integer roleId);
+    List<Integer> listMenuByRoleId(Integer roleId);
     
 }

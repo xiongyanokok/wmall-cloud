@@ -63,42 +63,6 @@ public class OrderServiceImpl implements OrderService {
     private DeliverFlowMapper deliverFlowMapper;
 	
 	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public Order selectByPrimaryKey(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-	    	return orderMapper.selectByPrimaryKey(id);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public Order getOrderById(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-    		Map<String, Object> map = CommonUtils.defaultQueryMap();
-    		map.put("id", id);
-	    	return orderMapper.getOrder(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-	/**
      * 保存数据
      *
      * @param order
@@ -244,7 +208,7 @@ public class OrderServiceImpl implements OrderService {
     		orderMapper.update(order);
     		
     		// 删除订单详情
-    		orderDetailMapper.delete(order.getId());
+    		orderDetailMapper.deleteByOrderId(order.getId());
     		
     		// 产品id
 			Integer[] productId = order.getProductId();
@@ -315,6 +279,25 @@ public class OrderServiceImpl implements OrderService {
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + order.toString() + "】删除失败", e);
     	}
+    }
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     * @throws WmallException
+     */
+    @Override
+    public Order getOrderById(Integer id) {
+    	Assert.notNull(id, "id为空");
+    	try {
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
+    		map.put("id", id);
+	    	return orderMapper.getOrder(map);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
+		}
     }
     
     /**

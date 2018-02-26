@@ -28,42 +28,6 @@ public class UserRoleServiceImpl implements UserRoleService {
 	private UserRoleMapper userRoleMapper;
 	
 	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public UserRole selectByPrimaryKey(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-	    	return userRoleMapper.selectByPrimaryKey(id);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public UserRole getUserRoleById(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-    		Map<String, Object> map = CommonUtils.defaultQueryMap();
-    		map.put("id", id);
-	    	return userRoleMapper.getUserRole(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-	/**
      * 保存数据
      *
      * @param userRole
@@ -111,6 +75,25 @@ public class UserRoleServiceImpl implements UserRoleService {
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + userRole.toString() + "】删除失败", e);
     	}
+    }
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     * @throws WmallException
+     */
+    @Override
+    public UserRole getUserRoleById(Integer id) {
+    	Assert.notNull(id, "id为空");
+    	try {
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
+    		map.put("id", id);
+	    	return userRoleMapper.getUserRole(map);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
+		}
     }
     
     /**
@@ -192,10 +175,10 @@ public class UserRoleServiceImpl implements UserRoleService {
      * @return
      */
     @Override
-    public UserRole getRoleByUser(Integer userId) {
+    public UserRole getRoleByUserId(Integer userId) {
     	Assert.notNull(userId, "userId为空");
     	try {
-	    	return userRoleMapper.getRoleByUser(userId);
+	    	return userRoleMapper.getRoleByUserId(userId);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + userId + "】根据用户查询角色失败", e);
 		}

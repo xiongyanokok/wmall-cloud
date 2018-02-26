@@ -28,42 +28,6 @@ public class DeliverFlowServiceImpl implements DeliverFlowService {
 	private DeliverFlowMapper deliverFlowMapper;
 	
 	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public DeliverFlow selectByPrimaryKey(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-	    	return deliverFlowMapper.selectByPrimaryKey(id);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public DeliverFlow getDeliverFlowById(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-    		Map<String, Object> map = CommonUtils.defaultQueryMap();
-    		map.put("id", id);
-	    	return deliverFlowMapper.getDeliverFlow(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-	/**
      * 保存数据
      *
      * @param deliverFlow
@@ -92,6 +56,25 @@ public class DeliverFlowServiceImpl implements DeliverFlowService {
     		deliverFlowMapper.update(deliverFlow);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_UPDATE_ERROR, "【" + deliverFlow.toString() + "】修改失败", e);
+		}
+    }
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     * @throws WmallException
+     */
+    @Override
+    public DeliverFlow getDeliverFlowById(Integer id) {
+    	Assert.notNull(id, "id为空");
+    	try {
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
+    		map.put("id", id);
+	    	return deliverFlowMapper.getDeliverFlow(map);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
 		}
     }
     

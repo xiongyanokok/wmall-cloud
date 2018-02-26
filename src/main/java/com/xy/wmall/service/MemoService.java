@@ -13,22 +13,6 @@ import com.xy.wmall.model.Memo;
  */
 public interface MemoService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Memo selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    Memo getMemoById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface MemoService {
      * @param memo
      */
     void remove(Memo memo);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    Memo getMemoById(Integer id);
     
     /**
      * 根据map查询

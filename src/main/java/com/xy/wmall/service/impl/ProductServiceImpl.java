@@ -32,42 +32,6 @@ public class ProductServiceImpl implements ProductService {
 	private ProductMapper productMapper;
 	
 	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public Product selectByPrimaryKey(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-	    	return productMapper.selectByPrimaryKey(id);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public Product getProductById(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-    		Map<String, Object> map = CommonUtils.defaultQueryMap();
-    		map.put("id", id);
-	    	return productMapper.getProduct(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-	/**
      * 保存数据
      *
      * @param product
@@ -119,6 +83,25 @@ public class ProductServiceImpl implements ProductService {
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + product.toString() + "】删除失败", e);
     	}
+    }
+	
+	/**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     * @throws WmallException
+     */
+    @Override
+    public Product getProductById(Integer id) {
+    	Assert.notNull(id, "id为空");
+    	try {
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
+    		map.put("id", id);
+	    	return productMapper.getProduct(map);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
+		}
     }
     
     /**

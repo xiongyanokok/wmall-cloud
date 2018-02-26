@@ -13,22 +13,6 @@ import com.xy.wmall.model.Logistics;
  */
 public interface LogisticsService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Logistics selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    Logistics getLogisticsById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface LogisticsService {
      * @param logistics
      */
     void remove(Logistics logistics);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    Logistics getLogisticsById(Integer id);
     
     /**
      * 根据map查询

@@ -118,7 +118,7 @@ public class LogisticsController extends BaseController {
 		deliver.setDeliverStatus(TrueFalseStatusEnum.TRUE.getValue());
 		deliver.setUpdateUserId(getUserId());
 		deliver.setUpdateTime(new Date());
-		deliverService.status(deliver);
+		deliverService.deliverStatus(deliver);
 		log.info("【{}】发货成功", deliver);
 	}
 	

@@ -43,42 +43,6 @@ public class DeliverServiceImpl implements DeliverService {
     private DeliverFlowMapper deliverFlowMapper;
 	
 	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public Deliver selectByPrimaryKey(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-	    	return deliverMapper.selectByPrimaryKey(id);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public Deliver getDeliverById(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-    		Map<String, Object> map = CommonUtils.defaultQueryMap();
-    		map.put("id", id);
-	    	return deliverMapper.getDeliver(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-	/**
      * 保存数据
      *
      * @param deliver
@@ -133,7 +97,7 @@ public class DeliverServiceImpl implements DeliverService {
     		deliverMapper.update(deliver);
     		
     		// 删除发货单详情
-    		deliverDetailMapper.delete(deliver.getId());
+    		deliverDetailMapper.deleteByDeliverId(deliver.getId());
     		
     		// 产品id
 			Integer[] productId = deliver.getProductId();
@@ -155,21 +119,6 @@ public class DeliverServiceImpl implements DeliverService {
     }
     
     /**
-     * 发货
-     * 
-     * @param deliver
-     */
-    @Override
-    public void status(Deliver deliver) {
-    	Assert.notNull(deliver, "修改数据为空");
-    	try {
-    		deliverMapper.update(deliver);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_UPDATE_ERROR, "【" + deliver.toString() + "】发货失败", e);
-		}
-    }
-    
-    /**
      * 删除数据
      * 
      * @param deliver
@@ -186,6 +135,25 @@ public class DeliverServiceImpl implements DeliverService {
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + deliver.toString() + "】删除失败", e);
     	}
+    }
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     * @throws WmallException
+     */
+    @Override
+    public Deliver getDeliverById(Integer id) {
+    	Assert.notNull(id, "id为空");
+    	try {
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
+    		map.put("id", id);
+	    	return deliverMapper.getDeliver(map);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
+		}
     }
     
     /**
@@ -257,6 +225,21 @@ public class DeliverServiceImpl implements DeliverService {
 			}
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_BATCH_ERROR, "批量修改失败", e);
+		}
+    }
+    
+    /**
+     * 发货状态
+     * 
+     * @param deliver
+     */
+    @Override
+    public void deliverStatus(Deliver deliver) {
+    	Assert.notNull(deliver, "修改数据为空");
+    	try {
+    		deliverMapper.update(deliver);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_UPDATE_ERROR, "【" + deliver.toString() + "】发货失败", e);
 		}
     }
     

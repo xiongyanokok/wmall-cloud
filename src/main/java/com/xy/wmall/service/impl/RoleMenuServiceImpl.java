@@ -28,42 +28,6 @@ public class RoleMenuServiceImpl implements RoleMenuService {
 	private RoleMenuMapper roleMenuMapper;
 	
 	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public RoleMenu selectByPrimaryKey(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-	    	return roleMenuMapper.selectByPrimaryKey(id);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public RoleMenu getRoleMenuById(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-    		Map<String, Object> map = CommonUtils.defaultQueryMap();
-    		map.put("id", id);
-	    	return roleMenuMapper.getRoleMenu(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-	/**
      * 保存数据
      *
      * @param roleMenu
@@ -111,6 +75,25 @@ public class RoleMenuServiceImpl implements RoleMenuService {
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + roleMenu.toString() + "】删除失败", e);
     	}
+    }
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     * @throws WmallException
+     */
+    @Override
+    public RoleMenu getRoleMenuById(Integer id) {
+    	Assert.notNull(id, "id为空");
+    	try {
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
+    		map.put("id", id);
+	    	return roleMenuMapper.getRoleMenu(map);
+		} catch (Exception e) {
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
+		}
     }
     
     /**
@@ -194,7 +177,7 @@ public class RoleMenuServiceImpl implements RoleMenuService {
     public void delete(Integer roleId) {
     	Assert.notNull(roleId, "roleId为空");
     	try {
-	    	roleMenuMapper.delete(roleId);
+	    	roleMenuMapper.deleteByRoleId(roleId);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + roleId + "】删除角色权限失败", e);
 		}
@@ -207,10 +190,10 @@ public class RoleMenuServiceImpl implements RoleMenuService {
      * @return
      */
     @Override
-    public List<Integer> listMenuByRole(Integer roleId) {
+    public List<Integer> listMenuByRoleId(Integer roleId) {
     	Assert.notNull(roleId, "roleId为空");
     	try {
-	    	return roleMenuMapper.listMenuByRole(roleId);
+	    	return roleMenuMapper.listMenuByRoleId(roleId);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + roleId + "】根据角色查询权限失败", e);
 		}

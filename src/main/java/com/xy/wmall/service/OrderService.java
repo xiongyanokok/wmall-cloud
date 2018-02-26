@@ -14,22 +14,6 @@ import com.xy.wmall.pojo.Statistics;
  */
 public interface OrderService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Order selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    Order getOrderById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -57,6 +41,14 @@ public interface OrderService {
      * @param order
      */
     void remove(Order order);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    Order getOrderById(Integer id);
     
     /**
      * 根据map查询

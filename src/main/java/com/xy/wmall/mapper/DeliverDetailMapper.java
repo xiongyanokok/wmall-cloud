@@ -3,8 +3,6 @@ package com.xy.wmall.mapper;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.xy.wmall.model.DeliverDetail;
 
 /**
@@ -14,14 +12,6 @@ import com.xy.wmall.model.DeliverDetail;
  * @date 2017年10月28日 上午08:54:03
  */
 public interface DeliverDetailMapper {
-
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    DeliverDetail selectByPrimaryKey(Integer id);
 
     /**
      * 新增数据库记录
@@ -37,13 +27,6 @@ public interface DeliverDetailMapper {
      */
     void update(DeliverDetail deliverDetail);
     
-    /**
-     * 删除数据库记录
-     *
-     * @param deliverId
-     */
-    void delete(@Param("deliverId") Integer deliverId);
-
     /**
      * 根据map查询
      * 
@@ -73,5 +56,12 @@ public interface DeliverDetailMapper {
      * @param list
      */
     void batchUpdate(List<DeliverDetail> list);
+    
+    /**
+     * 删除数据库记录
+     *
+     * @param deliverId
+     */
+    void deleteByDeliverId(Integer deliverId);
     
 }

@@ -118,7 +118,7 @@ public class MainController extends BaseController {
 		session.setAttribute(Constant.SESSION_KEY, userInfo);
 		
 		// 查询用户角色
-		UserRole userRole = userRoleService.getRoleByUser(user.getId());
+		UserRole userRole = userRoleService.getRoleByUserId(user.getId());
 		if (Constant.ADMIN_ROLE.equals(userRole.getRoleId())) {
 			userInfo.setIsAdmin(TrueFalseStatusEnum.TRUE.getValue());
 			return buildSuccess("登录成功");
@@ -228,7 +228,7 @@ public class MainController extends BaseController {
 		List<Menu> menus = userInfo.getMenus();
 		if (CollectionUtils.isEmpty(menus)) {
 			// 根据用户查询权限菜单
-			menus = menuService.listMenuByUser(userInfo.getUserId());
+			menus = menuService.listMenuByUserId(userInfo.getUserId());
 			userInfo.setMenus(menus);
 		}
 		model.addAttribute("name", userInfo.getName());

@@ -13,14 +13,6 @@ import com.xy.wmall.model.Memo;
  */
 public interface MemoMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Memo selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *

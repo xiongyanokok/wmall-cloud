@@ -13,14 +13,6 @@
   		id, user_id, proxy_id
   	</sql>
   	
-  	<!-- 根据主键查询 -->
-  	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    	select 
-    	<include refid="Base_Column_List" />
-    	from t_user_proxy
-		where id = #{id}
-  	</select>
-  	
   	<!-- 新增数据库记录 -->
   	<insert id="insert" parameterType="com.xy.wmall.model.UserProxy">
     	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">

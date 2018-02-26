@@ -13,22 +13,6 @@ import com.xy.wmall.model.DeliverDetail;
  */
 public interface DeliverDetailService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    DeliverDetail selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    DeliverDetail getDeliverDetailById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -44,11 +28,12 @@ public interface DeliverDetailService {
     void update(DeliverDetail deliverDetail);
     
     /**
-     * 删除数据
-     * 
-     * @param deliverDetail
+     * 根据ID查询
+     *
+     * @param id
+     * @return
      */
-    void remove(DeliverDetail deliverDetail);
+    DeliverDetail getDeliverDetailById(Integer id);
     
     /**
      * 根据map查询

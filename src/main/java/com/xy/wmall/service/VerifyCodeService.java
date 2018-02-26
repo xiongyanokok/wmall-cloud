@@ -13,22 +13,6 @@ import com.xy.wmall.model.VerifyCode;
  */
 public interface VerifyCodeService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    VerifyCode selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    VerifyCode getVerifyCodeById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface VerifyCodeService {
      * @param verifyCode
      */
     void remove(VerifyCode verifyCode);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    VerifyCode getVerifyCodeById(Integer id);
     
     /**
      * 根据map查询

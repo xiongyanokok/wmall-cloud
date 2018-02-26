@@ -13,22 +13,6 @@ import com.xy.wmall.model.User;
  */
 public interface UserService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    User selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    User getUserById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface UserService {
      * @param user
      */
     void remove(User user);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    User getUserById(Integer id);
     
     /**
      * 根据map查询

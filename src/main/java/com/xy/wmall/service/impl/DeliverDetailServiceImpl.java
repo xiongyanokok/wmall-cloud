@@ -28,42 +28,6 @@ public class DeliverDetailServiceImpl implements DeliverDetailService {
 	private DeliverDetailMapper deliverDetailMapper;
 	
 	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public DeliverDetail selectByPrimaryKey(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-	    	return deliverDetailMapper.selectByPrimaryKey(id);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public DeliverDetail getDeliverDetailById(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-    		Map<String, Object> map = CommonUtils.defaultQueryMap();
-    		map.put("id", id);
-	    	return deliverDetailMapper.getDeliverDetail(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-	/**
      * 保存数据
      *
      * @param deliverDetail
@@ -96,21 +60,22 @@ public class DeliverDetailServiceImpl implements DeliverDetailService {
     }
     
     /**
-     * 删除数据
-     * 
-     * @param deliverDetail
+     * 根据ID查询
+     *
+     * @param id
+     * @return
      * @throws WmallException
      */
     @Override
-    public void remove(DeliverDetail deliverDetail) {
-    	Assert.notNull(deliverDetail, "删除数据为空");
-		try {
-    		DeliverDetail deleteDeliverDetail = new DeliverDetail();
-    		deleteDeliverDetail.setId(deliverDetail.getId());
-    		deliverDetailMapper.update(deleteDeliverDetail);
+    public DeliverDetail getDeliverDetailById(Integer id) {
+    	Assert.notNull(id, "id为空");
+    	try {
+    		Map<String, Object> map = CommonUtils.defaultQueryMap();
+    		map.put("id", id);
+	    	return deliverDetailMapper.getDeliverDetail(map);
 		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + deliverDetail.toString() + "】删除失败", e);
-    	}
+			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
+		}
     }
     
     /**

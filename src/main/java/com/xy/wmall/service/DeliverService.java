@@ -14,22 +14,6 @@ import com.xy.wmall.pojo.Statistics;
  */
 public interface DeliverService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Deliver selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    Deliver getDeliverById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -45,18 +29,19 @@ public interface DeliverService {
     void update(Deliver deliver);
     
     /**
-     * 发货
-     * 
-     * @param deliver
-     */
-    void status(Deliver deliver);
-    
-    /**
      * 删除数据
      * 
      * @param deliver
      */
     void remove(Deliver deliver);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    Deliver getDeliverById(Integer id);
     
     /**
      * 根据map查询
@@ -87,6 +72,13 @@ public interface DeliverService {
      * @param list
      */
     void batchUpdate(List<Deliver> list);
+    
+    /**
+     * 发货状态
+     * 
+     * @param deliver
+     */
+    void deliverStatus(Deliver deliver);
     
     /**
      * 发货统计

@@ -13,14 +13,6 @@ import com.xy.wmall.model.ProxyLevel;
  */
 public interface ProxyLevelMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    ProxyLevel selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *

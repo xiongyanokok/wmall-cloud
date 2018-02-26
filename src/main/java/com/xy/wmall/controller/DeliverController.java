@@ -346,7 +346,7 @@ public class DeliverController extends BaseController {
 		deliver.setDeliverStatus(TrueFalseStatusEnum.FALSE.getValue());
 		deliver.setUpdateUserId(getUserId());
 		deliver.setUpdateTime(new Date());
-		deliverService.status(deliver);
+		deliverService.deliverStatus(deliver);
 		log.info("【{}】撤销发货成功", deliver);
 		return buildSuccess("撤销发货成功");
 	}

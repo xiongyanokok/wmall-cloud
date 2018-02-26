@@ -13,22 +13,6 @@ import com.xy.wmall.model.UserProxy;
  */
 public interface UserProxyService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    UserProxy selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    UserProxy getUserProxyById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface UserProxyService {
      * @param userProxy
      */
     void remove(UserProxy userProxy);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    UserProxy getUserProxyById(Integer id);
     
     /**
      * 根据map查询

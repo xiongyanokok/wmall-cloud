@@ -13,22 +13,6 @@ import com.xy.wmall.model.DeliverFlow;
  */
 public interface DeliverFlowService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    DeliverFlow selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    DeliverFlow getDeliverFlowById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -42,6 +26,14 @@ public interface DeliverFlowService {
      * @param deliverFlow
      */
     void update(DeliverFlow deliverFlow);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    DeliverFlow getDeliverFlowById(Integer id);
     
     /**
      * 根据map查询

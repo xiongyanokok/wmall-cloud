@@ -13,14 +13,6 @@ import com.xy.wmall.model.Logistics;
  */
 public interface LogisticsMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Logistics selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *

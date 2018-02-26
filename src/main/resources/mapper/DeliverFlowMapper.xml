@@ -16,14 +16,6 @@
   		id, deliver_id, proxy_id, parent_proxy_id, flow_status, create_time
   	</sql>
   	
-  	<!-- 根据主键查询 -->
-  	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    	select 
-    	<include refid="Base_Column_List" />
-    	from t_deliver_flow
-		where id = #{id}
-  	</select>
-  	
   	<!-- 新增数据库记录 -->
   	<insert id="insert" parameterType="com.xy.wmall.model.DeliverFlow">
     	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">

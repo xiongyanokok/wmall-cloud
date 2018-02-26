@@ -17,14 +17,6 @@
   		id, proxy_id, code, create_user_id, create_time, effective_time, use_status
   	</sql>
   	
-  	<!-- 根据主键查询 -->
-  	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    	select 
-    	<include refid="Base_Column_List" />
-    	from t_verify_code
-		where id = #{id}
-  	</select>
-  	
   	<!-- 新增数据库记录 -->
   	<insert id="insert" parameterType="com.xy.wmall.model.VerifyCode">
     	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">

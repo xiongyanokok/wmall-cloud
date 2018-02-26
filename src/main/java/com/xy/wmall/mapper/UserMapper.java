@@ -13,14 +13,6 @@ import com.xy.wmall.model.User;
  */
 public interface UserMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    User selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *

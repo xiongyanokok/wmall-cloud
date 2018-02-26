@@ -13,22 +13,6 @@ import com.xy.wmall.model.ProxyLevel;
  */
 public interface ProxyLevelService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    ProxyLevel selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    ProxyLevel getProxyLevelById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface ProxyLevelService {
      * @param proxyLevel
      */
     void remove(ProxyLevel proxyLevel);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    ProxyLevel getProxyLevelById(Integer id);
     
     /**
      * 根据map查询

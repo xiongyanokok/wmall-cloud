@@ -13,14 +13,6 @@ import com.xy.wmall.model.Product;
  */
 public interface ProductMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Product selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *

@@ -13,14 +13,6 @@ import com.xy.wmall.model.Wallet;
  */
 public interface WalletMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Wallet selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *

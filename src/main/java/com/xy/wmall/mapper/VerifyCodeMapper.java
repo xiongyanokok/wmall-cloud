@@ -13,14 +13,6 @@ import com.xy.wmall.model.VerifyCode;
  */
 public interface VerifyCodeMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    VerifyCode selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *

@@ -13,14 +13,6 @@ import com.xy.wmall.model.DeliverFlow;
  */
 public interface DeliverFlowMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    DeliverFlow selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *

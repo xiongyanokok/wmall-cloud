@@ -13,14 +13,6 @@ import com.xy.wmall.model.RoleMenu;
  */
 public interface RoleMenuMapper {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    RoleMenu selectByPrimaryKey(Integer id);
-
     /**
      * 新增数据库记录
      *
@@ -70,7 +62,7 @@ public interface RoleMenuMapper {
      * 
      * @param roleId
      */
-    void delete(Integer roleId);
+    void deleteByRoleId(Integer roleId);
     
     /**
      * 根据角色查询权限
@@ -78,6 +70,6 @@ public interface RoleMenuMapper {
      * @param roleId
      * @return
      */
-    List<Integer> listMenuByRole(Integer roleId);
+    List<Integer> listMenuByRoleId(Integer roleId);
     
 }

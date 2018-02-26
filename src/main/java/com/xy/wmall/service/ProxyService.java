@@ -13,22 +13,6 @@ import com.xy.wmall.model.Proxy;
  */
 public interface ProxyService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Proxy selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    Proxy getProxyById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface ProxyService {
      * @param proxy
      */
     void remove(Proxy proxy);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    Proxy getProxyById(Integer id);
     
     /**
      * 根据map查询

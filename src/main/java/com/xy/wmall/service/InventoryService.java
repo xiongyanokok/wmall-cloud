@@ -13,22 +13,6 @@ import com.xy.wmall.model.Inventory;
  */
 public interface InventoryService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Inventory selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    Inventory getInventoryById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface InventoryService {
      * @param inventory
      */
     void remove(Inventory inventory);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    Inventory getInventoryById(Integer id);
     
     /**
      * 根据map查询

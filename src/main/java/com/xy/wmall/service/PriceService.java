@@ -13,22 +13,6 @@ import com.xy.wmall.model.Price;
  */
 public interface PriceService {
 
-	/**
-     * 根据主键查询
-     *
-     * @param id
-     * @return
-     */
-    Price selectByPrimaryKey(Integer id);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    Price getPriceById(Integer id);
-    
     /**
      * 保存数据
      *
@@ -49,6 +33,14 @@ public interface PriceService {
      * @param price
      */
     void remove(Price price);
+    
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    Price getPriceById(Integer id);
     
     /**
      * 根据map查询
