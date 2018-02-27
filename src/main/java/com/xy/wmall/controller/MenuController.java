@@ -57,7 +57,7 @@ public class MenuController extends BaseController {
 		model.addAttribute("parentId", parentId);
 		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("parentId", 0);
-		List<Menu> menus = menuService.listMenu(map);
+		List<Menu> menus = menuService.listByMap(map);
 		model.addAttribute("menus", menus);
 		model.addAttribute("menusJson", JacksonUtils.serialize(menus));
 		return "menu/sub_list";
@@ -79,7 +79,7 @@ public class MenuController extends BaseController {
 			map.put("name", request.getParameter("name"));
 			// 菜单地址
 			map.put("uri", request.getParameter("uri"));
-			return menuService.listMenu(map);
+			return menuService.listByMap(map);
 		});
 	}
 	
@@ -95,7 +95,7 @@ public class MenuController extends BaseController {
 		Assert.notNull(parentId, "parentId为空");
 		model.addAttribute("parentId", parentId);
 		if (parentId > 0) {
-			Menu menu = menuService.getMenuById(parentId);
+			Menu menu = menuService.getById(parentId);
 			Assert.notNull(menu, "数据不存在");
 			model.addAttribute("supName", menu.getName());
 		}
@@ -132,11 +132,11 @@ public class MenuController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Menu menu = menuService.getMenuById(id);
+		Menu menu = menuService.getById(id);
 		Assert.notNull(menu, "数据不存在");
 		model.addAttribute("menu", menu);
 		if (menu.getParentId() > 0) {
-			Menu supMenu = menuService.getMenuById(menu.getParentId());
+			Menu supMenu = menuService.getById(menu.getParentId());
 			Assert.notNull(supMenu, "数据不存在");
 			model.addAttribute("supName", supMenu.getName());
 		}
@@ -153,7 +153,7 @@ public class MenuController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(Menu menu) {
 		Assert.notNull(menu, "修改数据为空");
-		Menu menuInfo = menuService.getMenuById(menu.getId());
+		Menu menuInfo = menuService.getById(menu.getId());
 		Assert.notNull(menuInfo, "数据不存在");
 		menu.setUpdateUserId(getUserId());
 		menu.setUpdateTime(new Date());
@@ -172,7 +172,7 @@ public class MenuController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		Menu menu = menuService.getMenuById(id);
+		Menu menu = menuService.getById(id);
 		Assert.notNull(menu, "数据不存在");
 		menuService.remove(menu);
 		log.info("【{}】删除成功", menu);

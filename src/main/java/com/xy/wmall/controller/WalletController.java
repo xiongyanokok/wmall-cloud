@@ -48,7 +48,7 @@ public class WalletController extends BaseController {
 			proxyId = getProxyId();
 		}
 		Assert.notNull(proxyId, "proxyId为空");
-		Proxy proxy = proxyService.getProxyById(proxyId);
+		Proxy proxy = proxyService.getById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxy", proxy);
 		return "wallet/list";
@@ -68,7 +68,7 @@ public class WalletController extends BaseController {
 			map.put("proxyId", request.getParameter("proxyId")); 
 			// 类型
 			map.put("type", request.getParameter("type")); 
-			return walletService.listWallet(map);
+			return walletService.listByMap(map);
 		});
 	}
 	
@@ -81,7 +81,7 @@ public class WalletController extends BaseController {
 	@RequestMapping(value = "/add", method = { RequestMethod.GET })
 	public String add(Model model, Integer proxyId) {
 		Assert.notNull(proxyId, "proxyId为空");
-		Proxy proxy = proxyService.getProxyById(proxyId);
+		Proxy proxy = proxyService.getById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxy", proxy);
 		model.addAttribute("type", ArithmeticTypeEnum.ADD.getValue());
@@ -97,7 +97,7 @@ public class WalletController extends BaseController {
 	@RequestMapping(value = "/expenses", method = { RequestMethod.GET })
 	public String expenses(Model model, Integer proxyId) {
 		Assert.notNull(proxyId, "proxyId为空");
-		Proxy proxy = proxyService.getProxyById(proxyId);
+		Proxy proxy = proxyService.getById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxy", proxy);
 		model.addAttribute("type", ArithmeticTypeEnum.SUB.getValue());
@@ -136,10 +136,10 @@ public class WalletController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Wallet wallet = walletService.getWalletById(id);
+		Wallet wallet = walletService.getById(id);
 		Assert.notNull(wallet, "数据不存在");
 		model.addAttribute("wallet", wallet);
-		Proxy proxy = proxyService.getProxyById(wallet.getProxyId());
+		Proxy proxy = proxyService.getById(wallet.getProxyId());
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxy", proxy);
 		return "wallet/edit";
@@ -155,7 +155,7 @@ public class WalletController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(Wallet wallet) {
 		Assert.notNull(wallet, "修改数据为空");
-		Wallet walletInfo = walletService.getWalletById(wallet.getId());
+		Wallet walletInfo = walletService.getById(wallet.getId());
 		Assert.notNull(walletInfo, "数据不存在");
 		wallet.setUpdateUserId(getUserId());
 		wallet.setUpdateTime(new Date());
@@ -174,7 +174,7 @@ public class WalletController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		Wallet wallet = walletService.getWalletById(id);
+		Wallet wallet = walletService.getById(id);
 		Assert.notNull(wallet, "数据不存在");
 		walletService.remove(wallet);
 		log.info("【{}】删除成功", wallet);

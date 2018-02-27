@@ -9,11 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xy.wmall.common.Assert;
-import com.xy.wmall.common.utils.CommonUtils;
-import com.xy.wmall.common.utils.ListPageUtils;
 import com.xy.wmall.enums.ErrorCodeEnum;
 import com.xy.wmall.enums.FlowStatusEnum;
-import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.exception.WmallException;
 import com.xy.wmall.mapper.DeliverDetailMapper;
 import com.xy.wmall.mapper.DeliverFlowMapper;
@@ -31,7 +28,7 @@ import com.xy.wmall.service.DeliverService;
  * @date 2017年10月28日 上午08:53:59
  */
 @Service
-public class DeliverServiceImpl implements DeliverService {
+public class DeliverServiceImpl extends BaseServiceImpl<DeliverMapper, Deliver> implements DeliverService {
 
     @Autowired
 	private DeliverMapper deliverMapper;
@@ -115,116 +112,6 @@ public class DeliverServiceImpl implements DeliverService {
 			deliverDetailMapper.batchInsert(deliverDetails);
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_UPDATE_ERROR, "【" + deliver.toString() + "】修改失败", e);
-		}
-    }
-    
-    /**
-     * 删除数据
-     * 
-     * @param deliver
-     * @throws WmallException
-     */
-    @Override
-    public void remove(Deliver deliver) {
-    	Assert.notNull(deliver, "删除数据为空");
-		try {
-    		Deliver deleteDeliver = new Deliver();
-    		deleteDeliver.setId(deliver.getId());
-    		deleteDeliver.setIsDelete(TrueFalseStatusEnum.TRUE.getValue());
-    		deliverMapper.update(deleteDeliver);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + deliver.toString() + "】删除失败", e);
-    	}
-    }
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public Deliver getDeliverById(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-    		Map<String, Object> map = CommonUtils.defaultQueryMap();
-    		map.put("id", id);
-	    	return deliverMapper.getDeliver(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public Deliver getDeliver(Map<String, Object> map) {
-    	Assert.notEmpty(map, "查询数据为空");
-    	try {
-	    	return deliverMapper.getDeliver(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询对象失败", e);
-		}
-    }
-    
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public List<Deliver> listDeliver(Map<String, Object> map) {
-   	 	Assert.notEmpty(map, "查询数据为空");
-    	try {
-	    	return deliverMapper.listDeliver(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询列表失败", e);
-		}
-    }
-    
-    /**
-     * 批量保存
-     * 
-     * @param list
-     * @throws WmallException
-     */
-    @Override
-    public void batchSave(List<Deliver> list) {
-    	Assert.notEmpty(list, "批量保存数据为空");
-    	try {
-			List<List<Deliver>> pageList = ListPageUtils.listPage(list, 1000);
-			for (List<Deliver> page : pageList) {
-				deliverMapper.batchInsert(page);
-			}
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_BATCH_ERROR, "批量保存失败", e);
-		}
-    }
-    
-    /**
-     * 批量更新
-     * 
-     * @param list
-     * @throws WmallException
-     */
-    @Override
-    public void batchUpdate(List<Deliver> list) {
-    	Assert.notEmpty(list, "批量修改数据为空");
-    	try {
-			List<List<Deliver>> pageList = ListPageUtils.listPage(list, 1000);
-			for (List<Deliver> page : pageList) {
-				deliverMapper.batchUpdate(page);
-			}
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_BATCH_ERROR, "批量修改失败", e);
 		}
     }
     

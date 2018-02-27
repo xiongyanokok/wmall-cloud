@@ -92,7 +92,7 @@ public class PurchaseController extends BaseController {
 			// 订单id
 			map.put("groupBy", "id");
 			// 查询进货单
-			List<Order> orders = orderService.listOrder(map);
+			List<Order> orders = orderService.listByMap(map);
 			if (CollectionUtils.isEmpty(orders)) {
 				return Collections.emptyList();
 			}
@@ -105,7 +105,7 @@ public class PurchaseController extends BaseController {
 			// 查询订单详情
 			Map<String, Object> dMap = new HashMap<>(1);
 			dMap.put("orderIds", orderIds);
-			List<OrderDetail> orderDetails = orderDetailService.listOrderDetail(dMap);
+			List<OrderDetail> orderDetails = orderDetailService.listByMap(dMap);
 			for (Order order : orders) {
 				List<OrderDetail> details = new ArrayList<>();
 				for (OrderDetail orderDetail : orderDetails) {
@@ -176,13 +176,13 @@ public class PurchaseController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Order order = orderService.getOrderById(id);
+		Order order = orderService.getById(id);
 		Assert.notNull(order, "数据不存在");
 		model.addAttribute("order", order);
 		// 查询订单详情
 		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("orderId", id);
-		List<OrderDetail> orderDetails = orderDetailService.listOrderDetail(map);
+		List<OrderDetail> orderDetails = orderDetailService.listByMap(map);
 		model.addAttribute("orderDetails", orderDetails);
 		List<Product> products = productService.listProduct();
 		model.addAttribute("products", products);
@@ -205,7 +205,7 @@ public class PurchaseController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(Order order) {
 		Assert.notNull(order, "修改数据为空");
-		Order orderInfo = orderService.getOrderById(order.getId());
+		Order orderInfo = orderService.getById(order.getId());
 		Assert.notNull(orderInfo, "数据不存在");
 		order.setProxyId(orderInfo.getProxyId());
 		order.setUpdateUserId(getUserId());

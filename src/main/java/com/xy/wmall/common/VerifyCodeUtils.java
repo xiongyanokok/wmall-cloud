@@ -59,6 +59,7 @@ public class VerifyCodeUtils{
 	public static String generateVerifyCode(int verifySize){
 		return generateVerifyCode(verifySize, VERIFY_CODES);
 	}
+	
 	/**
 	 * 使用指定源生成验证码
 	 * @param verifySize	验证码长度

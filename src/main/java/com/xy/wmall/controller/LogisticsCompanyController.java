@@ -54,7 +54,7 @@ public class LogisticsCompanyController extends BaseController {
 		return pageInfoResult(map -> {
 			// 查询条件
 			map.put("name", request.getParameter("name")); 
-			return logisticsCompanyService.listLogisticsCompany(map);
+			return logisticsCompanyService.listByMap(map);
 		});
 	}
 	
@@ -101,7 +101,7 @@ public class LogisticsCompanyController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		LogisticsCompany logisticsCompany = logisticsCompanyService.getLogisticsCompanyById(id);
+		LogisticsCompany logisticsCompany = logisticsCompanyService.getById(id);
 		Assert.notNull(logisticsCompany, "数据不存在");
 		model.addAttribute("logisticsCompany", logisticsCompany);
 		return "logisticscompany/edit";
@@ -117,7 +117,7 @@ public class LogisticsCompanyController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(LogisticsCompany logisticsCompany) {
 		Assert.notNull(logisticsCompany, "修改数据为空");
-		LogisticsCompany logisticsCompanyInfo = logisticsCompanyService.getLogisticsCompanyById(logisticsCompany.getId());
+		LogisticsCompany logisticsCompanyInfo = logisticsCompanyService.getById(logisticsCompany.getId());
 		Assert.notNull(logisticsCompanyInfo, "数据不存在");
 		logisticsCompany.setUpdateUserId(getUserId());
 		logisticsCompany.setUpdateTime(new Date());
@@ -138,7 +138,7 @@ public class LogisticsCompanyController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		LogisticsCompany logisticsCompany = logisticsCompanyService.getLogisticsCompanyById(id);
+		LogisticsCompany logisticsCompany = logisticsCompanyService.getById(id);
 		Assert.notNull(logisticsCompany, "数据不存在");
 		logisticsCompanyService.remove(logisticsCompany);
 		log.info("【{}】删除成功", logisticsCompany);

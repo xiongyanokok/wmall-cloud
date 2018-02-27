@@ -53,7 +53,7 @@ public class ProductController extends BaseController {
 			// 查询条件
 			// 产品名称
 			map.put("productName", request.getParameter("productName")); 
-			return productService.listProduct(map);
+			return productService.listByMap(map);
 		});
 	}
 	
@@ -98,7 +98,7 @@ public class ProductController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Product product = productService.getProductById(id);
+		Product product = productService.getById(id);
 		Assert.notNull(product, "数据不存在");
 		model.addAttribute("product", product);
 		return "product/edit";
@@ -114,7 +114,7 @@ public class ProductController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(Product product) {
 		Assert.notNull(product, "修改数据为空");
-		Product productInfo = productService.getProductById(product.getId());
+		Product productInfo = productService.getById(product.getId());
 		Assert.notNull(productInfo, "数据不存在");
 		product.setUpdateUserId(getUserId());
 		product.setUpdateTime(new Date());
@@ -133,7 +133,7 @@ public class ProductController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		Product product = productService.getProductById(id);
+		Product product = productService.getById(id);
 		Assert.notNull(product, "数据不存在");
 		productService.remove(product);
 		log.info("【{}】删除成功", product);

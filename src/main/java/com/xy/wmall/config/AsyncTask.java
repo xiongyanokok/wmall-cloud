@@ -34,7 +34,7 @@ public class AsyncTask {
 	 */
 	@Async
 	public void priceCache() {
-		List<Price> prices = priceService.listPrice(CommonUtils.defaultQueryMap());
+		List<Price> prices = priceService.listByMap(CommonUtils.defaultQueryMap());
 		if (CollectionUtils.isNotEmpty(prices)) {
 			for (Price price : prices) {
 				WmallCache.putPrice(price);
@@ -60,11 +60,6 @@ public class AsyncTask {
 	 */
 	@Async
 	public void roleMenuCache() {
-		List<Price> prices = priceService.listPrice(CommonUtils.defaultQueryMap());
-		if (CollectionUtils.isNotEmpty(prices)) {
-			for (Price price : prices) {
-				WmallCache.putPrice(price);
-			}
-		}
+		// 
 	}
 }

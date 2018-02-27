@@ -101,7 +101,7 @@ public class ProxyController extends BaseController {
 			// 手机号
 			map.put("phone", request.getParameter("phone"));
 			// 查询代理
-			return proxyService.listProxy(map);
+			return proxyService.listByMap(map);
 		});
 	}
 	
@@ -122,7 +122,7 @@ public class ProxyController extends BaseController {
 			// 姓名
 			map.put("name", request.getParameter("name")); 
 			// 查询代理
-			List<Proxy> proxyList = proxyService.listProxy(map);
+			List<Proxy> proxyList = proxyService.listByMap(map);
 			if (CollectionUtils.isEmpty(proxyList)) {
 				return proxyList;
 			}
@@ -190,7 +190,7 @@ public class ProxyController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Proxy proxy = proxyService.getProxyById(id);
+		Proxy proxy = proxyService.getById(id);
 		Assert.notNull(proxy, "数据不存在");
 		model.addAttribute("proxy", proxy);
 		return "proxy/edit";
@@ -206,7 +206,7 @@ public class ProxyController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(Proxy proxy) {
 		Assert.notNull(proxy, "修改数据为空");
-		Proxy proxyInfo = proxyService.getProxyById(proxy.getId());
+		Proxy proxyInfo = proxyService.getById(proxy.getId());
 		Assert.notNull(proxyInfo, "数据不存在");
 		proxy.setUpdateUserId(getUserId());
 		proxy.setUpdateTime(new Date());
@@ -225,7 +225,7 @@ public class ProxyController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		Proxy proxy = proxyService.getProxyById(id);
+		Proxy proxy = proxyService.getById(id);
 		Assert.notNull(proxy, "数据不存在");
 		proxyService.remove(proxy);
 		log.info("【{}】删除成功", proxy);
@@ -242,7 +242,7 @@ public class ProxyController extends BaseController {
 	@RequestMapping(value = "/detail", method = {RequestMethod.GET})
 	public String detail(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Proxy proxy = proxyService.getProxyById(id);
+		Proxy proxy = proxyService.getById(id);
 		Assert.notNull(proxy, "数据不存在");
 		model.addAttribute("proxy", proxy);
 		return "proxy/detail";
@@ -256,7 +256,7 @@ public class ProxyController extends BaseController {
 	@RequestMapping(value = "/order_list", method = { RequestMethod.GET })
 	public String orderList(Model model, Integer proxyId) {
 		Assert.notNull(proxyId, "proxyId为空");
-		Proxy proxy = proxyService.getProxyById(proxyId);
+		Proxy proxy = proxyService.getById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxy", proxy);
 		List<Product> products = productService.listProduct();
@@ -275,7 +275,7 @@ public class ProxyController extends BaseController {
 	@RequestMapping(value = "/deliver_list", method = { RequestMethod.GET })
 	public String deliverList(Model model, Integer proxyId) {
 		Assert.notNull(proxyId, "proxyId为空");
-		Proxy proxy = proxyService.getProxyById(proxyId);
+		Proxy proxy = proxyService.getById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxy", proxy);
 		List<Product> products = productService.listProduct();
@@ -293,7 +293,7 @@ public class ProxyController extends BaseController {
 	@RequestMapping(value = "/code", method = { RequestMethod.GET })
 	public String code(Model model, Integer proxyId) {
 		Assert.notNull(proxyId, "proxyId为空");
-		Proxy proxy = proxyService.getProxyById(proxyId);
+		Proxy proxy = proxyService.getById(proxyId);
 		Assert.notNull(proxy, "数据不存在");
 		model.addAttribute("proxy", proxy);
 		// 生成临时验证码

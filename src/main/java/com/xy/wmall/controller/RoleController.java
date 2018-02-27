@@ -69,7 +69,7 @@ public class RoleController extends BaseController {
 			// 查询条件
 			// 角色名称
 			map.put("name", request.getParameter("name"));
-			return roleService.listRole(map);
+			return roleService.listByMap(map);
 		});
 	}
 	
@@ -114,7 +114,7 @@ public class RoleController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Role role = roleService.getRoleById(id);
+		Role role = roleService.getById(id);
 		Assert.notNull(role, "数据不存在");
 		model.addAttribute("role", role);
 		return "role/edit";
@@ -130,7 +130,7 @@ public class RoleController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(Role role) {
 		Assert.notNull(role, "修改数据为空");
-		Role roleInfo = roleService.getRoleById(role.getId());
+		Role roleInfo = roleService.getById(role.getId());
 		Assert.notNull(roleInfo, "数据不存在");
 		role.setUpdateUserId(getUserId());
 		role.setUpdateTime(new Date());
@@ -149,7 +149,7 @@ public class RoleController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		Role role = roleService.getRoleById(id);
+		Role role = roleService.getById(id);
 		Assert.notNull(role, "数据不存在");
 		roleService.remove(role);
 		log.info("【{}】删除成功", role);
@@ -166,7 +166,7 @@ public class RoleController extends BaseController {
 	@RequestMapping(value = "/menu", method = { RequestMethod.GET })
 	public String menu(Model model, Integer roleId) {
 		Assert.notNull(roleId, "roleId为空");
-		Role role = roleService.getRoleById(roleId);
+		Role role = roleService.getById(roleId);
 		Assert.notNull(role, "数据不存在");
 		model.addAttribute("role", role);
 		
@@ -176,7 +176,7 @@ public class RoleController extends BaseController {
 		// 查询权限列表
 		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("orderBy", "sort, create_time");
-		List<Menu> menus = menuService.listMenu(map);
+		List<Menu> menus = menuService.listByMap(map);
 		if (CollectionUtils.isNotEmpty(menus) && CollectionUtils.isNotEmpty(menuIds)) {
 			for (Menu menu : menus) {
 				menu.setChecked(menuIds.contains(menu.getId()));
@@ -200,7 +200,7 @@ public class RoleController extends BaseController {
 		Assert.notNull(menuId, "menuId为空");
 		
 		// 删除角色权限
-		roleMenuService.delete(roleId);
+		roleMenuService.deleteByRoleId(roleId);
 		
 		// 分配角色权限
 		List<RoleMenu> roleMenus = new ArrayList<>();

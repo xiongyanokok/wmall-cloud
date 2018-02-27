@@ -46,7 +46,7 @@ public class ProxyLevelController extends BaseController {
 	@RequestMapping(value = "/list", method = { RequestMethod.GET })
 	public String list(Model model, Integer proxyId) {
 		Assert.notNull(proxyId, "proxyId为空");
-		Proxy proxy = proxyService.getProxyById(proxyId);
+		Proxy proxy = proxyService.getById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxy", proxy);
 		return "proxylevel/list";
@@ -64,7 +64,7 @@ public class ProxyLevelController extends BaseController {
 			// 查询条件
 			// 代理ID
 			map.put("proxyId", request.getParameter("proxyId")); 
-			return proxyLevelService.listProxyLevel(map);
+			return proxyLevelService.listByMap(map);
 		});
 	}
 	
@@ -78,7 +78,7 @@ public class ProxyLevelController extends BaseController {
 	@RequestMapping(value = "/add", method = { RequestMethod.GET })
 	public String add(Model model, Integer proxyId) {
 		Assert.notNull(proxyId, "proxyId为空");
-		Proxy proxy = proxyService.getProxyById(proxyId);
+		Proxy proxy = proxyService.getById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxy", proxy);
 		return "proxylevel/add";
@@ -114,7 +114,7 @@ public class ProxyLevelController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		ProxyLevel proxyLevel = proxyLevelService.getProxyLevelById(id);
+		ProxyLevel proxyLevel = proxyLevelService.getById(id);
 		Assert.notNull(proxyLevel, "数据不存在");
 		model.addAttribute("proxyLevel", proxyLevel);
 		return "proxylevel/edit";
@@ -130,7 +130,7 @@ public class ProxyLevelController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(ProxyLevel proxyLevel) {
 		Assert.notNull(proxyLevel, "修改数据为空");
-		ProxyLevel proxyLevelInfo = proxyLevelService.getProxyLevelById(proxyLevel.getId());
+		ProxyLevel proxyLevelInfo = proxyLevelService.getById(proxyLevel.getId());
 		Assert.notNull(proxyLevelInfo, "数据不存在");
 		proxyLevel.setUpdateUserId(getUserId());
 		proxyLevel.setUpdateTime(new Date());
@@ -149,7 +149,7 @@ public class ProxyLevelController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		ProxyLevel proxyLevel = proxyLevelService.getProxyLevelById(id);
+		ProxyLevel proxyLevel = proxyLevelService.getById(id);
 		Assert.notNull(proxyLevel, "数据不存在");
 		proxyLevelService.remove(proxyLevel);
 		log.info("【{}】删除成功", proxyLevel);

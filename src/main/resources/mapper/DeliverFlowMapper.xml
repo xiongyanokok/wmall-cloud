@@ -87,8 +87,13 @@
     	</where>
   	</update>
   	
+  	<!-- 删除数据库记录 -->
+  	<update id="delete" parameterType="com.xy.wmall.model.DeliverFlow">
+    	update t_deliver_flow set is_delete = 1 where id = #{id}
+  	</update>
+  	
 	<!-- 根据map查询 -->
-  	<select id="getDeliverFlow" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	<select id="getByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
   		select
         <include refid="Base_Column_List"/>
         from t_deliver_flow
@@ -115,7 +120,7 @@
   	</select>
   
   	<!-- 根据map查询 -->
-  	<select id="listDeliverFlow" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	<select id="listByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
   		select
         <include refid="Base_Column_List"/>
         from t_deliver_flow

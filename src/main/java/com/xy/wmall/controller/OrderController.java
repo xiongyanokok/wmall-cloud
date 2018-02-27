@@ -103,7 +103,7 @@ public class OrderController extends BaseController {
 			// 订单id
 			map.put("groupBy", "id"); 
 			// 查询订单
-			List<Order> orders = orderService.listOrder(map);
+			List<Order> orders = orderService.listByMap(map);
 			if (CollectionUtils.isEmpty(orders)) {
 				return Collections.emptyList();
 			}
@@ -116,7 +116,7 @@ public class OrderController extends BaseController {
 			// 查询订单详情
 			Map<String, Object> detailMap = new HashMap<>(1);
 			detailMap.put("orderIds", orderIds);
-			List<OrderDetail> orderDetails = orderDetailService.listOrderDetail(detailMap);
+			List<OrderDetail> orderDetails = orderDetailService.listByMap(detailMap);
 			for (Order order : orders) {
 				List<OrderDetail> details = new ArrayList<>();
 				for (OrderDetail orderDetail : orderDetails) {
@@ -202,7 +202,7 @@ public class OrderController extends BaseController {
 	@RequestMapping(value = "/add", method = { RequestMethod.GET })
 	public String add(Model model, Integer proxyId) {
 		Assert.notNull(proxyId, "proxyId为空");
-		Proxy proxy = proxyService.getProxyById(proxyId);
+		Proxy proxy = proxyService.getById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxyId", proxyId);
 		List<Product> products = productService.listProduct();
@@ -265,13 +265,13 @@ public class OrderController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Order order = orderService.getOrderById(id);
+		Order order = orderService.getById(id);
 		Assert.notNull(order, "数据不存在");
 		model.addAttribute("order", order);
 		// 查询订单详情
 		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("orderId", id);
-		List<OrderDetail> orderDetails = orderDetailService.listOrderDetail(map);
+		List<OrderDetail> orderDetails = orderDetailService.listByMap(map);
 		model.addAttribute("orderDetails", orderDetails);
 		List<Product> products = productService.listProduct();
 		model.addAttribute("products", products);
@@ -296,7 +296,7 @@ public class OrderController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(Order order) {
 		Assert.notNull(order, "修改数据为空");
-		Order orderInfo = orderService.getOrderById(order.getId());
+		Order orderInfo = orderService.getById(order.getId());
 		Assert.notNull(orderInfo, "数据不存在");
 		order.setProxyId(orderInfo.getProxyId());
 		order.setUpdateUserId(getUserId());
@@ -316,7 +316,7 @@ public class OrderController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		Order order = orderService.getOrderById(id);
+		Order order = orderService.getById(id);
 		Assert.notNull(order, "数据不存在");
 		orderService.remove(order);
 		log.info("【{}】删除成功", order);
@@ -333,13 +333,13 @@ public class OrderController extends BaseController {
 	@RequestMapping(value = "/detail", method = { RequestMethod.GET })
 	public String detail(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Order order = orderService.getOrderById(id);
+		Order order = orderService.getById(id);
 		Assert.notNull(order, "数据不存在");
 		model.addAttribute("order", order);
 		// 查询订单详情
 		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("orderId", id);
-		List<OrderDetail> orderDetails = orderDetailService.listOrderDetail(map);
+		List<OrderDetail> orderDetails = orderDetailService.listByMap(map);
 		model.addAttribute("orderDetails", orderDetails);
 		List<Product> products = productService.listProduct();
 		model.addAttribute("products", products);

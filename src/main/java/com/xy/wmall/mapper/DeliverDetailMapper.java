@@ -1,8 +1,5 @@
 package com.xy.wmall.mapper;
 
-import java.util.List;
-import java.util.Map;
-
 import com.xy.wmall.model.DeliverDetail;
 
 /**
@@ -11,52 +8,8 @@ import com.xy.wmall.model.DeliverDetail;
  * @author admin
  * @date 2017年10月28日 上午08:54:03
  */
-public interface DeliverDetailMapper {
+public interface DeliverDetailMapper extends BaseMapper<DeliverDetail> {
 
-    /**
-     * 新增数据库记录
-     *
-     * @param deliverDetail
-     */
-    void insert(DeliverDetail deliverDetail);
-
-    /**
-     * 更新数据库记录
-     *
-     * @param deliverDetail
-     */
-    void update(DeliverDetail deliverDetail);
-    
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     */
-    DeliverDetail getDeliverDetail(Map<String, Object> map);
-    
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     */
-    List<DeliverDetail> listDeliverDetail(Map<String, Object> map);
-    
-    /**
-     * 批量保存
-     * 
-     * @param list
-     */
-    void batchInsert(List<DeliverDetail> list);
-    
-    /**
-     * 批量更新
-     * 
-     * @param list
-     */
-    void batchUpdate(List<DeliverDetail> list);
-    
     /**
      * 删除数据库记录
      *

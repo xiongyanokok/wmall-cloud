@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.xy.wmall.common.Assert;
 import com.xy.wmall.common.utils.CommonUtils;
-import com.xy.wmall.common.utils.ListPageUtils;
 import com.xy.wmall.enums.ArithmeticTypeEnum;
 import com.xy.wmall.enums.ErrorCodeEnum;
 import com.xy.wmall.enums.FlowStatusEnum;
@@ -25,6 +24,7 @@ import com.xy.wmall.mapper.DeliverFlowMapper;
 import com.xy.wmall.mapper.DeliverMapper;
 import com.xy.wmall.mapper.OrderDetailMapper;
 import com.xy.wmall.mapper.OrderMapper;
+import com.xy.wmall.mapper.WalletMapper;
 import com.xy.wmall.model.Deliver;
 import com.xy.wmall.model.DeliverDetail;
 import com.xy.wmall.model.DeliverFlow;
@@ -42,7 +42,7 @@ import com.xy.wmall.service.WalletService;
  * @date 2017年10月28日 上午08:54:11
  */
 @Service
-public class OrderServiceImpl implements OrderService {
+public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implements OrderService {
 
     @Autowired
 	private OrderMapper orderMapper;
@@ -55,6 +55,9 @@ public class OrderServiceImpl implements OrderService {
     
     @Autowired
     private DeliverDetailMapper deliverDetailMapper;
+    
+    @Autowired
+    private WalletMapper walletMapper;
     
     @Autowired
     private WalletService walletService;
@@ -117,7 +120,7 @@ public class OrderServiceImpl implements OrderService {
 					wallet.setUpdateUserId(order.getCreateUserId());
 					wallet.setUpdateTime(new Date());
 					wallet.setIsDelete(TrueFalseStatusEnum.FALSE.getValue());
-					walletService.save(wallet);
+					walletMapper.insert(wallet);
 				}
 			}
 			
@@ -242,7 +245,7 @@ public class OrderServiceImpl implements OrderService {
 			map.put("proxyId", order.getProxyId());
 			map.put("orderId", order.getId());
 			map.put("type", WalletTypeEnum.EXPENDITURE.getValue());
-			Wallet wallet = walletService.getWallet(map);
+			Wallet wallet = walletMapper.getByMap(map);
 			if (null != wallet) {
 				Integer price = order.getOrderPrice() - wallet.getPrice();
 				if (price > 0) {
@@ -250,125 +253,15 @@ public class OrderServiceImpl implements OrderService {
 					Integer balance = walletService.getWalletBalance(order.getProxyId());
 					if (null != balance && balance > 0) {
 						wallet.setPrice(wallet.getPrice() + (price >= balance ? balance : price));
-						walletService.update(wallet);
+						walletMapper.update(wallet);
 					}
 				} else {
 					wallet.setPrice(order.getOrderPrice());
-					walletService.update(wallet);
+					walletMapper.update(wallet);
 				}
 			}
 		} catch (Exception e) {
 			throw new WmallException(ErrorCodeEnum.DB_UPDATE_ERROR, "【" + order.toString() + "】修改失败", e);
-		}
-    }
-    
-    /**
-     * 删除数据
-     * 
-     * @param order
-     * @throws WmallException
-     */
-    @Override
-    public void remove(Order order) {
-    	Assert.notNull(order, "删除数据为空");
-		try {
-    		Order deleteOrder = new Order();
-    		deleteOrder.setId(order.getId());
-    		deleteOrder.setIsDelete(TrueFalseStatusEnum.TRUE.getValue());
-    		orderMapper.update(deleteOrder);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_DELETE_ERROR, "【" + order.toString() + "】删除失败", e);
-    	}
-    }
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public Order getOrderById(Integer id) {
-    	Assert.notNull(id, "id为空");
-    	try {
-    		Map<String, Object> map = CommonUtils.defaultQueryMap();
-    		map.put("id", id);
-	    	return orderMapper.getOrder(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + id + "】查询失败", e);
-		}
-    }
-    
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public Order getOrder(Map<String, Object> map) {
-    	Assert.notEmpty(map, "查询数据为空");
-    	try {
-	    	return orderMapper.getOrder(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询对象失败", e);
-		}
-    }
-    
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     * @throws WmallException
-     */
-    @Override
-    public List<Order> listOrder(Map<String, Object> map) {
-   	 	Assert.notEmpty(map, "查询数据为空");
-    	try {
-	    	return orderMapper.listOrder(map);
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_SELECT_ERROR, "【" + map + "】查询列表失败", e);
-		}
-    }
-    
-    /**
-     * 批量保存
-     * 
-     * @param list
-     * @throws WmallException
-     */
-    @Override
-    public void batchSave(List<Order> list) {
-    	Assert.notEmpty(list, "批量保存数据为空");
-    	try {
-			List<List<Order>> pageList = ListPageUtils.listPage(list, 1000);
-			for (List<Order> page : pageList) {
-				orderMapper.batchInsert(page);
-			}
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_BATCH_ERROR, "批量保存失败", e);
-		}
-    }
-    
-    /**
-     * 批量更新
-     * 
-     * @param list
-     * @throws WmallException
-     */
-    @Override
-    public void batchUpdate(List<Order> list) {
-    	Assert.notEmpty(list, "批量修改数据为空");
-    	try {
-			List<List<Order>> pageList = ListPageUtils.listPage(list, 1000);
-			for (List<Order> page : pageList) {
-				orderMapper.batchUpdate(page);
-			}
-		} catch (Exception e) {
-			throw new WmallException(ErrorCodeEnum.DB_BATCH_ERROR, "批量修改失败", e);
 		}
     }
     

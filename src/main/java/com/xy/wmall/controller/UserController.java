@@ -66,7 +66,7 @@ public class UserController extends BaseController {
 	 */
 	@RequestMapping(value = "/list", method = { RequestMethod.GET })
 	public String list(Model model) {
-		List<Role> roles = roleService.listRole(CommonUtils.defaultQueryMap());
+		List<Role> roles = roleService.listByMap(CommonUtils.defaultQueryMap());
 		model.addAttribute("roles", roles);
 		return "user/list";
 	}
@@ -147,7 +147,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		User user = userService.getUserById(id);
+		User user = userService.getById(id);
 		Assert.notNull(user, "数据不存在");
 		model.addAttribute("user", user);
 		return "user/edit";
@@ -163,7 +163,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(User user) {
 		Assert.notNull(user, "修改数据为空");
-		User userInfo = userService.getUserById(user.getId());
+		User userInfo = userService.getById(user.getId());
 		Assert.notNull(userInfo, "数据不存在");
 		user.setUpdateTime(new Date());
 		userService.update(user);
@@ -181,7 +181,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		User user = userService.getUserById(id);
+		User user = userService.getById(id);
 		Assert.notNull(user, "数据不存在");
 		userService.remove(user);
 		log.info("【{}】删除成功", user);
@@ -198,7 +198,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/info", method = { RequestMethod.GET })
 	public String info(Model model) {
 		Integer proxyId = getProxyId();
-		Proxy proxy = proxyService.getProxyById(proxyId);
+		Proxy proxy = proxyService.getById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxy", proxy);
 		return "system/info";
@@ -227,7 +227,7 @@ public class UserController extends BaseController {
 	public Map<String, Object> password(String oldPassword, String newPassword) {
 		Assert.hasLength(oldPassword, "oldPassword为空");
 		Assert.hasLength(newPassword, "newPassword为空");
-		User user = userService.getUserById(getUserId());
+		User user = userService.getById(getUserId());
 		Assert.notNull(user, "用户不存在");
 		if (!user.getPassword().equals(Md5Utils.md5(oldPassword))) {
 			log.error("当前密码错误：密码【{}】", oldPassword);
@@ -254,7 +254,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> disabled(Integer id) {
 		Assert.notNull(id, "id为空");
-		User user = userService.getUserById(id);
+		User user = userService.getById(id);
 		Assert.notNull(user, "数据不存在");
 		user.setDisabled(TrueFalseStatusEnum.TRUE.getValue());
 		userService.update(user);
@@ -272,7 +272,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> enabled(Integer id) {
 		Assert.notNull(id, "id为空");
-		User user = userService.getUserById(id);
+		User user = userService.getById(id);
 		Assert.notNull(user, "数据不存在");
 		user.setDisabled(TrueFalseStatusEnum.FALSE.getValue());
 		userService.update(user);
@@ -290,7 +290,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/role", method = { RequestMethod.GET })
 	public String role(Model model, Integer userId) {
 		Assert.notNull(userId, "userId为空");
-		User user = userService.getUserById(userId);
+		User user = userService.getById(userId);
 		Assert.notNull(user, "数据不存在");
 		model.addAttribute("username", user.getUsername());
 		
@@ -299,7 +299,7 @@ public class UserController extends BaseController {
 		model.addAttribute("userRole", userRole);
 		
 		// 查询角色列表
-		List<Role> roles = roleService.listRole(CommonUtils.defaultQueryMap());
+		List<Role> roles = roleService.listByMap(CommonUtils.defaultQueryMap());
 		model.addAttribute("roles", roles);
 		return "user/role";
 	}

@@ -47,7 +47,7 @@ public class ServiceFreeController extends BaseController {
 	@RequestMapping(value = "/list", method = { RequestMethod.GET })
 	public String list(Model model, Integer userId) {
 		Assert.notNull(userId, "userId为空");
-		User user = userService.getUserById(userId);
+		User user = userService.getById(userId);
 		Assert.notNull(user, "数据不存在");
 		model.addAttribute("user", user);
 		return "servicefree/list";
@@ -65,7 +65,7 @@ public class ServiceFreeController extends BaseController {
 			// 查询条件
 			// userId
 			map.put("userId", request.getParameter("userId"));
-			return serviceFreeService.listServiceFree(map);
+			return serviceFreeService.listByMap(map);
 		});
 	}
 	
@@ -79,7 +79,7 @@ public class ServiceFreeController extends BaseController {
 	@RequestMapping(value = "/add", method = { RequestMethod.GET })
 	public String add(Model model, Integer userId) {
 		Assert.notNull(userId, "userId为空");
-		User user = userService.getUserById(userId);
+		User user = userService.getById(userId);
 		Assert.notNull(user, "数据不存在");
 		model.addAttribute("user", user);
 		return "servicefree/add";
@@ -117,10 +117,10 @@ public class ServiceFreeController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		ServiceFree serviceFree = serviceFreeService.getServiceFreeById(id);
+		ServiceFree serviceFree = serviceFreeService.getById(id);
 		Assert.notNull(serviceFree, "数据不存在");
 		model.addAttribute("serviceFree", serviceFree);
-		User user = userService.getUserById(serviceFree.getUserId());
+		User user = userService.getById(serviceFree.getUserId());
 		Assert.notNull(user, "数据不存在");
 		model.addAttribute("user", user);
 		return "servicefree/edit";
@@ -136,7 +136,7 @@ public class ServiceFreeController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(ServiceFree serviceFree) {
 		Assert.notNull(serviceFree, "修改数据为空");
-		ServiceFree serviceFreeInfo = serviceFreeService.getServiceFreeById(serviceFree.getId());
+		ServiceFree serviceFreeInfo = serviceFreeService.getById(serviceFree.getId());
 		Assert.notNull(serviceFreeInfo, "数据不存在");
 		serviceFree.setUpdateUserId(getUserId());
 		serviceFree.setUpdateTime(new Date());
@@ -155,7 +155,7 @@ public class ServiceFreeController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		ServiceFree serviceFree = serviceFreeService.getServiceFreeById(id);
+		ServiceFree serviceFree = serviceFreeService.getById(id);
 		Assert.notNull(serviceFree, "数据不存在");
 		serviceFreeService.remove(serviceFree);
 		log.info("【{}】删除成功", serviceFree);

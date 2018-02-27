@@ -66,7 +66,7 @@ public class PriceController extends BaseController {
 			// 查询条件
 			// 产品id
 			map.put("productId", request.getParameter("productId")); 
-			return priceService.listPrice(map);
+			return priceService.listByMap(map);
 		});
 	}
 	
@@ -79,7 +79,7 @@ public class PriceController extends BaseController {
 	@RequestMapping(value = "/add", method = { RequestMethod.GET })
 	public String add(Model model, Integer productId) {
 		Assert.notNull(productId, "productId为空");
-		Product product = productService.getProductById(productId);
+		Product product = productService.getById(productId);
 		Assert.notNull(product, "产品不存在");
 		model.addAttribute("product", product);
 		return "price/add";
@@ -117,9 +117,9 @@ public class PriceController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Price price = priceService.getPriceById(id);
+		Price price = priceService.getById(id);
 		Assert.notNull(price, "数据不存在");
-		Product product = productService.getProductById(price.getProductId());
+		Product product = productService.getById(price.getProductId());
 		Assert.notNull(product, "产品不存在");
 		model.addAttribute("product", product);
 		model.addAttribute("price", price);
@@ -136,7 +136,7 @@ public class PriceController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(Price price) {
 		Assert.notNull(price, "修改数据为空");
-		Price priceInfo = priceService.getPriceById(price.getId());
+		Price priceInfo = priceService.getById(price.getId());
 		Assert.notNull(priceInfo, "数据不存在");
 		price.setUpdateUserId(getUserId());
 		price.setUpdateTime(new Date());
@@ -160,7 +160,7 @@ public class PriceController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		Price price = priceService.getPriceById(id);
+		Price price = priceService.getById(id);
 		Assert.notNull(price, "数据不存在");
 		priceService.remove(price);
 		log.info("【{}】删除成功", price);

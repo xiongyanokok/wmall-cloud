@@ -11,52 +11,8 @@ import com.xy.wmall.model.User;
  * @author admin
  * @date 2018年01月29日 下午02:43:39
  */
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<User> {
 
-    /**
-     * 新增数据库记录
-     *
-     * @param user
-     */
-    void insert(User user);
-
-    /**
-     * 更新数据库记录
-     *
-     * @param user
-     */
-    void update(User user);
-
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     */
-    User getUser(Map<String, Object> map);
-    
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     */
-    List<User> listUser(Map<String, Object> map);
-    
-    /**
-     * 批量保存
-     * 
-     * @param list
-     */
-    void batchInsert(List<User> list);
-    
-    /**
-     * 批量更新
-     * 
-     * @param list
-     */
-    void batchUpdate(List<User> list);
-    
     /**
      * 根据map查询
      * 

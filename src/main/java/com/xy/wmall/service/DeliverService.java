@@ -12,67 +12,8 @@ import com.xy.wmall.pojo.Statistics;
  * @author admin
  * @date 2017年10月28日 上午08:53:59
  */
-public interface DeliverService {
+public interface DeliverService extends BaseService<Deliver> {
 
-    /**
-     * 保存数据
-     *
-     * @param deliver
-     */
-    void save(Deliver deliver);
-
-    /**
-     * 修改数据
-     *
-     * @param deliver
-     */
-    void update(Deliver deliver);
-    
-    /**
-     * 删除数据
-     * 
-     * @param deliver
-     */
-    void remove(Deliver deliver);
-    
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    Deliver getDeliverById(Integer id);
-    
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     */
-    Deliver getDeliver(Map<String, Object> map);
-    
-    /**
-     * 根据map查询
-     * 
-     * @param map
-     * @return
-     */
-    List<Deliver> listDeliver(Map<String, Object> map);
-    
-    /**
-     * 批量保存
-     * 
-     * @param list
-     */
-    void batchSave(List<Deliver> list);
-    
-    /**
-     * 批量更新
-     * 
-     * @param list
-     */
-    void batchUpdate(List<Deliver> list);
-    
     /**
      * 发货状态
      * 

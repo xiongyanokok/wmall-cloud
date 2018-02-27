@@ -180,7 +180,7 @@ public class MainController extends BaseController {
 		
 		Map<String, Object> map = new HashMap<>(1);
 		map.put("code", code);
-		VerifyCode verifyCode = verifyCodeService.getVerifyCode(map);
+		VerifyCode verifyCode = verifyCodeService.getByMap(map);
 		if (null == verifyCode) {
 			log.info("临时验证码【{}】不存在", code);
 			return buildFail("验证码不存在");

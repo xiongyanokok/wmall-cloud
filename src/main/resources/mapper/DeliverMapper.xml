@@ -151,8 +151,13 @@
     	</where>
   	</update>
   	
+  	<!-- 删除数据库记录 -->
+  	<update id="delete" parameterType="com.xy.wmall.model.Deliver">
+    	update t_deliver set is_delete = 1 where id = #{id}
+  	</update>
+  	
 	<!-- 根据map查询 -->
-  	<select id="getDeliver" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	<select id="getByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
   		select
         <include refid="Base_Column_List"/>
         from t_deliver
@@ -200,7 +205,7 @@
   	</select>
   
   	<!-- 根据map查询-->
-  	<select id="listDeliver" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	<select id="listByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
   		select 
   			t1.*, t3.id flowId, t3.flow_status flowStatus
         from 

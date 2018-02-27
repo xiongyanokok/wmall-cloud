@@ -172,7 +172,7 @@ public class DeliverController extends BaseController {
 			// 发货单id
 			map.put("groupBy", "id"); 
 			// 查询发货单
-			List<Deliver> delivers = deliverService.listDeliver(map);
+			List<Deliver> delivers = deliverService.listByMap(map);
 			if (CollectionUtils.isEmpty(delivers)) {
 				return Collections.emptyList();
 			}
@@ -185,7 +185,7 @@ public class DeliverController extends BaseController {
 			// 查询发货单详情
 			Map<String, Object> detailMap = new HashMap<>(1);
 			detailMap.put("deliverIds", deliverIds);
-			List<DeliverDetail> deliverDetails = deliverDetailService.listDeliverDetail(detailMap);
+			List<DeliverDetail> deliverDetails = deliverDetailService.listByMap(detailMap);
 			for (Deliver deliver : delivers) {
 				List<DeliverDetail> details = new ArrayList<>();
 				for (DeliverDetail deliverDetail : deliverDetails) {
@@ -208,7 +208,7 @@ public class DeliverController extends BaseController {
 	@RequestMapping(value = "/add", method = { RequestMethod.GET })
 	public String add(Model model, Integer proxyId) {
 		Assert.notNull(proxyId, "proxyId为空");
-		Proxy proxy = proxyService.getProxyById(proxyId);
+		Proxy proxy = proxyService.getById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxy", proxy);
 		if (proxyId != getProxyId()) {
@@ -250,13 +250,13 @@ public class DeliverController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Deliver deliver = deliverService.getDeliverById(id);
+		Deliver deliver = deliverService.getById(id);
 		Assert.notNull(deliver, id + "不存在");
 		model.addAttribute("deliver", deliver);
 		// 查询发货详情
 		Map<String, Object> map = new HashMap<>(1);
 		map.put("deliverId", deliver.getId());
-		List<DeliverDetail> deliverDetails = deliverDetailService.listDeliverDetail(map);
+		List<DeliverDetail> deliverDetails = deliverDetailService.listByMap(map);
 		model.addAttribute("deliverDetails", deliverDetails);
 		List<Product> products = productService.listProduct();
 		model.addAttribute("products", products);
@@ -273,7 +273,7 @@ public class DeliverController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(Deliver deliver) {
 		Assert.notNull(deliver, "修改数据为空");
-		Deliver deliverInfo = deliverService.getDeliverById(deliver.getId());
+		Deliver deliverInfo = deliverService.getById(deliver.getId());
 		Assert.notNull(deliverInfo, "数据不存在");
 		deliver.setUpdateUserId(getUserId());
 		deliver.setUpdateTime(new Date());
@@ -292,7 +292,7 @@ public class DeliverController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		Deliver deliver = deliverService.getDeliverById(id);
+		Deliver deliver = deliverService.getById(id);
 		Assert.notNull(deliver, "数据不存在");
 		deliverService.remove(deliver);
 		log.info("【{}】删除成功", deliver);
@@ -309,7 +309,7 @@ public class DeliverController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> report(Integer flowId) {
 		Assert.notNull(flowId, "flowId为空");
-		DeliverFlow deliverFlow = deliverFlowService.getDeliverFlowById(flowId);
+		DeliverFlow deliverFlow = deliverFlowService.getById(flowId);
 		Assert.notNull(deliverFlow, "数据不存在");
 		
 		if (!FlowStatusEnum.START.getValue().equals(deliverFlow.getFlowStatus())) {
@@ -338,7 +338,7 @@ public class DeliverController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> deliverReset(Integer id) {
 		Assert.notNull(id, "id为空");
-		Deliver deliverInfo = deliverService.getDeliverById(id);
+		Deliver deliverInfo = deliverService.getById(id);
 		Assert.notNull(deliverInfo, "数据不存在");
 		// 撤销发货
 		Deliver deliver = new Deliver();
@@ -362,14 +362,14 @@ public class DeliverController extends BaseController {
 	public String detail(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
 		// 查询发货信息
-		Deliver deliver = deliverService.getDeliverById(id);
+		Deliver deliver = deliverService.getById(id);
 		Assert.notNull(deliver, "数据不存在");
 		model.addAttribute("deliver", deliver);
 		
 		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("deliverId", id);
 		// 查询发货详情
-		List<DeliverDetail> deliverDetails = deliverDetailService.listDeliverDetail(map);
+		List<DeliverDetail> deliverDetails = deliverDetailService.listByMap(map);
 		model.addAttribute("deliverDetails", deliverDetails);
 		
 		// 产品列表
@@ -377,7 +377,7 @@ public class DeliverController extends BaseController {
 		model.addAttribute("products", products);
 		
 		// 发货物流信息
-		Logistics logistics = logisticsService.getLogistics(map);
+		Logistics logistics = logisticsService.getByMap(map);
 		if (null != logistics) {
 			logistics.setName(WmallCache.getLogisticsCompanyName(logistics.getCompanyId()));
 			model.addAttribute("logistics", logistics);
@@ -408,7 +408,7 @@ public class DeliverController extends BaseController {
 		map.put("groupBy", "id");
 		// 发货时间排序
 		map.put("orderBy", "create_time desc");
-		List<Deliver> delivers = deliverService.listDeliver(map);
+		List<Deliver> delivers = deliverService.listByMap(map);
 		if (CollectionUtils.isEmpty(delivers)) {
 			return;
 		}
@@ -421,9 +421,9 @@ public class DeliverController extends BaseController {
 		// 查询发货单详情
 		Map<String, Object> detailMap = new HashMap<>(1);
 		detailMap.put("deliverIds", deliverIds);
-		List<DeliverDetail> deliverDetails = deliverDetailService.listDeliverDetail(detailMap);
+		List<DeliverDetail> deliverDetails = deliverDetailService.listByMap(detailMap);
 		// 查询快递信息
-		List<Logistics> logisticss = logisticsService.listLogistics(detailMap);
+		List<Logistics> logisticss = logisticsService.listByMap(detailMap);
 		for (Deliver deliver : delivers) {
 			List<DeliverDetail> details = new ArrayList<>();
 			for (DeliverDetail deliverDetail : deliverDetails) {
@@ -442,7 +442,7 @@ public class DeliverController extends BaseController {
 
 		String wechatName = "";
 		if (StringUtils.isNotEmpty(proxyId)) {
-			Proxy proxy = proxyService.getProxyById(Integer.valueOf(proxyId));
+			Proxy proxy = proxyService.getById(Integer.valueOf(proxyId));
 			Assert.notNull(proxy, "代理不存在");
 			wechatName = proxy.getWechatName() + "_";
 		}

@@ -59,7 +59,7 @@ public class MemoController extends BaseController {
 			map.put("content", request.getParameter("content"));
 			// 状态
 			map.put("status", request.getParameter("status")); 
-			return memoService.listMemo(map);
+			return memoService.listByMap(map);
 		});
 	}
 	
@@ -104,7 +104,7 @@ public class MemoController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Memo memo = memoService.getMemoById(id);
+		Memo memo = memoService.getById(id);
 		Assert.notNull(memo, "数据不存在");
 		model.addAttribute("memo", memo);
 		return "memo/edit";
@@ -120,7 +120,7 @@ public class MemoController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(Memo memo) {
 		Assert.notNull(memo, "修改数据为空");
-		Memo memoInfo = memoService.getMemoById(memo.getId());
+		Memo memoInfo = memoService.getById(memo.getId());
 		Assert.notNull(memoInfo, "数据不存在");
 		memo.setUpdateUserId(getUserId());
 		memo.setUpdateTime(new Date());
@@ -139,7 +139,7 @@ public class MemoController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		Memo memo = memoService.getMemoById(id);
+		Memo memo = memoService.getById(id);
 		Assert.notNull(memo, "数据不存在");
 		memoService.remove(memo);
 		log.info("【{}】删除成功", memo);

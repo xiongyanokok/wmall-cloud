@@ -78,7 +78,7 @@ public class InventoryController extends BaseController {
 			model.addAttribute("proxyId", proxyId);
 		}
 		Assert.notNull(proxyId, "proxyId为空");
-		Proxy proxy = proxyService.getProxyById(proxyId);
+		Proxy proxy = proxyService.getById(proxyId);
 		Assert.notNull(proxy, "代理不存在");
 		model.addAttribute("proxy", proxy);
 		List<Product> products = productService.listProduct();
@@ -104,7 +104,7 @@ public class InventoryController extends BaseController {
 			map.put("startDate", request.getParameter("startDate"));
 			// 对货结束时间
 			map.put("endDate", request.getParameter("endDate")); 
-			return inventoryService.listInventory(map);
+			return inventoryService.listByMap(map);
 		});
 	}
 	
@@ -246,7 +246,7 @@ public class InventoryController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Inventory inventory = inventoryService.getInventoryById(id);
+		Inventory inventory = inventoryService.getById(id);
 		Assert.notNull(inventory, "数据不存在");
 		model.addAttribute("inventory", inventory);
 		return "inventory/edit";
@@ -262,7 +262,7 @@ public class InventoryController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(Inventory inventory) {
 		Assert.notNull(inventory, "修改数据为空");
-		Inventory inventoryInfo = inventoryService.getInventoryById(inventory.getId());
+		Inventory inventoryInfo = inventoryService.getById(inventory.getId());
 		Assert.notNull(inventoryInfo, "数据不存在");
 		inventory.setUpdateUserId(getUserId());
 		inventory.setUpdateTime(new Date());
@@ -281,7 +281,7 @@ public class InventoryController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		Inventory inventory = inventoryService.getInventoryById(id);
+		Inventory inventory = inventoryService.getById(id);
 		Assert.notNull(inventory, "数据不存在");
 		inventoryService.remove(inventory);
 		log.info("【{}】删除成功", inventory);
@@ -298,7 +298,7 @@ public class InventoryController extends BaseController {
 	@RequestMapping(value = "/detail", method = { RequestMethod.GET })
 	public String detail(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Inventory inventory = inventoryService.getInventoryById(id);
+		Inventory inventory = inventoryService.getById(id);
 		Assert.notNull(inventory, "数据不存在");
 		model.addAttribute("remark", inventory.getRemark());
 		List<Statistics> statisticsList = new ArrayList<>();

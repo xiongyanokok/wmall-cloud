@@ -70,7 +70,7 @@ public class LogisticsController extends BaseController {
 	public Map<String, Object> query() {
 		return pageInfoResult(map -> {
 			// 查询条件
-			return logisticsService.listLogistics(map);
+			return logisticsService.listByMap(map);
 		});
 	}
 	
@@ -132,7 +132,7 @@ public class LogisticsController extends BaseController {
 	@RequestMapping(value = "/edit", method = { RequestMethod.GET })
 	public String edit(Model model, Integer id) {
 		Assert.notNull(id, "id为空");
-		Logistics logistics = logisticsService.getLogisticsById(id);
+		Logistics logistics = logisticsService.getById(id);
 		Assert.notNull(logistics, "数据不存在");
 		model.addAttribute("logistics", logistics);
 		return "logistics/edit";
@@ -155,7 +155,7 @@ public class LogisticsController extends BaseController {
 		// 发货物流信息
 		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("deliverId", deliverId);
-		Logistics logistics = logisticsService.getLogistics(map);
+		Logistics logistics = logisticsService.getByMap(map);
 		if (null != logistics) {
 			model.addAttribute("logistics", logistics);
 			return "logistics/edit";
@@ -175,7 +175,7 @@ public class LogisticsController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> update(Logistics logistics) {
 		Assert.notNull(logistics, "修改数据为空");
-		Logistics logisticsInfo = logisticsService.getLogisticsById(logistics.getId());
+		Logistics logisticsInfo = logisticsService.getById(logistics.getId());
 		Assert.notNull(logisticsInfo, "数据不存在");
 		logistics.setUpdateUserId(getUserId());
 		logistics.setUpdateTime(new Date());
@@ -196,7 +196,7 @@ public class LogisticsController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> delete(Integer id) {
 		Assert.notNull(id, "id为空");
-		Logistics logistics = logisticsService.getLogisticsById(id);
+		Logistics logistics = logisticsService.getById(id);
 		Assert.notNull(logistics, "数据不存在");
 		logisticsService.remove(logistics);
 		log.info("【{}】删除成功", logistics);
@@ -222,7 +222,7 @@ public class LogisticsController extends BaseController {
 		// 发货物流信息
 		Map<String, Object> map = CommonUtils.defaultQueryMap();
 		map.put("deliverId", deliverId);
-		Logistics logistics = logisticsService.getLogistics(map);
+		Logistics logistics = logisticsService.getByMap(map);
 		Assert.notNull(logistics, "数据不存在");
 		logistics.setName(WmallCache.getLogisticsCompanyName(logistics.getCompanyId()));
 		model.addAttribute("logistics", logistics);
