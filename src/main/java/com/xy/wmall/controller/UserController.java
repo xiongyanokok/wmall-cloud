@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.Constant;
 import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.Md5Utils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
@@ -102,7 +104,11 @@ public class UserController extends BaseController {
 			Map<Integer, Date> userServiceMap = serviceFreeService.listServiceDate(userIds);
 			for (User user : users) {
 				user.setLevel(proxyLevelMap.get(user.getId()));
-				user.setServiceDate(userServiceMap.get(user.getId()));
+				Date serviceDate = userServiceMap.get(user.getId());
+				if (null == serviceDate) {
+					serviceDate = DateUtils.addDays(user.getCreateTime(), Constant.FREE_30_DAY);
+				}
+				user.setServiceDate(serviceDate);
 			}
 			return users;
 		});

@@ -1,8 +1,10 @@
 package com.xy.wmall.controller;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xy.wmall.common.Assert;
+import com.xy.wmall.common.Constant;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.ServiceFree;
 import com.xy.wmall.model.User;
@@ -95,8 +98,23 @@ public class ServiceFreeController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> save(ServiceFree serviceFree) {
 		Assert.notNull(serviceFree, "保存数据为空");
-		serviceFree.setStartDate(new Date());
-		serviceFree.setEndDate(DateUtils.addDays(DateUtils.addYears(new Date(), 1), -1));
+		// 获取用户服务截止日期
+		Map<Integer, Date> userServiceMap = serviceFreeService.listServiceDate(Arrays.asList(serviceFree.getUserId()));
+		Date serviceDate = null;
+		if (MapUtils.isEmpty(userServiceMap)) {
+			// 免费试用30天
+			User user = userService.getById(serviceFree.getUserId());
+			serviceDate = DateUtils.addDays(user.getCreateTime(), Constant.FREE_30_DAY);
+		} else {
+			// 服务截止日期
+			serviceDate = userServiceMap.get(serviceFree.getUserId());
+		}
+		// 服务开始日期
+		Date startDate = DateUtils.addDays(serviceDate, 1);
+		// 服务截止日期
+		Date endDate = DateUtils.addYears(serviceDate, 1);
+		serviceFree.setStartDate(startDate);
+		serviceFree.setEndDate(endDate);
 		serviceFree.setCreateUserId(getUserId());
 		serviceFree.setCreateTime(new Date());
 		serviceFree.setUpdateUserId(getUserId());

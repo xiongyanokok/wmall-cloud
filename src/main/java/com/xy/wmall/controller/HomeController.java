@@ -1,5 +1,6 @@
 package com.xy.wmall.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xy.wmall.common.Constant;
 import com.xy.wmall.common.utils.CommonUtils;
+import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
 import com.xy.wmall.model.Product;
+import com.xy.wmall.pojo.UserInfo;
 import com.xy.wmall.service.BackupService;
 import com.xy.wmall.service.DeliverService;
 import com.xy.wmall.service.ProductService;
@@ -77,6 +81,9 @@ public class HomeController extends BaseController {
 		// 待发货数量
 		int waitDeliver = deliverService.countWaitDeliver(proxyId);
 		model.addAttribute("waitDeliver", waitDeliver);
+		// 服务有效期剩余天数
+		UserInfo userInfo = (UserInfo) session.getAttribute(Constant.SESSION_KEY);
+		model.addAttribute("overDay", DateUtils.daysBetween(userInfo.getServiceDate(), new Date()));
 		return "home/index";
 	}
 	

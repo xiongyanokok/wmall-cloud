@@ -253,4 +253,26 @@ public class DateUtils {
     	return format(new Date(), "yyyy-MM");
     }
 	
+	/**
+	 * 日期天数差
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
+	public static int daysBetween(Date d1, Date d2) {
+		Calendar c1 = Calendar.getInstance();
+		Calendar c2 = Calendar.getInstance();
+		c1.setTime(d1);
+		c2.setTime(d2);
+		// 设置时间为0时
+		c1.set(Calendar.HOUR_OF_DAY, 0);
+		c1.set(Calendar.MINUTE, 0);
+		c1.set(Calendar.SECOND, 0);
+		c2.set(Calendar.HOUR_OF_DAY, 0);
+		c2.set(Calendar.MINUTE, 0);
+		c2.set(Calendar.SECOND, 0);
+		return ((int) (c1.getTime().getTime() / 1000) - (int) (c2.getTime().getTime() / 1000)) / 3600 / 24;
+    }
+	
 }
