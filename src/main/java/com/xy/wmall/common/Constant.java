@@ -82,4 +82,9 @@ public final class Constant {
 	 */
 	public static final Integer FREE_30_DAY = 30;
 	
+	/**
+	 * 秘钥KEY
+	 */
+	public static final String DES_KEY = "xy@hs=xpg%1314*happy$family";
+	
 }

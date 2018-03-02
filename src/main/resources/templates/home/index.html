@@ -34,21 +34,27 @@
 			总价：
 			<input class="input-text inline" style="width: 15%;" type="text" readonly="readonly" id="totalPrice"/>
 		</div>
-		<div class="cl pd-5 bg-1 bk-gray mt-20" th:if="${null == isAdmin}">
-    		代理存款余额：<b><span class="c-red" th:text="${proxyWallet}"></span></b>
-    		<span style="padding-left: 20px;"></span>
-    		我的存款余额：<b><span class="c-red" th:text="${myWallet}"></span></b>
-    		<span style="padding-left: 20px;"></span>
-    		待发货数量：<b><span class="c-red" th:text="${waitDeliver}"></span></b>
-  		</div>
-  		<br>
-  		<dev class="c-red" th:if="${null == isAdmin and overDay < 10}">
-  			服务有效期剩余：[[${overDay}]] 天
-  			<br>
-  			请联系管理员续费：手机号（15001187708）
-  			<br>
-  			<img src="/images/alipay.png">
-  		</dev>
+		<span th:if="${null == isAdmin}">
+			<div class="cl pd-5 bg-1 bk-gray mt-20">
+	    		代理存款余额：<b><span class="c-red" th:text="${proxyWallet}"></span></b>
+	    		<span style="padding-left: 20px;"></span>
+	    		我的存款余额：<b><span class="c-red" th:text="${myWallet}"></span></b>
+	    		<span style="padding-left: 20px;"></span>
+	    		待发货数量：<b><span class="c-red" th:text="${waitDeliver}"></span></b>
+	  		</div>
+	  		<dev class="c-red" th:if="${overDay < 10}">
+		  		<br>
+	  			服务有效期剩余：[[${overDay}]] 天， 请联系管理员续费：熊焱 15001187708
+	  			<br>
+	  			<img src="/images/alipay.png">
+	  		</dev>
+	  		<dev th:if="${null != notice}">
+		  		<br>
+		  		<div class="cl pd-5 bg-1 bk-gray mt-20">消息通知</div>
+		  		&nbsp;&nbsp;&nbsp;&nbsp;[[${notice.content}]]
+	  		</dev>
+		</span>
+		<br>
   		<button class="btn btn-primary radius" type="button" onclick="backup()" th:if="${isAdmin == true}"> 备份数据 </button>
 	</div>
 </body>

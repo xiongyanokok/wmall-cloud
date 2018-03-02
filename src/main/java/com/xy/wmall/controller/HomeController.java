@@ -15,10 +15,12 @@ import com.xy.wmall.common.Constant;
 import com.xy.wmall.common.utils.CommonUtils;
 import com.xy.wmall.common.utils.DateUtils;
 import com.xy.wmall.enums.TrueFalseStatusEnum;
+import com.xy.wmall.model.Notice;
 import com.xy.wmall.model.Product;
 import com.xy.wmall.pojo.UserInfo;
 import com.xy.wmall.service.BackupService;
 import com.xy.wmall.service.DeliverService;
+import com.xy.wmall.service.NoticeService;
 import com.xy.wmall.service.ProductService;
 import com.xy.wmall.service.WalletService;
 
@@ -46,6 +48,9 @@ public class HomeController extends BaseController {
 	
 	@Autowired
 	private BackupService backupService;
+	
+	@Autowired
+	private NoticeService noticeService;
 	
 	/**
 	 * 进入列表页面
@@ -84,6 +89,9 @@ public class HomeController extends BaseController {
 		// 服务有效期剩余天数
 		UserInfo userInfo = (UserInfo) session.getAttribute(Constant.SESSION_KEY);
 		model.addAttribute("overDay", DateUtils.daysBetween(userInfo.getServiceDate(), new Date()));
+		// 最新通知
+		Notice notice = noticeService.getNewestNotice();
+		model.addAttribute("notice", notice);
 		return "home/index";
 	}
 	
